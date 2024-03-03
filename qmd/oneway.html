@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>실험계획법 2024 강의 노트 - 1&nbsp; 일원배치법</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../references.html" rel="next">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/oneway.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">일원배치법</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">실험계획법 2024 강의 노트</a> 
+        <div class="sidebar-tools-main">
+    <a href="../실험계획법-2024-강의-노트.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">서론</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/oneway.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">일원배치법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/visual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title"><code>R</code>을 이용한 자료의 시각화 비교</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#두-집단의-평균-비교" id="toc-두-집단의-평균-비교" class="nav-link active" data-scroll-target="#두-집단의-평균-비교"><span class="header-section-number">1.1</span> 두 집단의 평균 비교</a>
+  <ul class="collapse">
+  <li><a href="#t-검정" id="toc-t-검정" class="nav-link" data-scroll-target="#t-검정"><span class="header-section-number">1.1.1</span> t-검정</a></li>
+  <li><a href="#t-검정의-재구성" id="toc-t-검정의-재구성" class="nav-link" data-scroll-target="#t-검정의-재구성"><span class="header-section-number">1.1.2</span> t-검정의 재구성</a></li>
+  </ul></li>
+  <li><a href="#일원배치법" id="toc-일원배치법" class="nav-link" data-scroll-target="#일원배치법"><span class="header-section-number">1.2</span> 일원배치법</a>
+  <ul class="collapse">
+  <li><a href="#일원배치을-이용한-랜덤화-실험계획법" id="toc-일원배치을-이용한-랜덤화-실험계획법" class="nav-link" data-scroll-target="#일원배치을-이용한-랜덤화-실험계획법"><span class="header-section-number">1.2.1</span> 일원배치을 이용한 랜덤화 실험계획법</a></li>
+  <li><a href="#실험배정의-랜덤화" id="toc-실험배정의-랜덤화" class="nav-link" data-scroll-target="#실험배정의-랜덤화"><span class="header-section-number">1.2.2</span> 실험배정의 랜덤화</a></li>
+  <li><a href="#예제-3.1---자료" id="toc-예제-3.1---자료" class="nav-link" data-scroll-target="#예제-3.1---자료"><span class="header-section-number">1.2.3</span> 예제 3.1 - 자료</a></li>
+  <li><a href="#일원배치법의-자료-구조와-모형" id="toc-일원배치법의-자료-구조와-모형" class="nav-link" data-scroll-target="#일원배치법의-자료-구조와-모형"><span class="header-section-number">1.2.4</span> 일원배치법의 자료 구조와 모형</a></li>
+  </ul></li>
+  <li><a href="#분산분석" id="toc-분산분석" class="nav-link" data-scroll-target="#분산분석"><span class="header-section-number">1.3</span> 분산분석</a>
+  <ul class="collapse">
+  <li><a href="#모형과-가설" id="toc-모형과-가설" class="nav-link" data-scroll-target="#모형과-가설"><span class="header-section-number">1.3.1</span> 모형과 가설</a></li>
+  <li><a href="#변동의-분해" id="toc-변동의-분해" class="nav-link" data-scroll-target="#변동의-분해"><span class="header-section-number">1.3.2</span> 변동의 분해</a></li>
+  <li><a href="#자유도" id="toc-자유도" class="nav-link" data-scroll-target="#자유도"><span class="header-section-number">1.3.3</span> 자유도</a></li>
+  <li><a href="#평균제곱합과-f-통계량" id="toc-평균제곱합과-f-통계량" class="nav-link" data-scroll-target="#평균제곱합과-f-통계량"><span class="header-section-number">1.3.4</span> 평균제곱합과 F-통계량</a></li>
+  <li><a href="#분산분석을-이용한-f-검정" id="toc-분산분석을-이용한-f-검정" class="nav-link" data-scroll-target="#분산분석을-이용한-f-검정"><span class="header-section-number">1.3.5</span> 분산분석을 이용한 F-검정</a></li>
+  <li><a href="#분산분석-후의-추정" id="toc-분산분석-후의-추정" class="nav-link" data-scroll-target="#분산분석-후의-추정"><span class="header-section-number">1.3.6</span> 분산분석 후의 추정</a></li>
+  <li><a href="#예제-3.1---anova-f-검정과-사후-추정" id="toc-예제-3.1---anova-f-검정과-사후-추정" class="nav-link" data-scroll-target="#예제-3.1---anova-f-검정과-사후-추정"><span class="header-section-number">1.3.7</span> 예제 3.1 - ANOVA F-검정과 사후 추정</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-oneway" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">일원배치법</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="두-집단의-평균-비교" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="두-집단의-평균-비교"><span class="header-section-number">1.1</span> 두 집단의 평균 비교</h2>
+<section id="t-검정" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="t-검정"><span class="header-section-number">1.1.1</span> t-검정</h3>
+<p>기초통계학에서 나오는 가장 기본적이고 자주 쓰이는 가설검정 방법은 두 집단의 평균의 차이를 검정하는 t-검정(t-test)이다.</p>
+<p>교과서 2장 예제 2.2 를 다시 보자. 공장의 두 개 라인에서 생산되는 시멘트의 인장강도에 유의한 차이가 있는지 통계적 가설 검정을 수행하려고 한다. 첫 번째 생산라인을 <span class="math inline">\(1\)</span>, 두 번째 생산라인을 <span class="math inline">\(2\)</span> 라고 했을 때 각각의 라인에서 시멘트 인장강도의 평균을 <span class="math inline">\(\mu_1\)</span>, <span class="math inline">\(\mu_2\)</span>이라고 하자.</p>
+<p>여기서 고려해야할 가설은 다음과 같다.</p>
+<p><span class="math display">\[ H_0: \mu_1 = \mu_2 \quad \text{vs.} \quad H_1: \mu_1  \ne \mu_2 \]</span></p>
+<p>두 집단이 분산이 동일한 정규분포 <span class="math inline">\(N(\mu_1, \sigma^2)\)</span>, <span class="math inline">\(N(\mu_2, \sigma^2)\)</span>를 따른다고 가정하고 다음과 같이 각각 <span class="math inline">\(n_1\)</span>, <span class="math inline">\(n_2\)</span>개의 독립 표본을 얻었다고 하자.</p>
+<p><span class="math display">\[ y_{11}, y_{12}, \dots, y_{1 n_1} \sim N(\mu_1, \sigma^2), \quad y_{21}, y_{22}, \dots, y_{2 n_2} \sim N(\mu_2, \sigma^2) \]</span></p>
+<p>위의 가설을 다음과 같은 t-통계량을 이용하여 검정할 수 있다.</p>
+<p><span class="math display">\[ t_0 =\frac {\bar y_1 -\bar y_2 } {  s_p \sqrt{1/n_1 + 1/n_2}} \]</span></p>
+<p>여기서 <span class="math inline">\(\bar y_1\)</span>, <span class="math inline">\(\bar y_2\)</span>은 두 생산라인에서 추출된 표본의 평균을 나타내고 <span class="math inline">\(n_1\)</span>, <span class="math inline">\(n_2\)</span> 은 각 집단의 표본 개수를 나타낸다. 또한 <span class="math inline">\(s_p^2\)</span> 은 두 집단의 공통분산 추정량이며 다음과 같이 계산한다.</p>
+<p><span class="math display">\[ \hat \sigma^2 = s_p^2 =  \frac { \sum_{i=1}^{n_1} (y_{1i} -\bar y_1)^2 + \sum_{i=1}^{n_2} (y_{2i} -\bar y_2)^2 } { n_1 + n_2 -2} \]</span></p>
+<p>위에서 구한 t-통계량의 절대값이 크다면 귀무가설 <span class="math inline">\(H_0\)</span> 에 반대되는 증거이다. 유의수준을 <span class="math inline">\(\alpha\)</span>라고 했을 때 t-통계량 <span class="math inline">\(t_0\)</span>의 절대값이 자유도 <span class="math inline">\(df=n_1 + n_2 -2\)</span> 를 가지는 t-분포의 상위 <span class="math inline">\(\alpha/2\)</span> 분위수보다 크면 귀무가설을 기각하고 대립가설 <span class="math inline">\(H_1\)</span>을 채택한다.</p>
+<p><span class="math display">\[ \text{ Reject } H_0  \quad \text { if } ~~ |t_0| &gt; t(1-\alpha/2, n_1 + n_2 -2 ) \]</span></p>
+<p>가설 검정은 p-값(p-value)을 구하고 그 값이 <span class="math inline">\(\alpha\)</span>보다 작으면 귀무가설을 기각하는 방법을 사용할 수 있다.</p>
+<p><span class="math display">\[ \text{ Reject } H_0  \quad \text { if    p-value } &lt; \alpha \]</span></p>
+<p>여기서 <span class="math inline">\(p-value\)</span> 는 다음과 같이 계산할 수 있으며 <span class="math inline">\(t(n_1 + n_1 -2 )\)</span>는 자유도가 <span class="math inline">\(n_1 + n_2 -2\)</span>을 가지는 <span class="math inline">\(t\)</span>-분포를 따르는 확률변수이다. .</p>
+<p><span class="math display">\[ \text {p-value }=2 P[ t(n_1 + n_2 -2 ) &gt;|t_0|] \]</span></p>
+<p><code>R</code> 에서 함수 <code>t.test</code>를 이용하여 두 집단에 대한 t-검정을 실시해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>line1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">16.9</span>, <span class="fl">16.4</span>, <span class="fl">17.2</span>, <span class="fl">16.4</span>, <span class="fl">16.5</span>, <span class="fl">17.0</span>, <span class="fl">17.0</span>, <span class="fl">17.2</span>, <span class="fl">16.6</span>, <span class="fl">16.6</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>line2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">16.6</span>, <span class="fl">16.8</span>, <span class="fl">17.4</span>, <span class="fl">17.1</span>, <span class="fl">17.0</span>, <span class="fl">16.9</span>, <span class="fl">17.3</span>, <span class="fl">17.0</span>, <span class="fl">17.1</span>, <span class="fl">17.3</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df220 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(line1, line2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df220</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   line1 line2
+1   16.9  16.6
+2   16.4  16.8
+3   17.2  17.4
+4   16.4  17.1
+5   16.5  17.0
+6   17.0  16.9
+7   17.0  17.3
+8   17.2  17.0
+9   16.6  17.1
+10  16.6  17.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df22<span class="ot">&lt;-</span> df220 <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"line"</span>, <span class="at">values_to =</span> <span class="st">"strength"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">arrange</span>(line)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df22</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 2
+   line  strength
+   &lt;chr&gt;    &lt;dbl&gt;
+ 1 line1     16.9
+ 2 line1     16.4
+ 3 line1     17.2
+ 4 line1     16.4
+ 5 line1     16.5
+ 6 line1     17  
+ 7 line1     17  
+ 8 line1     17.2
+ 9 line1     16.6
+10 line1     16.6
+11 line2     16.6
+12 line2     16.8
+13 line2     17.4
+14 line2     17.1
+15 line2     17  
+16 line2     16.9
+17 line2     17.3
+18 line2     17  
+19 line2     17.1
+20 line2     17.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(strength<span class="sc">~</span>line, df22, <span class="at">paired =</span> <span class="cn">FALSE</span>, <span class="at">var.equal =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  strength by line
+t = -2.1338, df = 18, p-value = 0.04687
+alternative hypothesis: true difference in means between group line1 and group line2 is not equal to 0
+95 percent confidence interval:
+ -0.535840211 -0.004159789
+sample estimates:
+mean in group line1 mean in group line2 
+              16.78               17.05 </code></pre>
+</div>
+</div>
+<p>유의수준을 0.05로 정하면 t-검정의 결과 p-값이 유의수준 보다 작아서 귀무가설을 기각하고 대립가설 <span class="math inline">\(H_1\)</span>을 채택한다. 즉, 두 라인의 시멘트 인장강도 평균은 유의하게 다르다.</p>
+</section>
+<section id="t-검정의-재구성" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="t-검정의-재구성"><span class="header-section-number">1.1.2</span> t-검정의 재구성</h3>
+<p>이제 두 집단에 대한 가설 검정을 세 개 이상인 여러 개의 집단으로 확장하는 경우를 생각해보자. 여러 개의 집단에 대한 가설 검정을 고려하기 전에 두 집단에 대한 t-검정을 약간 재구성하여 여러 평균들의 차이를 비교하는 검정법에 대한 일반적인 개념을 제시해 보려고 한다. 이제 t-검정에서 검정 통계량의 분자와 분모를 따로 살펴보자</p>
+<p><span class="math display">\[ t_0 =\frac {\bar y_1 -\bar y_2 } { s_p \sqrt{1/n_1 + 1/n_2}} \]</span></p>
+<p>t-검정 통계량의 분자는 집단 간의 평균의 차이를 나타낸다. 즉 <span class="math inline">\(\bar y_1 -\bar y_2\)</span>는 두 집단의 표본 평균의 차이를 추정하는 양이고 그 차이가 크면 클수록 두 집단의 모평균의 차이 <span class="math inline">\(\mu_1 - \mu_2\)</span>가 크다는 것을 의미한다.</p>
+<p>t-검정 통계량의 분모는 두 집단의 공통분산 추정량 <span class="math inline">\(\hat \sigma^2 =s_p^2\)</span>에 비례한다. 즉 집단 내의 변동을 반영하는 <span class="math inline">\(s_p^2\)</span> 이 크면 클수록 t-검정 통계량은 그 크기가 작아져서 귀무가설의 기각을 어렵게 한다.</p>
+<p><span class="math display">\[ s^2_p = \frac{\sum_{i=1}^{n_1} (y_{1i} -\bar y_1)^2 + \sum_{i=1}^{n_2} (y_{2i} -\bar y_2)^2}{n_1+n_2-2} \]</span></p>
+<p>또한 t-검정 통계량는 표본의 수(<span class="math inline">\(n_1\)</span>과 <span class="math inline">\(n_2\)</span>)에 비례한다. 즉 표본의 수가 증가햐면 t-검정 통계량이 커지게 된다.</p>
+<p>정리해보면 t-검정 통계량은 <strong>집단 간의 변동</strong>(between-group variation)을 <strong>집단 내의 변동</strong>(within-group variation) 으로 나누어준 값이다. 다른 말로 급간 변동과 급내 변동을 사용하기도 한다.</p>
+<p>이제 t-검정 통계량을 <strong>제곱하면</strong> 다음과 같이 표현할 수 있다.</p>
+<p><span class="math display">\[  t_0^2 =\frac { (\bar y_1 -\bar y_2)^2 } { s_p^2 (1/n_1 + 1/n_2)} = \frac{\text{between-group variation}} {\text{within-group variation}} \]</span></p>
+<p>두 집단의 평균을 비교하는 t-검정 통계량은 집단 간의 변동(집단 간의 평균들의 차이)과 집단 내의 변동(집단 내 관측치들의 퍼진 정도)의 비율로 구성된 통계량으로 생각할 수 있으며 이러한 개념을 3개 이상의 집단을 비교하는 경우로 쉽게 확장할 수 있다.</p>
+</section>
+</section>
+<section id="일원배치법" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="일원배치법"><span class="header-section-number">1.2</span> 일원배치법</h2>
+<section id="일원배치을-이용한-랜덤화-실험계획법" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="일원배치을-이용한-랜덤화-실험계획법"><span class="header-section-number">1.2.1</span> 일원배치을 이용한 랜덤화 실험계획법</h3>
+<ul>
+<li>일원배치법(one-way randomization design)은 관심있는 중요한 한 개 요인이 반응변수에 어떠한 영향을 미치는지 알아보는 실험법이다.</li>
+<li>반응값에 영향을 주는 다른 요인들에 대한 정보가 많고 사전 실험이 많이 이루어져서 가장 중요한 요인의 미세한 영향을 조사하고자 할 때 유용하다.</li>
+<li>처리를 제외한 다른 요인들의 영향을 적절하게 통제할 수 있어야 한다.</li>
+</ul>
+</section>
+<section id="실험배정의-랜덤화" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="실험배정의-랜덤화"><span class="header-section-number">1.2.2</span> 실험배정의 랜덤화</h3>
+<p>실험배정의 랜덤화 방법은 교과서 38-41 페이지 참조</p>
+<p><img src="../images/oneway-random.png" class="img-fluid"></p>
+</section>
+<section id="예제-3.1---자료" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="예제-3.1---자료"><span class="header-section-number">1.2.3</span> 예제 3.1 - 자료</h3>
+<p>이 실험에서 요인은 직물이며 4개 수준은 4개의 납품업체에서 공급한 서로 다른 직물이다. 실험 목적은 4개의 직물의 긁힘에 대한 저항력을 비교하는 실험이다. 각 업체마다 4개의 제품을 랜덤하게 선택하여 일원배치법으로 마모도 검사를 실시하였다.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>company<span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>), <span class="at">each=</span><span class="dv">4</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>response<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.93</span>, <span class="fl">2.38</span>, <span class="fl">2.20</span>, <span class="fl">2.25</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>             <span class="fl">2.55</span>, <span class="fl">2.72</span>, <span class="fl">2.75</span>, <span class="fl">2.70</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">2.40</span>, <span class="fl">2.68</span>, <span class="fl">2.32</span>, <span class="fl">2.28</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>             <span class="fl">2.33</span>, <span class="fl">2.38</span>, <span class="fl">2.28</span>, <span class="fl">2.25</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df31 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">company=</span>company, <span class="at">response=</span> response)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>df31</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   company response
+1        1     1.93
+2        1     2.38
+3        1     2.20
+4        1     2.25
+5        2     2.55
+6        2     2.72
+7        2     2.75
+8        2     2.70
+9        3     2.40
+10       3     2.68
+11       3     2.32
+12       3     2.28
+13       4     2.33
+14       4     2.38
+15       4     2.28
+16       4     2.25</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df31, <span class="fu">aes</span>(company, response)) <span class="sc">+</span>   <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> <span class="fu">factor</span>(company)), <span class="at">size =</span> <span class="dv">2</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="oneway_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>실험에서는 처리 이외의 다른 요인들이 적절하게 통제되는 것이 매우 중요하다. 4개의 처리 외에 마모도 검사의 결과에 영향을 미칠 수 있는 다른 요인을 생각해 보자.</p>
+<ul>
+<li>검사를 수행하는 사람</li>
+<li>마모도를 검사하는 도구 또는 기계</li>
+<li>검사를 실시하는 환경 (측정 시간, 장소 등)</li>
+<li>마모도 검사의 배정을 완전 임의(completely randomized)로 할 수 있는지?</li>
+</ul>
+<p>일원배치법으로 실험을 진행할 떄 다음과 같은 상항들을 고려해야 한다.</p>
+<ul>
+<li>처리 이외의 다른 요인들을 적절하게 통제할 수 있는가?</li>
+<li>어떤 경우에 완전한 랜덤화가 불가능한가? 이러한 경우 실험의 배정을 어떻게 해야 할까?</li>
+</ul>
+</section>
+<section id="일원배치법의-자료-구조와-모형" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="일원배치법의-자료-구조와-모형"><span class="header-section-number">1.2.4</span> 일원배치법의 자료 구조와 모형</h3>
+<ul>
+<li>일원배치법에서의 자료 구조는 교과서 41-44 페이지 참조</li>
+</ul>
+<p>일원배치법 실험에서는 하나의 요인 A 의 효과를 측정한다. 요인 A 에 대하여 서로 다른 a 개의 수준(<span class="math inline">\(A_1, A_2, \dots, A_a\)</span>)의 효과를 비교한다고 가정하자. 각 수준에 대하여 <span class="math inline">\(r_i\)</span> 개의 반응값을 반복 측정한다.</p>
+<p>이제 <span class="math inline">\(i\)</span>번 수준에서 측정된 <span class="math inline">\(j\)</span>번째 반응변수의 값을 <span class="math inline">\(x_{ij}\)</span>라고 하자. 일원배치법에서 측정된 자료들은 다음과 같은 모형을 가진다고 가정한다.</p>
+<p><span id="eq-onewaymodel1"><span class="math display">\[
+x_{ij} = \mu_i + e_{ij} \text{ where } e_{ij} \sim N(0,\sigma_E^2)
+\tag{1.1}\]</span></span></p>
+<p>여기서 오차항 <span class="math inline">\(e_{ij}\)</span>는 모두 독립이다.</p>
+<p>첨자 <span class="math inline">\(i\)</span>는 실험의 수준에 나타낸다 (<span class="math inline">\(i=1, 2, \cdots, a\)</span>). 균형자료의 경우는 모든 수준에 대하여 반복수가 같은 경우이다 (<span class="math inline">\(j=1,2,\cdots,r\)</span>). 불균형자료의 경우는 수준에 대하여 반복수가 다른 경우이다 (<span class="math inline">\(j=1,2,\cdots,r_i\)</span>). <img src="../images/oneway-data.png" class="img-fluid"></p>
+<p><a href="#eq-onewaymodel1" class="quarto-xref">식&nbsp;<span>1.1</span></a> 은 일반적으로 <strong>평균모형(mean model)</strong> 이라고 부르며 모형의 이름대로 모두 <span class="math inline">\(\mu_i\)</span>는 <span class="math inline">\(i\)</span>번째 수준의 평균을 의미한다.</p>
+<p><span class="math display">\[ E(x_{ij}) = E(\mu_i + e_{ij}) = \mu_i \]</span></p>
+<p>이제 <a href="#eq-onewaymodel1" class="quarto-xref">식&nbsp;<span>1.1</span></a> 을 약각 변형하여 다른 형식의 모형을 만들어 보자.</p>
+<p><span class="math display">\[\begin{align*}
+x_{ij} &amp; = \mu_i + e_{ij} \\
+      &amp; = \mu + (\mu_i - \mu) + e_{ij} \\
+      &amp; = \mu + \alpha_i + e_{ij}
+\end{align*}\]</span></p>
+<p>위의 모형에서 모수 <span class="math inline">\(\mu\)</span>는 반응값의 전체 평균을 의미하며 <span class="math inline">\(\alpha_i = \mu_i - \mu\)</span>는 <span class="math inline">\(i\)</span>번째 수준의 평균이 전체 평균과 어떻게 다른지 나타내는 수준의 상대적 효과를 의미한다.</p>
+<p>다음의 식으로 정의된 일원배치 모형을 <strong>주효과모형(main effect model)</strong> 이라고 부른다. 모수 <span class="math inline">\(\alpha_i\)</span>는 <span class="math inline">\(i\)</span> 번째 집단의 효과(처리 효과; treatment effect)를 나타낸다고 할 수 있다.</p>
+<p><span id="eq-onewaymodel2"><span class="math display">\[
+x_{ij} = \mu + \alpha_i + e_{ij} \text{ where } e_{ij} \sim N(0,\sigma_E^2)
+\tag{1.2}\]</span></span></p>
+<p>여기서 오차항 <span class="math inline">\(e_{ij}\)</span>는 모두 독립이며 다음과 같은 제약조건이 있다.</p>
+<p><span id="eq-onewaycondition"><span class="math display">\[
+\sum_{i=1}^a \alpha_i = 0
+\tag{1.3}\]</span></span></p>
+<p><a href="#eq-onewaycondition" class="quarto-xref">식&nbsp;<span>1.3</span></a> 의 제약조건은 모수의 개수(<span class="math inline">\(a+1\)</span>)가 그룹의 개수(<span class="math inline">\(a\)</span>)보다 많아서 발생하는 문제를 해결하기 위하여 모수에 대한 제약 조건 1개를 고려해서 모수의 개수와 그룹의 개수를 맞추어준 것이다. 나중에 이러한 제약조건에 대한 이론을 자세히 다루기로 한다.</p>
+<p><a href="#eq-onewaycondition" class="quarto-xref">식&nbsp;<span>1.3</span></a> 의 제약조건은 <strong>sum to zero</strong>조건이라고 부르며 문제를 해결하는 유일한 조건은 아니다. 예를 들어서 조건 <a href="#eq-onewaycondition" class="quarto-xref">식&nbsp;<span>1.3</span></a> 의 제약조건을 대신하여 <span class="math inline">\(\alpha_1=0\)</span> 인 <strong>set to zero</strong> 조건을 사용할 수 있다.</p>
+</section>
+</section>
+<section id="분산분석" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="분산분석"><span class="header-section-number">1.3</span> 분산분석</h2>
+<section id="모형과-가설" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="모형과-가설"><span class="header-section-number">1.3.1</span> 모형과 가설</h3>
+<p>집단의 모평균을 편의상 <span class="math inline">\(\mu_1, \mu_2, \cdots, \mu_a\)</span> 이라고 하자. 평균모형 <a href="#eq-onewaymodel1" class="quarto-xref">식&nbsp;<span>1.1</span></a> 을 가정하고 집단들 사이에 차이가 있는지에 대한 가설은 다음과 같다.</p>
+<p><span class="math display">\[ H_0: \mu_1 = \mu_2 =\dots =\mu_a \quad \text{vs.} \quad H_1: \text{ not } H_0 \]</span></p>
+<p>위의 가설에서 주의할 점은 대립가설 <span class="math inline">\(H_1\)</span>의 경우애 평균들이 서로 다른 경우가 매우 다양하다는 것이다. 예를 들어 집단이 3개 인 경우 <span class="math inline">\(\mu_1 = \mu_2  &lt; \mu_3\)</span>일 수 도 있고 <span class="math inline">\(\mu_1 &lt; \mu_2  &lt; \mu_3\)</span> 있으며 이 외에 매우 다양한 경우들이 있다.</p>
+<p>이제 효과모형 <a href="#eq-onewaymodel2" class="quarto-xref">식&nbsp;<span>1.2</span></a> 을 고려하면 집단들 사이에 차이가 있는지에 대한 가설을 다음과 같이 바꿀수 있다. 집단에 대한 효과가 모두 0이 되면 집단 간의 평균에 대한 차이는 없다.</p>
+<p><span id="eq-hypo1"><span class="math display">\[
+H_0: \alpha_1 = \alpha_2 =\cdots=\alpha_a =0  \quad \text{vs.} \quad H_1: \text{ not } H_0
+\tag{1.4}\]</span></span></p>
+</section>
+<section id="변동의-분해" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="변동의-분해"><span class="header-section-number">1.3.2</span> 변동의 분해</h3>
+<p>이제 앞 절에서 생각해본 t-검정의 재구성처럼 집단 간의 변동(각 집단의 평균의 차이가 얼마나 나는지에 대한 통계량)과 집단 내의 변동(각 집단내에서 관측값들의 퍼진 정도)를 측정하는 통계량을 찾아서 검정 통계량을 구성해 보자.</p>
+<p>일단 다음과 같이 전체 평균과 집단의 평균을 정의하자.</p>
+<p><span class="math display">\[ \bar{\bar {x}} =  \frac{\sum_{i=1}^a \sum_{j=1}^r x_{ij}}{ar} =\frac{T}{ar}, \quad  \bar {x}_{i.} =   \frac{\sum_{j=1}^r x_{ij}}{r} = \frac{T_{i.}}{r} \]</span></p>
+<p>이제 하나의 관측값 <span class="math inline">\(x_{ij}\)</span>과 전체 평균 <span class="math inline">\(\bar{\bar {x}}\)</span> 간의 편차(deviation)를 다음과 같이 분해해 보자.</p>
+<p><span id="eq-decomp1"><span class="math display">\[
+\underbrace{ x_{ij} - \bar{\bar {x}} }_{\text{total deviation}}  = \underbrace{ ( x_{ij} - \bar {x}_{i.} )}_{\text{within-group deviation}} + \underbrace{(\bar {x}_{i.} - \bar{\bar {x}} )}_{\text{between-group deviation}}
+\tag{1.5}\]</span></span></p>
+<p><a href="#eq-decomp1" class="quarto-xref">식&nbsp;<span>1.5</span></a> 에서 집단 평균과 총 평균의 편차 (<span class="math inline">\(\bar {x}_{i.} - \bar{\bar {x}}\)</span>)는 처리의 효과를 측정할 수 있는 통계량이다. 집단 간의 차이를 반영하는 양으로 처리 효과 <span class="math inline">\(\alpha_i\)</span>들에 의하여 발생한다.</p>
+<p>집단 내의 관측값과 집단 평균의 차이 (<span class="math inline">\(x_{ij} - \bar {x}_{i.}\)</span>)는 집단 내의 변동을 나타내는 통계량으로 측정 오차 <span class="math inline">\(e_{ij}\)</span>에 의하여 발생한다.</p>
+<p><a href="#eq-decomp1" class="quarto-xref">식&nbsp;<span>1.5</span></a> 의 각 편차들은 양수와 음수로서 부호를 가지기 때문에 이를 변동으로 표현하기 위하여 차이를 제곱하여 합친 제곱합(sum of squares)을 고려해 보자.</p>
+<p><span class="math display">\[\begin{align*}
+\sum_{i=1}^a \sum_{j=1}^r (x_{ij} - \bar{\bar {x}})^2
+    &amp; = \sum_{i=1}^a \sum_{j=1}^r \left [ ( x_{ij} - \bar {x}_{i.} ) + (\bar {x}_{i.} - \bar{\bar {x}} ) \right ]^2 \\
+    &amp; = \sum_{i=1}^a \sum_{j=1}^r ( x_{ij} - \bar {x}_{i.} )^2 + \sum_{i=1}^a \sum_{j=1}^r (\bar {x}_{i.} - \bar{\bar {x}} )^2 + 2   \sum_{i=1}^a \sum_{j=1}^r ( x_{ij} - \bar {x}_{i.} ) (\bar {x}_{i.} - \bar{\bar {x}} ) \\
+    &amp; = \sum_{i=1}^a \sum_{j=1}^r ( x_{ij} - \bar {x}_{i.} )^2 + \sum_{i=1}^a r (\bar {x}_{i.} - \bar{\bar {x}} )^2 + 0 (why?) \\
+\end{align*}\]</span></p>
+<p>결과적으로 다음과 같은 변동의 분해를 제곱합의 형식으로 얻을 수 있다.</p>
+<p><span id="eq-decomp2"><span class="math display">\[
+\underbrace{ \sum_{i=1}^a \sum_{j=1}^r (x_{ij} - \bar{\bar {x}})^2  }_{\text{total variation}}  = \underbrace{ \sum_{i=1}^a \sum_{j=1}^r ( x_{ij} - \bar {x}_{i.} )^2 }_{\text{within-group variation}} + \underbrace{\sum_{i=1}^a \sum_{j=1}^r (\bar {x}_{i.} - \bar{\bar {x}} )^2 }_{\text{between-group variation}}
+\tag{1.6}\]</span></span></p>
+<p>분해 <a href="#eq-decomp2" class="quarto-xref">식&nbsp;<span>1.6</span></a> 에서 나타난 각 제곱합에 대한 이름과 의미를 살펴보자.</p>
+<ul>
+<li><span class="math inline">\(SS_T\)</span>를 총 제곱합(Total Sum of Squares)이라고 부르며 자료의 전체 변동을 의미한다.</li>
+</ul>
+<p><span class="math display">\[ SS_T = \sum_{i=1}^a \sum_{j=1}^r (x_{ij} - \bar{\bar {x}})^2 \]</span></p>
+<ul>
+<li><span class="math inline">\(SS_E\)</span>를 잔차 제곱합(Residual Sum of Squares)이라고 부르며 관측 오차에 발생된 집단 내의 변동 또는 급내 변동(within-group variation)을 의미한다.</li>
+</ul>
+<p><span class="math display">\[ SS_E = \sum_{i=1}^a \sum_{j=1}^r  ( x_{ij} - \bar {x}_{i.} )^2 \]</span></p>
+<ul>
+<li><span class="math inline">\(SS_A\)</span>를 처리 제곱합(Treatment Sum of Squares)이라고 부르며 처리들의 차이로 발생하는 변동으로거 집단 간의 변동 또는 급간 변동(bwtween-group variation)을 의미한다.</li>
+</ul>
+<p><span class="math display">\[ SS_A = \sum_{i=1}^a \sum_{j=1}^r (\bar {x}_{i.} - \bar{\bar {x}} )^2 =\sum_{i=1}^a r (\bar {x}_{i.} - \bar{\bar {x}} )^2 \]</span></p>
+<p>이제 분해 <a href="#eq-decomp2" class="quarto-xref">식&nbsp;<span>1.6</span></a> 을 다음과 같이 나타낼수 있다.</p>
+<p><span id="eq-decomp3"><span class="math display">\[
+SS_T = SS_A + SS_E
+\tag{1.7}\]</span></span></p>
+<p>위의 분해식에서 볼 수 있듯이 집단 간의 변동의 크기를 나타내는 처리제곱합이 커질수록, 또는 집단내의 변동의 크기를 나타내는 오차제곱합이 작아질수록 귀무가설에 반대되는(즉, 집단 간의 평균이 유의한 차이가 난다는) 증거가 강해진다.</p>
+</section>
+<section id="자유도" class="level3" data-number="1.3.3">
+<h3 data-number="1.3.3" class="anchored" data-anchor-id="자유도"><span class="header-section-number">1.3.3</span> 자유도</h3>
+<p>제곱합은 편차(deviation)의 제곱들을 더한 형태로서 각 제곱합들에 대하여 해당하는 자유도(degrees of freedom; df 또는 <span class="math inline">\(\phi\)</span>로 표기)를 구할 수 있다.</p>
+<pre><code>제곱합의 자유도 = 제곱합을 구성하는 편차의 개수 – 선형제약 조건의 개수 </code></pre>
+<p>각 제곱합에 대한 선형제약조건은 편차들의 합이 0이 되는 조건이다. 이제 식 <a href="#eq-decomp3" class="quarto-xref">식&nbsp;<span>1.7</span></a> 에 주어진 제곱합의 자유도에 대한 정보를 다음과 같이 정리할 수 있다.</p>
+<table class="table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 12%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">제곱합</th>
+<th style="text-align: right;">편차의 개수</th>
+<th style="text-align: center;">제약조건</th>
+<th style="text-align: center;">제약조건의 수</th>
+<th style="text-align: left;">자유도</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(SS_T\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(ar\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\sum_{i=1}^a \sum_{j=1}^r (x_{ij} - \bar{\bar {x}})=0\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;"><span class="math inline">\(\phi_T= ar-1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(SS_A\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(a\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\sum_{i=1}^a (\bar {x}_{i.} - \bar{\bar {x}} ) =0\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;"><span class="math inline">\(\phi_A=a-1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(SS_E\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(ar\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\sum_{j=1}^r ( x_{ij} - \bar {x}_{i.} ) =0, i=1,2,..,a\)</span></td>
+<td style="text-align: center;">a</td>
+<td style="text-align: left;"><span class="math inline">\(\phi_E=ar-a\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="평균제곱합과-f-통계량" class="level3" data-number="1.3.4">
+<h3 data-number="1.3.4" class="anchored" data-anchor-id="평균제곱합과-f-통계량"><span class="header-section-number">1.3.4</span> 평균제곱합과 F-통계량</h3>
+<p>이제 가설 <a href="#eq-hypo1" class="quarto-xref">식&nbsp;<span>1.4</span></a> 을 검정하기 위한 통계량을 구성해 보자. 먼저 다음과 같은 제곱합들을 각 자유도로 나눈 평균제곱합(Mean Sum of Squares)를 정의한다.</p>
+<p><span id="eq-mse"><span class="math display">\[
+MS_A = \frac{SS_A}{\phi_A}, \quad MS_E =\frac{SS_E}{\phi_E}
+\tag{1.8}\]</span></span></p>
+<p>앞 절에서 t-검정을 재구성하면서 알아본 통계량의 의미를 다시 생각해 보자. 집단 간의 변동과 집단 내의 변동의 상대적 비율로 그룹 간의 차이를 검정할 수 있다는 개념을 확장하여 다음과 같은 F-통계량 <span class="math inline">\(F_0\)</span> 를 만들어 보자.</p>
+<p><span id="eq-fstat"><span class="math display">\[
+F_0 =  \frac{MS_A}{MS_E} = \frac{\text{between-group variation}} {\text{within-group variation}}
+\tag{1.9}\]</span></span></p>
+<p>위 <a href="#eq-fstat" class="quarto-xref">식&nbsp;<span>1.9</span></a> 에서 정의된 F-통계량은 그룹 간에 평균의 차이가 클수록, 그룹 내의 차이가 작을 수록 그 값이 커진다. 따라서 F-통계량의 값이 크면 클수록 귀무가설에 반대되는 증거가 강해진다.</p>
+<p>이렇게 전체의 변동을 집단 간의 변동과 집단 내의 변동으로 나누어 집단 간의 평균의 차이를 추론하는 방법을 <strong>분산분석</strong>(Analysis of Variance, <strong>ANOVA</strong>)이라고 한다.</p>
+</section>
+<section id="분산분석을-이용한-f-검정" class="level3" data-number="1.3.5">
+<h3 data-number="1.3.5" class="anchored" data-anchor-id="분산분석을-이용한-f-검정"><span class="header-section-number">1.3.5</span> 분산분석을 이용한 F-검정</h3>
+<p>이제 <a href="#eq-fstat" class="quarto-xref">식&nbsp;<span>1.9</span></a> 에서 정의된 F-통계량을 이용하여 가설 <a href="#eq-hypo1" class="quarto-xref">식&nbsp;<span>1.4</span></a> 를 검정하는 통계적 방법을 만들어 보자. 일단 두 제곱합의 통계적 성질은 다음과 같다.</p>
+<ul>
+<li>잔차 제곱합을 오차항의 분산으로 나눈 통계량은 자유도가 <span class="math inline">\(\phi_E\)</span> 를 가지는 카이제곱 분포를 따른다.</li>
+</ul>
+<p><span class="math display">\[ \frac{SS_E}{\sigma_E^2}  \sim \chi^2(\phi_E) \]</span></p>
+<ul>
+<li><strong>귀무가설이 참인 경우</strong> 처리 제곱합을 오차항의 분산으로 나눈 통계량은 자유도가 <span class="math inline">\(\phi_A\)</span> 를 가지는 카이제곱 분포를 따른다.</li>
+</ul>
+<p><span class="math display">\[ \frac{SS_A}{\sigma_E^2}  \sim \chi^2(\phi_A) \quad \text{ under } H_0  \]</span></p>
+<ul>
+<li>잔차 제곱합과 처리 제곱합은 서로 독립이다.</li>
+</ul>
+<p>따라서 <strong>귀무가설이 참인 경우</strong> F-통계량은 자유도가 <span class="math inline">\(\phi_A, \phi_E\)</span>를 가지는 F-분포를 따른다.</p>
+<p><span id="eq-ftest"><span class="math display">\[
+F_0 =  \frac{MS_A}{MS_E} = \frac{ \tfrac{SS_A/\sigma_E^2}{\phi_A}} {\tfrac{SS_E/\sigma_E^2}{\phi_E }}  \sim F(\phi_A, \phi_E) \quad \text{ under } H_0  
+\tag{1.10}\]</span></span></p>
+<p>유의수준 <span class="math inline">\(\alpha\)</span>에서 F-통계량이 기각역을 벗어나면 귀무가설을 기각한다.</p>
+<p><span class="math display">\[ \text{ Reject } H_0 \text{ if } F_0 &gt; F(1-\alpha, \phi_A, \phi_E)  \]</span></p>
+<p>또는 다음과 같이 게산된 p-값이 유의수준 <span class="math inline">\(\alpha\)</span> 보다 작으면 귀무가설을 기각한다.</p>
+<p><span class="math display">\[ p-value = P[F(\phi_A, \phi_E) &gt; F_0  ]   \]</span></p>
+<p>F-통계량을 정의할 때 편리하고 유용하게 사용되는 것이 다음과 같은 분산분석표(ANOVA table)이다.</p>
+<table class="table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 7%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 11%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">요인</th>
+<th style="text-align: right;">제곱합</th>
+<th style="text-align: right;">자유도</th>
+<th style="text-align: right;">평균제곱합</th>
+<th style="text-align: center;"><span class="math inline">\(F_0\)</span></th>
+<th style="text-align: right;">p-값</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">처리</td>
+<td style="text-align: right;"><span class="math inline">\(SS_A\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\phi_A = a-1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(MS_A=SS_A/\phi_A\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(F_0=MS_A/MS_E\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(P[F(\phi_A, \phi_E) &gt; F_0  ]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">잔차</td>
+<td style="text-align: right;"><span class="math inline">\(SS_E\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\phi_E=a(r-1)\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(MS_E=SS_E/\phi_E\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">총합</td>
+<td style="text-align: right;"><span class="math inline">\(SS_T\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\phi_T =  ar-1\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="분산분석-후의-추정" class="level3" data-number="1.3.6">
+<h3 data-number="1.3.6" class="anchored" data-anchor-id="분산분석-후의-추정"><span class="header-section-number">1.3.6</span> 분산분석 후의 추정</h3>
+<p>분산분석에서 고려한 요인 A의 수준에 따라서 반응값의 평균에 유의한 차이가 있다고 결론이 나면 그룹 간의 모평균을 차이에 대한 더 자세한 정보가 필요하다. 즉 집단들의 평균이 서로 유의하게 다르거나 같은지에 대한 정보를 얻는 것이 중요하다.</p>
+<p>일단 모집단의 분산 <span class="math inline">\(\sigma_E^2\)</span> 에 대한 추정은 잔차제곱합의 분포를 이용하면 다음과 같은 불편추정량을 얻을 수 있다.</p>
+<p><span class="math display">\[ \hat \sigma_E^2 = MS_E, \quad E(MS_E) = \sigma_E^2 \]</span></p>
+<p>다음으로 각 수준(집단)에 대한 평균에 대한 추정량은 표본평균 <span class="math inline">\(\bar {x}_{i.}\)</span> 이며</p>
+<p><span class="math display">\[ \hat \mu_i = \widehat {\mu + \alpha_i} = \bar {x}_{i.}  \quad E(\bar {x}_{i.}) =\mu_i \]</span></p>
+<p><span class="math inline">\(100(1-\alpha)\)</span> % 신뢰구간(confidence interval)은 다음과 같이 주어진다.</p>
+<p><span class="math display">\[ \bar {x}_{i.} \pm t(1-\alpha/2, \phi_E) \sqrt{ \frac{MS_E}{r}} \]</span></p>
+<p>야기서 <span class="math inline">\(t(1-\alpha/2, \phi_E)\)</span>는 자유도 <span class="math inline">\(\phi_E\)</span>를 가지는 t-분포의 <span class="math inline">\(1-\alpha/2\)</span> 분위수를 의미한다.</p>
+<p>이제 두 개의 수준에 대한 평균의 차이에 대한 통계적 추론을 생각해 보자. 수준 <span class="math inline">\(A_i\)</span>와 <span class="math inline">\(A_j\)</span>의 평균의 차이에 대한 추정과 검정을 하려고 한다.</p>
+<p><span class="math display">\[ \delta_{ij} = \mu_i-\mu_j = \alpha_i - \alpha_j \]</span></p>
+<p>두 평균의 차이 <span class="math inline">\(\delta_{ij}\)</span> 에 대한 <span class="math inline">\(100(1-\alpha)\)</span> % 신뢰구간은 다음과 같이 주어진다.</p>
+<p><span id="eq-twomeanci"><span class="math display">\[
+( \bar {x}_{i.} - \bar {x}_{j.})   \pm t(1-\alpha/2, \phi_E) \sqrt{ \frac{2MS_E}{r}}
+\tag{1.11}\]</span></span></p>
+<p>신뢰구간 <a href="#eq-twomeanci" class="quarto-xref">식&nbsp;<span>1.11</span></a> 에서 두 개의 표본 평균 <span class="math inline">\(\bar {x}_{i.}\)</span>와 <span class="math inline">\(\bar {x}_{j.}\)</span> 은 서로 독립인 것에 유의하자.</p>
+<p>이제 마지막으로 두 평균의 차이 <span class="math inline">\(\delta_{ij}\)</span> 에 대한 가설을 검정하여고 한다.</p>
+<p><span class="math display">\[ H_0 : \alpha_i = \alpha_j \quad \text{ vs. } \quad H_1: \alpha_i \ne \alpha_j \]</span></p>
+<p>유의 수준 <span class="math inline">\(\alpha\)</span>에서 다음과 같은 조건을 만족하면 위의 귀무가설을 기각한다.</p>
+<p><span id="eq-lsd"><span class="math display">\[
+\left | \bar {x}_{i.} - \bar {x}_{j.} \right | &gt; t(1-\alpha/2, \phi_E) \sqrt{ \frac{2MS_E}{r}}
+\tag{1.12}\]</span></span></p>
+<p><a href="#eq-lsd" class="quarto-xref">식&nbsp;<span>1.12</span></a> 에서 주어진 귀무 가설 <span class="math inline">\(\delta_{ij}=0\)</span> 을 기각하는 조건은 <a href="#eq-twomeanci" class="quarto-xref">식&nbsp;<span>1.11</span></a> 에 주어진 신뢰구간이 0 을 포함하지 않는 조건과 동일하다.</p>
+<p><a href="#eq-lsd" class="quarto-xref">식&nbsp;<span>1.12</span></a> 에서 검정을 위한 조건의 우변을 최소유의차(least significant difference; LSD) 라고 부른다. 두 수준의 차이가 유의하려면 두 평균 차이의 절대값이 최소한 최소유의차의 값보다 커야한다.</p>
+<p><span class="math display">\[  \text{LSD} =t(1-\alpha/2, \phi_E) \sqrt{ \frac{2MS_E}{r}}  \]</span></p>
+</section>
+<section id="예제-3.1---anova-f-검정과-사후-추정" class="level3" data-number="1.3.7">
+<h3 data-number="1.3.7" class="anchored" data-anchor-id="예제-3.1---anova-f-검정과-사후-추정"><span class="header-section-number">1.3.7</span> 예제 3.1 - ANOVA F-검정과 사후 추정</h3>
+<p>다시 예제 3.1의 실험 자료를 고려한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df31</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   company response
+1        1     1.93
+2        1     2.38
+3        1     2.20
+4        1     2.25
+5        2     2.55
+6        2     2.72
+7        2     2.75
+8        2     2.70
+9        3     2.40
+10       3     2.68
+11       3     2.32
+12       3     2.28
+13       4     2.33
+14       4     2.38
+15       4     2.28
+16       4     2.25</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df31s <span class="ot">&lt;-</span> df31 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(company)  <span class="sc">%&gt;%</span>  <span class="fu">summarise</span>(<span class="at">mean=</span><span class="fu">mean</span>(response), <span class="at">median=</span> <span class="fu">median</span>(response), <span class="at">sd=</span><span class="fu">sd</span>(response), <span class="at">min=</span><span class="fu">min</span>(response), <span class="at">max=</span><span class="fu">max</span>(response))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df31s</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 6
+  company  mean median     sd   min   max
+  &lt;fct&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 1        2.19   2.22 0.189   1.93  2.38
+2 2        2.68   2.71 0.0891  2.55  2.75
+3 3        2.42   2.36 0.180   2.28  2.68
+4 4        2.31   2.30 0.0572  2.25  2.38</code></pre>
+</div>
+</div>
+<p>예제 3.1에서 실험의 목적은 4개의 직물의 긁힘에 대한 저항력을 비교하는 실험이다.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df31, <span class="fu">aes</span>(company, response)) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df31s, <span class="fu">aes</span>(<span class="at">x=</span>company, <span class="at">y=</span>mean, <span class="at">group=</span><span class="dv">1</span>), <span class="at">size=</span><span class="fl">1.5</span>, <span class="at">col=</span><span class="st">"#9ACBF9"</span>) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df31s, <span class="fu">aes</span>(<span class="at">x=</span>company, <span class="at">y=</span>mean), <span class="at">col=</span><span class="st">"darkblue"</span>, <span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="oneway_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>이제 위에서 제시한 F-검정을 이용하여 납품 업체 간에 직물 마모도에 차이가 있는지 검정해보자.</p>
+<p><span class="math display">\[ H_0: \mu_1=\mu_2=\mu_3=\mu_4 \quad \text{ vs. }\quad H_1: \text{ not } H_0 \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>anova.res <span class="ot">&lt;-</span> <span class="fu">aov</span>(response<span class="sc">~</span>company,<span class="at">data=</span>df31) </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.res)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+company      3 0.5240 0.17467   8.785 0.00235 **
+Residuals   12 0.2386 0.01988                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>위의 분산분석표에서 p-값이 유의수준 5% 보다 매우 작으므로 네 개의 직물에 대한 평균이 같다는 귀무가설을 기각한다. 따라서 4개의 납품업체에서 받은 직물의 저항력이 유의하게 다르다고 할 수 있다. 여기서 유의할 점은 ANOVA를 이용한 F-검정은 그룹 간의 차이가 있다는 것을 의미하지만 어떻게 다른지에 대한 정보를 주지 않는다.</p>
+<p>최소유의차(LSD) 방법에 의하여 처리 간의 평균을 신뢰구간을 구하고 차이가 있는지 검정할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Mean of response by factor</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>result1 <span class="ot">&lt;-</span> <span class="fu">LSD.test</span>(anova.res, <span class="st">"company"</span>, <span class="at">group=</span><span class="cn">FALSE</span>, <span class="at">console =</span> <span class="cn">TRUE</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Study: anova.res ~ "company"
+
+LSD t Test for response 
+
+Mean Square Error:  0.01988333 
+
+company,  means and individual ( 95 %) CI
+
+  response        std r         se      LCL      UCL  Min  Max    Q25   Q50
+1     2.19 0.18920888 4 0.07050414 2.036385 2.343615 1.93 2.38 2.1325 2.225
+2     2.68 0.08906926 4 0.07050414 2.526385 2.833615 2.55 2.75 2.6625 2.710
+3     2.42 0.18036999 4 0.07050414 2.266385 2.573615 2.28 2.68 2.3100 2.360
+4     2.31 0.05715476 4 0.07050414 2.156385 2.463615 2.25 2.38 2.2725 2.305
+     Q75
+1 2.2825
+2 2.7275
+3 2.4700
+4 2.3425
+
+Alpha: 0.05 ; DF Error: 12
+Critical Value of t: 2.178813 
+
+Comparison between treatments means
+
+      difference pvalue signif.         LCL         UCL
+1 - 2      -0.49 0.0004     *** -0.70724487 -0.27275513
+1 - 3      -0.23 0.0397       * -0.44724487 -0.01275513
+1 - 4      -0.12 0.2520         -0.33724487  0.09724487
+2 - 3       0.26 0.0229       *  0.04275513  0.47724487
+2 - 4       0.37 0.0030      **  0.15275513  0.58724487
+3 - 4       0.11 0.2916         -0.10724487  0.32724487</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>result1</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$statistics
+     MSerror Df Mean       CV  t.value       LSD
+  0.01988333 12  2.4 5.875345 2.178813 0.2172449
+
+$parameters
+        test p.ajusted  name.t ntr alpha
+  Fisher-LSD      none company   4  0.05
+
+$means
+  response        std r         se      LCL      UCL  Min  Max    Q25   Q50
+1     2.19 0.18920888 4 0.07050414 2.036385 2.343615 1.93 2.38 2.1325 2.225
+2     2.68 0.08906926 4 0.07050414 2.526385 2.833615 2.55 2.75 2.6625 2.710
+3     2.42 0.18036999 4 0.07050414 2.266385 2.573615 2.28 2.68 2.3100 2.360
+4     2.31 0.05715476 4 0.07050414 2.156385 2.463615 2.25 2.38 2.2725 2.305
+     Q75
+1 2.2825
+2 2.7275
+3 2.4700
+4 2.3425
+
+$comparison
+      difference pvalue signif.         LCL         UCL
+1 - 2      -0.49 0.0004     *** -0.70724487 -0.27275513
+1 - 3      -0.23 0.0397       * -0.44724487 -0.01275513
+1 - 4      -0.12 0.2520         -0.33724487  0.09724487
+2 - 3       0.26 0.0229       *  0.04275513  0.47724487
+2 - 4       0.37 0.0030      **  0.15275513  0.58724487
+3 - 4       0.11 0.2916         -0.10724487  0.32724487
+
+$groups
+NULL
+
+attr(,"class")
+[1] "group"</code></pre>
+</div>
+</div>
+<p>최소유의차(LSD) 방법에 의한 평균의 차이에 대한 결과를 이용하여 처리를 다음과 같이 그룹화 하여 보여줄 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>result2 <span class="ot">&lt;-</span> <span class="fu">LSD.test</span>(anova.res, <span class="st">"company"</span>, <span class="at">group=</span><span class="cn">TRUE</span>, <span class="at">console =</span> <span class="cn">TRUE</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Study: anova.res ~ "company"
+
+LSD t Test for response 
+
+Mean Square Error:  0.01988333 
+
+company,  means and individual ( 95 %) CI
+
+  response        std r         se      LCL      UCL  Min  Max    Q25   Q50
+1     2.19 0.18920888 4 0.07050414 2.036385 2.343615 1.93 2.38 2.1325 2.225
+2     2.68 0.08906926 4 0.07050414 2.526385 2.833615 2.55 2.75 2.6625 2.710
+3     2.42 0.18036999 4 0.07050414 2.266385 2.573615 2.28 2.68 2.3100 2.360
+4     2.31 0.05715476 4 0.07050414 2.156385 2.463615 2.25 2.38 2.2725 2.305
+     Q75
+1 2.2825
+2 2.7275
+3 2.4700
+4 2.3425
+
+Alpha: 0.05 ; DF Error: 12
+Critical Value of t: 2.178813 
+
+least Significant Difference: 0.2172449 
+
+Treatments with the same letter are not significantly different.
+
+  response groups
+2     2.68      a
+3     2.42      b
+4     2.31     bc
+1     2.19      c</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>result2<span class="sc">$</span>groups</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  response groups
+2     2.68      a
+3     2.42      b
+4     2.31     bc
+1     2.19      c</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(result2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="oneway_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="서론">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">서론</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
