@@ -9,6 +9,7 @@ book:
   chapters:
     - index.qmd
     - qmd/oneway.qmd
+    - qmd/twoway.qmd
     - references.qmd
   appendices:    
     - qmd/visual.qmd
