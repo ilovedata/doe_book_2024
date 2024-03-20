@@ -1,4 +1,4 @@
-# 이원배치  {#sec-twoway}
+# 이원배치법  {#sec-twoway}
 
 ```{r warning=FALSE, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
