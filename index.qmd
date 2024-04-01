@@ -17,6 +17,11 @@ library(kableExtra)
 library(agricolae)
 library(emmeans)
 
+# 변량모형(혼합모형)
+library(lme4)
+library(lmerTest)
+
+# ggplot 그래프에서 한글 사용
 library(showtext)
 font_add_google("Nanum Pen Script", "gl")
 showtext_auto()

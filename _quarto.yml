@@ -10,9 +10,13 @@ book:
     - index.qmd
     - qmd/oneway.qmd
     - qmd/twoway.qmd
+    - qmd/block.qmd
     - references.qmd
   appendices:    
     - qmd/visual.qmd
+    - qmd/linear.qmd
+    - qmd/raneff.qmd
+    - qmd/comfound.qmd
 
   
 bibliography: references.bib
