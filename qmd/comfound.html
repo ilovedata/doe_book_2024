@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>실험계획법 2024 강의 노트 - References</title>
+<title>실험계획법 2024 강의 노트 - 부록 D — 교락</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,46 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./qmd/visual.html" rel="next">
-<link href="./qmd/block.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../qmd/raneff.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -104,6 +84,35 @@ div.csl-indent {
 };
 </script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -116,7 +125,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./references.html">References</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/visual.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/comfound.html"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">교락</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -131,9 +140,9 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">실험계획법 2024 강의 노트</a> 
+      <a href="../">실험계획법 2024 강의 노트</a> 
         <div class="sidebar-tools-main">
-    <a href="./실험계획법-2024-강의-노트.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="../실험계획법-2024-강의-노트.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -146,31 +155,31 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">서론</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./qmd/oneway.html" class="sidebar-item-text sidebar-link">
+  <a href="../qmd/oneway.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">일원배치법</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./qmd/twoway.html" class="sidebar-item-text sidebar-link">
+  <a href="../qmd/twoway.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">이원배치법</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./qmd/block.html" class="sidebar-item-text sidebar-link">
+  <a href="../qmd/block.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">블록설계, 라틴정방설계와 분할법</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link active">
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -185,25 +194,25 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./qmd/visual.html" class="sidebar-item-text sidebar-link">
+  <a href="../qmd/visual.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title"><code>R</code>을 이용한 자료의 시각화 비교</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./qmd/linear.html" class="sidebar-item-text sidebar-link">
+  <a href="../qmd/linear.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">일원배치 모형과 최소제곱법</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./qmd/raneff.html" class="sidebar-item-text sidebar-link">
+  <a href="../qmd/raneff.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">혼합 모형</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./qmd/comfound.html" class="sidebar-item-text sidebar-link">
+  <a href="../qmd/comfound.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">교락</span></span></a>
   </div>
 </li>
@@ -215,14 +224,21 @@ div.csl-indent {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#일원배치" id="toc-일원배치" class="nav-link active" data-scroll-target="#일원배치"><span class="header-section-number">D.0.1</span> 일원배치</a></li>
+  <li><a href="#완전-랜덤화-이원배치" id="toc-완전-랜덤화-이원배치" class="nav-link" data-scroll-target="#완전-랜덤화-이원배치"><span class="header-section-number">D.0.2</span> 완전 랜덤화 이원배치</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/visual.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/comfound.html"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">교락</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">References</h1>
+<h1 class="title"><span id="sec-comfound" class="quarto-section-identifier">부록 D — 교락</span></h1>
 </div>
 
 
@@ -239,22 +255,99 @@ div.csl-indent {
 </header>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-montgomery2017design" class="csl-entry" role="listitem">
-Montgomery, Douglas C. 2017. <em>Design and Analysis of
-Experiments</em>. John wiley &amp; sons.
+<p><strong>교락(confounding)</strong>은 실험 또는 표본 추출의 방법에서 서로 다른 두 효과가 섞여서 자료를 통하여 구별할 수 없는 경우를 말한다. 실험계획에서 교락은 대부분 처리 효과와 오차/임의효과를 구별할 수 없는 경우에 발생한다.</p>
+<p>여러분이 반복이 없는 이원배치법에서는 상호작용과 오차가 교락되어 상호작용에 대한 추론을 할 수 없다고 배웠다.</p>
+<section id="일원배치" class="level3" data-number="D.0.1">
+<h3 data-number="D.0.1" class="anchored" data-anchor-id="일원배치"><span class="header-section-number">D.0.1</span> 일원배치</h3>
+<p>이러한 교락의 개념을 이해하기 위하여 가장 간단한 실험 계획인 일원배치를 생각하고 반복이 있는 경우와 없는 경우를 생각해 보자.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/confound1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>일원배치: 반복이 없는 경우와 있는 경우</figcaption>
+</figure>
 </div>
-<div id="ref-sch2001" class="csl-entry" role="listitem">
-Schabenberger, Oliver, and Francis J Pierce. 2001. <em>Contemporary
-Statistical Models for the Plant and Soil Sciences</em>. CRC press.
+<ul>
+<li>반복이 없는 일원배치</li>
+</ul>
+<p>위의 그림에서 반복이 없는 일원배치에서는 처리효과와 실험단위(오차항)가 교락되어 구별할 수 없다.</p>
+<p>예를 들어 철수에게는 A 약을 처방하고 영이에게는 B 약을 처방한 경우, 만약 철수의 치료 효과가 영이보다 좋으면 A 약의 효과가 더 좋다고 말할 수 있는가? 이런 경우 약의 효과인지 실험 대상인 개인의 특성인지 알 수 없다.</p>
+<p>반복이 없는 일원배치에서는 효과의 차이를 알 수 있는 통계량이 두 관측값의 차이 <span class="math inline">\(x_1 - x_2\)</span> 밖에 없으며 이를 모형식으로 보면 다음과 같다.</p>
+<p><span class="math display">\[ x_1 - x_2 = \alpha_1 - \alpha_2 + e_1 - e_2 \]</span></p>
+<p>즉 처리 효과 <span class="math inline">\(\alpha_i\)</span>와 오차 <span class="math inline">\(e_i\)</span>의 효과를 분리해야 하는데 사용할 수 있는 통계량이 하나 밖에 없어서 처리효과에 대한 추론이 불가능하다.</p>
+<p>여기서 유의할 점은 두 관측값의 차이 <span class="math inline">\(x_1 - x_2\)</span> 와 평균으로부터 편차 <span class="math inline">\(x_1 -\bar x\)</span>는 기본적으로 같은 정보를 가진 통계량이다.</p>
+<p><span class="math display">\[
+x_1 -\bar x = \frac{x_2 - x_1}{2}
+\]</span></p>
+<ul>
+<li>반복이 있는 일원배치</li>
+</ul>
+<p>반복이 있는 일원배치의 경우 우리는 2개의 편차를 만들 수 있으며 두 편차가 가지고 정보에서 처리 효과에 대한 정보를 분리해 낼수 있다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+x_{11} - \bar { \bar x }  &amp; = ( x_{11} - \bar x_{1.}) +  (  {\bar x}_{1.} - \bar { \bar x }) \\
+  &amp; = \frac{1}{2} \left [ (-1)x_{12} +(1) x_{11} + (0)x_{21} + (0) x_{22} \right ] \\
+   &amp;~ + \frac{1}{4}  \left [ (1)x_{12} +(1) x_{11} + (-1)x_{21} + (-1) x_{22} \right ]  \\
+  &amp; =  ( e_{11} -  {\bar e}_{1.} ) +  ( [\alpha_1 - \bar \alpha] - [ {\bar e}_{1.} - \bar {\bar e} ])
+\end{aligned}
+\]</span></p>
+<p>반복이 있는 일원배치에서 잔차제곱합 <span class="math inline">\(MS_E\)</span>는 <span class="math inline">\(x_{ij} - \bar x_{i.}\)</span>가 지닌 정보, 즉 오차항의 분산에 대한 정보를 가지고 있다. 또한 <span class="math inline">\(MS_A\)</span>는 <span class="math inline">\(\bar x_{i.}- \bar { \bar x }\)</span> 가 지닌 정보, 즉 오차항의 분산과 처리 효과의 정보 모두 가지고 있다. 이러한 사실은 각 평균제곱합의 기대값을 보면 알 수 있다.</p>
+<p>제곱합의 기대값을 구하는 방법은 <a href="raneff.html#sec-mean-mse" class="quarto-xref"><span>섹션 C.3.3</span></a> 을 참조하자.</p>
+<p><span class="math display">\[
+E (MS_E) = \sigma_E^2,  \quad E(MS_A) = \sigma^2_E + r \frac {\sum_i^a (\alpha_i - \bar \alpha)^2}{a-1}  
+\]</span></p>
+<p>따라서 처리효과가 있는지에 대한 검정은 <span class="math inline">\(MS_E\)</span>와 <span class="math inline">\(MS_E\)</span>의 비(ratio)를 이용하여 검정한다(F-검정).</p>
+</section>
+<section id="완전-랜덤화-이원배치" class="level3" data-number="D.0.2">
+<h3 data-number="D.0.2" class="anchored" data-anchor-id="완전-랜덤화-이원배치"><span class="header-section-number">D.0.2</span> 완전 랜덤화 이원배치</h3>
+<p>이제 이원배치에서 반복이 없는 경우와 있는 경우를 살펴보자.</p>
+<section id="반복이-없는-이원배치" class="level4" data-number="D.0.2.1">
+<h4 data-number="D.0.2.1" class="anchored" data-anchor-id="반복이-없는-이원배치"><span class="header-section-number">D.0.2.1</span> 반복이 없는 이원배치</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/confound2.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>이원배치: 반복이 없는 경우</figcaption>
+</figure>
 </div>
-<div id="ref-lim2020" class="csl-entry" role="listitem">
-임용빈. 2020. <em>Design Expert, Minitab 과 R을 활용한 실험계획법</em>.
-자유아카데미.
+<p>반복이 없는 이원배치는 관측자료의 편차를 각 효과에 대한 편차들로 다음과 같이 분해할 수 있다.</p>
+<p><span class="math display">\[
+\underbrace{ ( {x}_{ij} - \bar{\bar {x}} )}_{\text{total deviation}}= \underbrace{( {\bar x}_{i.} - \bar{\bar {x}} ) }_{\text{A effect}} + \underbrace{( {\bar x}_{.j} - \bar{\bar {x}} ) }_{\text{B effect}} + \underbrace{ ( x_{ij} -{\bar x}_{i.} - {\bar x}_{.j} + \bar{\bar {x}}  )}_{\text{(A x B) + residual}}
+\]</span> 위의 분해에서 이원배치 모형식을 이용하여 마지막 항 <span class="math inline">\(x_{ij} -{\bar x}_{i.} - {\bar x}_{.j} + \bar{\bar {x}}\)</span> 을 모수와 오차로 표현해보면 다음과 같다.</p>
+<p><span id="eq-inter"><span class="math display">\[
+x_{ij} -{\bar x}_{i.} - {\bar x}_{.j} + \bar{\bar {x}}  =
+[ (\alpha \beta)_{ij} - \bar {(\alpha \beta)}_{i. } -\bar {(\alpha \beta)}_{.j} + \bar {\bar {(\alpha \beta)}} ]  +
+[ e_{ij} - \bar {e}_{i. } -\bar {e}_{.j} + \bar {\bar {e}}]
+\tag{D.1}\]</span></span></p>
+<p>위의 식을 보면 편차 <span class="math inline">\(x_{ij} -{\bar x}_{i.} - {\bar x}_{.j} + \bar{\bar {x}}\)</span> 는 상호작용에 대한 정보와 오차항의 정보가 섞여 있고 더 이상 분리할 수 없음을 알 수 있다. 따라서 상호작용과 오차항은 교락되어 있다.</p>
+</section>
+<section id="반복이-있는-이원배치" class="level4" data-number="D.0.2.2">
+<h4 data-number="D.0.2.2" class="anchored" data-anchor-id="반복이-있는-이원배치"><span class="header-section-number">D.0.2.2</span> 반복이 있는 이원배치</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/confound3.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>이원배치: 반복이 있는 경우</figcaption>
+</figure>
 </div>
-</div>
+<p>반복이 있는 이원배치는 관측자료의 편차를 각 효과에 대한 편차들로 다음과 같이 분해할 수 있다. 주목할 점은 반복이 있기 떄문에 반복이 없는 경우보다 하나의 항 <span class="math inline">\(x_{ijk} - {\bar x}_{ij.}\)</span> 이 추가된다.</p>
+<p><span class="math display">\[
+\underbrace{ (x_{ijk} - \bar{\bar {x}}) }_{\text{total deviation}} =
+\underbrace{( {\bar x}_{i..} - \bar{\bar {x}} ) }_{\text{A effect}} + \underbrace{( {\bar x}_{.j.} - \bar{\bar {x}} ) }_{\text{B effect}} + \underbrace{ ( {\bar x}_{ij.} -{\bar x}_{i..} - {\bar x}_{.j.} + \bar{\bar {x}}  )}_{\text{A x B}}
++ \underbrace{ ( x_{ijk} - {\bar x}_{ij.} )}_{\text{residual}}
+\]</span></p>
+<p>반복이 있는 이원배치 모형에서 상호작용에 대한 편차는 반복이 없는 경우의 식 @ref(eq:inter)과 유사하게 다음과 같이 표시할 수 있다.</p>
+<p><span class="math display">\[
+x_{ij.} -{\bar x}_{i..} - {\bar x}_{..j} + \bar{\bar {x}}  =
+[ (\alpha \beta)_{ij.} - \bar {(\alpha \beta)}_{i. } -\bar {(\alpha \beta)}_{.j} + \bar {\bar {(\alpha \beta)}} ] +
+[ e_{ij.} - \bar {e}_{i.. } -\bar {e}_{.j.} + \bar {\bar {e}}]
+\]</span></p>
+<p>또한 잔차에 대한 편차는 다음과 같이 표시된다.</p>
+<p><span class="math display">\[
+x_{ijk} - {\bar x}_{ij.} = e_{ijk} - \bar {e}_{ij. }
+\]</span> 이제 잔차에 대한 편차는 순수허게 오차항만의 정보를 가지고 있고 상호작용에 대한 편차는 상호작용과 오차에 대한 정보를 가지고 있다. 따라서 두 편차로 만든 두 개의 제곱합을 이용하면 상호작용에 대한 효과를 분리해낼 수 있다.</p>
+<p>따라서 상호작용 효과가 있는지에 대한 검정은 <span class="math inline">\(x_{ij.} -{\bar x}_{i..} - {\bar x}_{..j} + \bar{\bar {x}}\)</span> 로 계산된 <span class="math inline">\(MS_{(A \times B)}\)</span>와 <span class="math inline">\(x_{ijk} - {\bar x}_{ij.}\)</span> 로 만들어진 <span class="math inline">\(MS_E\)</span>의 비(ratio)를 이용하여 검정한다(F-검정).</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -646,14 +739,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./qmd/block.html" class="pagination-link" aria-label="블록설계, 라틴정방설계와 분할법">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">블록설계, 라틴정방설계와 분할법</span></span>
+      <a href="../qmd/raneff.html" class="pagination-link" aria-label="혼합 모형">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">혼합 모형</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./qmd/visual.html" class="pagination-link" aria-label="`R`을 이용한 자료의 시각화 비교">
-        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title"><code>R</code>을 이용한 자료의 시각화 비교</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>실험계획법 2024 강의 노트 - 부록 C — 혼합 모형</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../qmd/comfound.html" rel="next">
+<link href="../qmd/linear.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/visual.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/raneff.html"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">혼합 모형</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">실험계획법 2024 강의 노트</a> 
+        <div class="sidebar-tools-main">
+    <a href="../실험계획법-2024-강의-노트.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">서론</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/oneway.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">일원배치법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/twoway.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">이원배치법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/block.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">블록설계, 라틴정방설계와 분할법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/visual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title"><code>R</code>을 이용한 자료의 시각화 비교</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/linear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">일원배치 모형과 최소제곱법</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/raneff.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">혼합 모형</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/comfound.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">교락</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#고정효과" id="toc-고정효과" class="nav-link active" data-scroll-target="#고정효과"><span class="header-section-number">C.1</span> 고정효과</a></li>
+  <li><a href="#임의효과" id="toc-임의효과" class="nav-link" data-scroll-target="#임의효과"><span class="header-section-number">C.2</span> 임의효과</a></li>
+  <li><a href="#변량모형의-성질" id="toc-변량모형의-성질" class="nav-link" data-scroll-target="#변량모형의-성질"><span class="header-section-number">C.3</span> 변량모형의 성질</a>
+  <ul class="collapse">
+  <li><a href="#총변동의-분해" id="toc-총변동의-분해" class="nav-link" data-scroll-target="#총변동의-분해"><span class="header-section-number">C.3.1</span> 총변동의 분해</a></li>
+  <li><a href="#관측값의-종속성" id="toc-관측값의-종속성" class="nav-link" data-scroll-target="#관측값의-종속성"><span class="header-section-number">C.3.2</span> 관측값의 종속성</a></li>
+  <li><a href="#sec-mean-mse" id="toc-sec-mean-mse" class="nav-link" data-scroll-target="#sec-mean-mse"><span class="header-section-number">C.3.3</span> 제곱합의 기대값</a></li>
+  <li><a href="#가설-검정" id="toc-가설-검정" class="nav-link" data-scroll-target="#가설-검정"><span class="header-section-number">C.3.4</span> 가설 검정</a></li>
+  </ul></li>
+  <li><a href="#예제-3.3" id="toc-예제-3.3" class="nav-link" data-scroll-target="#예제-3.3"><span class="header-section-number">C.4</span> 예제 3.3</a>
+  <ul class="collapse">
+  <li><a href="#자료" id="toc-자료" class="nav-link" data-scroll-target="#자료"><span class="header-section-number">C.4.1</span> 자료</a></li>
+  <li><a href="#추정과-가설검정" id="toc-추정과-가설검정" class="nav-link" data-scroll-target="#추정과-가설검정"><span class="header-section-number">C.4.2</span> 추정과 가설검정</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/visual.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/raneff.html"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">혼합 모형</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-randomeffect" class="quarto-section-identifier">부록 C — 혼합 모형</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>교과서에서 <strong>변량모형</strong>으로 불리는 모형으로 흔히 <strong>임의효과 모형(random effect model)</strong> 또는 <strong>혼합모형(mixed effects model)</strong> 이라고 부른다.</p>
+<section id="고정효과" class="level2" data-number="C.1">
+<h2 data-number="C.1" class="anchored" data-anchor-id="고정효과"><span class="header-section-number">C.1</span> 고정효과</h2>
+<p>앞 장에서 하나의 요인있는 일원배치 모형에 대한 추론에 대하여 알아보있다.</p>
+<p><span id="eq-onewaymodel"><span class="math display">\[
+x_{ij} = \mu + \alpha_i + e_{ij}
+\tag{C.1}\]</span></span></p>
+<p>여기서 오차항 <span class="math inline">\(e_{ij}\)</span>는 모두 독립이며 <span class="math inline">\(N(0,\sigma_E^2)\)</span>를 따른다.</p>
+<p>일원배치 모형 <a href="#eq-onewaymodel" class="quarto-xref">식&nbsp;<span>C.1</span></a> 에서 전체 평균 <span class="math inline">\(\mu\)</span> 와 처리수준의 효과를 나타내는 <span class="math inline">\(\alpha_1, \alpha_2, \dots, \alpha_a\)</span>는 모두 고정된 값을 가지는 모수(parameter)이다. <a href="#eq-onewaymodel" class="quarto-xref">식&nbsp;<span>C.1</span></a> 의 오른쪽 항들 중에서 확률변수는 오차항 <span class="math inline">\(e_{ij}\)</span>이 유일하다.</p>
+<p>처리수준의 효과 <span class="math inline">\(\alpha_i\)</span>들이 모수이라는 것은 의미는 만약 새로운 실험에서 실험단위(experiment unit)에 동일한 처리를 적용하면 평균 처리 효과는 <span class="math inline">\(\alpha_i\)</span>로 일정하다는 의미이다.</p>
+<p>예를 들어 예제 3.1에서 수행한 실험을 다른 회사에서 동일한 납품업체의 원단(동일한 실험 단위와 처리)을 가지고 새로운 실험을 하면 평균적인 효과는 예제 3.1과 동일하다는 가정을 할 수 있다. 물론 횩과는 동일하지만 설명할 수 없는오차떄문에 관측값은 다를 수 있다.</p>
+<p>또한 예제 4.1 에 대한 실험에서도 만약 동일한 돼지 품종과 사료를 사용하여 새로운 실험을 수행할 때 처리 효과는 원래 실험과 같다고 가정할 수 있다. 즉, 처리라는 것이 기술적인 의미를 지니고 있어 반복하여 재현할 수 있는 효과이다. 이러한 고정된 모수로서의 효과를 <strong>고정 효과(fixed effect)</strong>라고 부른다.</p>
+<p>더 나아가 고정효과를 가지는 모형에서는 고정효과를 추정하고 처리 수준간의 차이가 있는지 추론하는 것이 실험의 주요 목적이다.</p>
+</section>
+<section id="임의효과" class="level2" data-number="C.2">
+<h2 data-number="C.2" class="anchored" data-anchor-id="임의효과"><span class="header-section-number">C.2</span> 임의효과</h2>
+<p>이제 고정효과와는 다른 의미를 가지는 몇 가지 실험들을 생각해 보자.</p>
+<hr>
+<div id="exm-raneff33" class="theorem example">
+<p><span class="theorem-title"><strong>보기 C.1 (화학약품 회사:교과서예제 3.3)</strong></span> 화학약품 회사에서는 매년 원자재의 수백 개의 배치(batch)를 정제하여 순도가 높은 화학약품을 만든다. 품질 관리를 위하여 수백 개의 배치들 중에서 5개를 랜덤하게 선택하고 배치당 3개의 시료를 채취한 후에 순도를 측정하였다.</p>
+<p>배치마다 순도가 크게 다르면 품질을 일정하게 유지할 수 없눈 문제가 생긴다. 따라서 실험의 목적은 품질 관리이며 배치 간의 변동과 배치 내의 변동을 알아보는 것이다.</p>
+</div>
+<hr>
+<div id="exm-raneff4" class="theorem example">
+<p><span class="theorem-title"><strong>보기 C.2 (학교간의 성적 비교)</strong></span> 학교 간에 성적의 차이를 알아보기 위하여 서울에 있는 603개의 학교에서 20개의 학교를을 임의로 추출하고 추출된 학교에 속한 6학년 학생들 10명을 임의로 추출하여 과학시험을 보게 하여 점수를 얻었다.</p>
+<p>이러한 자료에서 학생들의 성적은 가장 점수가 낮은 학생부터 매우 우수한 성적을 낸 학생까지 점수의 변동(variation)이 존재한다. 변동의 요인은 무었일까? 학생의 개인의 차이(예:학생의 지능, 노력 정도, 학습 환경)도 변동의 요인이지만 또한 학교의 차이(예: 교사, 거주 환경)도 변동의 요인이 될 수 있다.</p>
+</div>
+<hr>
+<div id="exm-raneff5" class="theorem example">
+<p><span class="theorem-title"><strong>보기 C.3 (Test-ReTest)</strong></span> 새로 개발된 CT 로 만든 영상에 근거하여 의사들이 암의 단계를 점수로 파악하는 방법이 제안되었다. 제안된 방법의 유료성과 안정성을 알아보기 위하여 실험을 진행하였다. 일단 5명의 암환자들에서 CT 영상을 쵤영하였다. 다음으로 15명의 의사를 임의로 추출하고 5명의 CT 영상을 본 후 암의 진행 단계를 판단할 수 있는 점수를 매기도록 하였다.</p>
+<p>실험의 목적은 CT 영상에 근거한 진단이 의사들간에 잘 일치하는지를 알아보는 실험이다. 이 실험에서는 의사와 환자라는 두 가지 요인이 존재한다.</p>
+</div>
+<hr>
+<p>위의 예제에서 <strong>배치, 의사, 학교</strong>는 고정 효과를 가정한 실험에서 고려하는 요인과는 성격이 틀리다. 5개의 배치들은 수백 개의 배치들에서 임의로 추출 되었으며 5명의 의사들은 다수의 의사들 중 임의로 추출되었다. 603개 초등 학교의 모집단에서 20개의 학교가 임의로 추출되었다.</p>
+<p>배치, 의사 또는 학교 간의 차이는 잘 설계된 실험의 처리에 대한 고정 효과와는 다르다. 동일한 배치, 학교 또는 의사으로 부터 나온 관측값들은 동일한 처릴 받은 값들이라기 보다는 동일한 <strong>집단(group, cluster)</strong>에서 나온 관측값으로 볼 수 있다. 위의 예제들에서는 <a href="#eq-randommodel" class="quarto-xref">식&nbsp;<span>C.2</span></a> 에서 효과 <span class="math inline">\(\alpha_i\)</span> 의 변동은 모집단을 구성하는 집단들의 변동이라고 할 수 있다.</p>
+<p>위에서 언급한 3개 예제는 실험의 목적이 선택된 수준들의 효과의 기술적인 비교가 아니라 모집단이 가지고 있는 여러 가지 변동(variance)에 대하여 추론하는 것이다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>같은 학교에 다니는 학생들은 주거 환경, 교사 등 공통적인 요인에 의하여 영향을 받는다고 가정할 수 있다. 따라서 같은 학교에 다는 학생들의 성적이 독립이 아닐 수도 있다.</p>
+<p>깉은 의사가 5명의 환자에 대한 평가하여 진단을 한 경우 5개의 진단결과는 다른 환자에 대항 결과임에도 불구하고 서로 독립이라고 가정하지 않을 수 있다. 의사의 역량, 경험, 성향에 따라서 환자에 대한 진단에 공통적인 영향을 미칠 수 있기 때문이다.</p>
+</div>
+</div>
+<p>고정효과처럼 기술적인 처리효과가 아니라 모집단의 구성 단위들의 변동을 기술하는 효과를 <strong>임의효과(random effect, 변량)</strong> 라고 한다. 임의효과를 가진 일원배치 모형을 <strong>변량모형</strong>(random models) 또는 임의효과 모형(random effect models)이라고 부르며 다음과 같이 나타낼 수 있다.</p>
+<p><span id="eq-randommodel"><span class="math display">\[
+x_{ij} = \mu + \alpha_i + e_{ij} \quad \text{ where } \alpha_i \sim N(0,\sigma_A^2),~~ e_{ij} \sim N(0,\sigma_E^2)
+\tag{C.2}\]</span></span></p>
+<p>위의 식에서 <span class="math inline">\(\alpha_1, \alpha_2, \dots, \alpha_a\)</span>를 임의 효과라고 부르며 서로 독립인 확률 변수로서 분포는 <span class="math inline">\(N(0,\sigma_A^2)\)</span>을 따른다. 또한 임의 효과 <span class="math inline">\(\alpha_i\)</span>와 오차항 <span class="math inline">\(e_{ij}\)</span>은 서로 독립이다.</p>
+<p>임의효과가 가지는 분산을 <span class="math inline">\(\sigma_A^2\)</span>을 분산성분(variance component)라고 하며 집단 간의 변동을 의미한다. <span class="math inline">\(\sigma_A^2\)</span>이 크면 모집단을 구성하고 있는 단위들의 변동이 크다고 할 수 있다. 반면 <span class="math inline">\(\sigma_A^2\)</span>이 작으면 단위들간의 변동이 작아진다.</p>
+<p>그럼 효과를 어느 경우에 고정효과로 가정하는지? 또 임의효과로 가정하는 경우는 언제인지? 이러한 질문에 대하여 간단하고 명료한 대답은 없다. 많은 학자들이 이 문제에 대하여 다양한 설명을 내놓았는데 정답은 없다.</p>
+<p>심지어 다음과 같이 말한 학자도 있어요</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Before proceeding further with random field linear models, we need to remind the reader of the adage that <strong>one modeler’s random effect is another modeler’s fixed effect.</strong></p>
+<p><span class="citation" data-cites="sch2001">Schabenberger 와/과 Pierce (<a href="../references.html#ref-sch2001" role="doc-biblioref">2001</a>)</span> (627 page)</p>
+</div>
+</div>
+<p><strong>모형</strong>은 실제 현상이 어떻게 작동되는지 인간이 가진 제한적인 지식으로 간단한 수식과 분포 가정을 사용하여 기술하는 것이기 때문에 가정한 모형이 옳다 그르다를 판별하기 어렵다. G.P. Box 가 말했듯이 모형을 평가하는 가장 중요한 요소는 <strong>모형의 유용성</strong>일 것이다. 즉, 유용하지 않는 모형은 사람들이 금방 외면해 버릴 것이고 유용한 모형은 실제 자료를 예측하는데 도음을 주니 많은 사람들이 이용할 것이다.</p>
+<p>아직도 같은 자료에 대하여 고정효과와 임의효과 모형이 동시에 사용되고 있으니 두 모형 모두 유용하다고 할 수 있다. 하지만 두 효과에 대한 어느 정도 차이점은 알아야 한다. 지금까지 경험으로 고정효과와 임의효과의 대략적 의미와 차이점은 다음과 같습니다.</p>
+<ul>
+<li>고정효과
+<ul>
+<li>기술적인 효과(technical effect)</li>
+<li>실험자가 기술적으로 반복하여 적용할 수 있는 효과</li>
+<li>평균 효과의 비교가 주 목적인 경우</li>
+<li>예를 들어 온도, 사료, 비료, 촉매 등등</li>
+</ul></li>
+<li>임의효과
+<ul>
+<li>효과가 있는 것 같은데 기술적으로 명확한 설명이 어려운 효과 (Unobservable heterogeneity)</li>
+<li>숨겨진 변수 (latent variable )</li>
+<li>모집단에서 추출된 집단(group, cluster, repeated menasure)에 속하여 나타나는 효과 - 급내상관계수</li>
+<li>효과들의 변동에 관심있는 경우</li>
+<li>예를 들어 학교, 병원, 재배단위(plot) 등등</li>
+</ul></li>
+</ul>
+</section>
+<section id="변량모형의-성질" class="level2" data-number="C.3">
+<h2 data-number="C.3" class="anchored" data-anchor-id="변량모형의-성질"><span class="header-section-number">C.3</span> 변량모형의 성질</h2>
+<section id="총변동의-분해" class="level3" data-number="C.3.1">
+<h3 data-number="C.3.1" class="anchored" data-anchor-id="총변동의-분해"><span class="header-section-number">C.3.1</span> 총변동의 분해</h3>
+<p>일원배치 변량 모형 <a href="#eq-randommodel" class="quarto-xref">식&nbsp;<span>C.2</span></a> 을 따르는는 반응변수 <span class="math inline">\(x_{ij}\)</span>의 평균과 분산은 다음과 같다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(x_{ij}) &amp; = E(\mu + \alpha_i + e_{ij}) \\
+  &amp; =E(\mu) + E(\alpha_i) + E(e_{ij})  \\
+  &amp;= \mu + 0 + 0 \\
+  &amp; = \mu
+\end{aligned}
+\]</span> <span id="eq-vardecomp"><span class="math display">\[
+\begin{aligned}
+V(x_{ij}) &amp; =Var(\mu + \alpha_i + e_{ij}) \\
+  &amp; = V(\alpha_i) + V(e_{ij}) \\
+  &amp; = \sigma^2_A + \sigma^2_E
+\end{aligned}
+\tag{C.3}\]</span></span></p>
+<p><a href="#eq-vardecomp" class="quarto-xref">식&nbsp;<span>C.3</span></a> 에서 나타난 분해는 다음과 같이 의미로 표현할 수 있다.</p>
+<p><span class="math display">\[
+\underbrace{V(x_{ij})}_{\text{total variation}} =  \underbrace{\sigma^2_A}_{\text{variation between groups}} + \underbrace{\sigma^2_E}_{\text{variation within group}}  
+\]</span></p>
+</section>
+<section id="관측값의-종속성" class="level3" data-number="C.3.2">
+<h3 data-number="C.3.2" class="anchored" data-anchor-id="관측값의-종속성"><span class="header-section-number">C.3.2</span> 관측값의 종속성</h3>
+<p><a href="#eq-randommodel" class="quarto-xref">식&nbsp;<span>C.2</span></a> 로 표현된 변량모형의 가장 큰 특징 중에 하나는 같은 집단에 속하는 관측치들은 서로 독립이 아니며 양의 상관관계가 있는 것이다. 예를 들어 위의 학교간의 성적 비교 예제에서 두 학생 <span class="math inline">\(x_{ij}\)</span>와 <span class="math inline">\(x_{ik}\)</span>이 같은 학교 <span class="math inline">\(i\)</span>에 속한다면</p>
+<p><span class="math display">\[
+\begin{aligned}
+Cov(x_{ij},x_{ik}) &amp;  = Cov(  \mu + \alpha_i + e_{ij}, \mu + \alpha_i + e_{ik})  \\
+  &amp; =Cov (\alpha_i, \alpha_i) + Cov( \alpha_i, e_{ik}) + Cov( e_{ij}, \alpha_i ) + Cov( e_{ij}, e_{ik}) \\
+  &amp; = Cov (\alpha_i, \alpha_i) + 0 + 0 + 0 \\
+  &amp; = V (\alpha_i, \alpha_i) \\
+  &amp; = \sigma^2_A
+\end{aligned}
+\]</span></p>
+<p>따라서 <span class="math display">\[
+\begin{aligned}
+corr(x_{ij},x_{ik}) &amp; = \frac{ Cov(x_{ij},x_{ik})}{\sqrt{V(x_{ij}) ~V(x_{ik})} } \\
+&amp; = \frac{\sigma^2_A }{\sigma^2_A + \sigma^2_E } \\
+&amp; =\rho
+\end{aligned}
+\]</span></p>
+<p>위의 상관계수(교과서애서 기여율)는 보통 급내 <strong>상관계수(Intra Class Correlation, ICC)</strong>라고 부른다. 그룹 변동의 크기를 나타내는 분산성분 <span class="math inline">\(\sigma^2_A\)</span>가 그룹 내 변동을 나타내는 오차항의 분산 <span class="math inline">\(\sigma^2_E\)</span>보다 상대적으로 클수록 급내 상관계수가 1에 가까와진다.</p>
+<p>보통 <span class="math inline">\(\sigma^2_A\)</span>을 집단간 변동(between-group variance)라 하고 <span class="math inline">\(\sigma^2_E\)</span>를 집단내 변동(within-group variance)라고 한다. 따라서 <span class="math inline">\(\sigma^2_A\)</span>와 <span class="math inline">\(\sigma^2_E\)</span>의 상대적인 크기의 차이에 따라 그룹내 관측값의 상관관계가 달라진다.</p>
+</section>
+<section id="sec-mean-mse" class="level3" data-number="C.3.3">
+<h3 data-number="C.3.3" class="anchored" data-anchor-id="sec-mean-mse"><span class="header-section-number">C.3.3</span> 제곱합의 기대값</h3>
+<p>일원배치 변량 모형 <a href="#eq-randommodel" class="quarto-xref">식&nbsp;<span>C.2</span></a> 은 고정효과 모형 <a href="#eq-onewaymodel" class="quarto-xref">식&nbsp;<span>C.1</span></a> 과 동일한 분산분석(ANOVA) 표를 사용한다. 분산분석 표의 제곱합을 이용하여 <span class="math inline">\(\sigma^2_A\)</span>와 <span class="math inline">\(\sigma^2_E\)</span>에 대한 추정량을 얻을 수 있다.</p>
+<p>첫 째로 분산분석 표에서 <span class="math inline">\(SS_E\)</span>의 기대값을 구해보자.</p>
+<p>먼저 다음과 같은 분해를 고려하자.</p>
+<p><span class="math display">\[
+\begin{aligned}
+x_{ij}-\bar x_{i.} &amp;= (\mu + \alpha_i + e_{ij}) -\frac{ \sum_{j=1}^r (\mu + \alpha_i + e_{ij})}{r} \\
+&amp; = (\mu + \alpha_i + e_{ij})  - \left (\mu + \alpha_i + \frac{ \sum_{j=1}^r e_{ij}}{r} \right ) \\
+&amp; = (\mu + \alpha_i + e_{ij}) -(\mu + \alpha_i + \bar e_{i.}) \\
+&amp;= e_{ij}-\bar e_{i}
+\end{aligned}
+\]</span></p>
+<p>이므로 오차제곱합 <span class="math inline">\(SS_E\)</span>의 기대값은 다음과 같이 구해진다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+E \left [ \sum_{i=1}^a \sum_{j=1}^r (x_{ij}-\bar x_{i.})^2 \right ]
+&amp;= E \left [ \sum_{i=1}^a \sum_{j=1}^r (e_{ij}-\bar e_{i.}))^2 \right ] \\
+&amp;= (r-1) \sum_{i=1}^a E \left [ \frac{   \sum_{j=1}^r  (e_{ij}-\bar e_{i.}))^2 }{r-1} \right ] \\
+&amp;= (r-1) \sum_{i=1}^a \sigma^2_E \\
+&amp;= a(r-1) \sigma^2_E
+\end{aligned}
+\]</span></p>
+<p>또한 <span class="math inline">\(SS_A\)</span>의 기대값을 구하기 위하여</p>
+<p><span class="math display">\[
+\begin{aligned}
+\bar x_{i.} -\bar {\bar x}  &amp;= (\mu + \alpha_i + \bar e_{i.}) -(\mu + \bar \alpha + \bar {\bar e}) \\
+  &amp; = (\alpha_i -\bar \alpha) + (\bar e_{i.}- \bar {\bar e})
+\end{aligned}
+\]</span></p>
+<p>이므로 <span class="math inline">\(SS_A\)</span>의 기대값은 다음과 같이 구해진다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+E \left [ \sum_{i=1}^a \sum_{j=1}^r (\bar x_{i.} -\bar {\bar x} )^2 \right ]
+&amp;= E \left [ \sum_{i=1}^a \sum_{j=1}^r \{(\alpha_i -\bar \alpha) + (\bar e_{i.}-\bar {\bar e})\}^2 \right ] \\
+&amp;= \sum_{i=1}^a \sum_{j=1}^r E  [(\alpha_i -\bar \alpha)^2 ] + \sum_{i=1}^a \sum_{j=1}^r E  [(\bar e_{i.}- \bar{\bar e})^2 ]  \\
+&amp;= r(a-1)E \left  [    \frac{\sum_{i=1}^a(\alpha_i -\bar \alpha)^2}{a-1} \right ]
++ r(a-1)   E \left [ \frac{\sum_{i=1}^a(\bar e_{i.}-\bar{\bar e})^2}{a-1} \right ]  \\
+&amp;= r(a-1) \sigma^2_A + r(a-1)\frac{\sigma^2_E}{r} \\
+&amp;= (a-1)(r\sigma^2_A+ \sigma^2_E) \\
+\end{aligned}
+\]</span></p>
+<p>위의 계산에서 이용한 사실은 <span class="math inline">\(\alpha_i\)</span>는 서로 독립으로 <span class="math inline">\(N(0,\sigma^2_A)\)</span>를 따르고 <span class="math inline">\(\bar e_{i.}\)</span>는 서로 독립으로 <span class="math inline">\(N(0,\sigma^2_E/r)\)</span>를 따른다는 것이다.</p>
+<p>위의 제곱합의 기대값을 정리해보면 다음과 같은 두 방정식을 얻는다.</p>
+<p><span class="math display">\[
+E(SS_A) = (a-1)(r\sigma^2_A+ \sigma^2_E), \quad E(SS_E) =  a(r-1) \sigma^2_E
+\]</span></p>
+<p>위의 모수 방정식에 적률추정법(methods of moment)을 적용하면 다음과 같은 방정식을 얻고</p>
+<p><span class="math display">\[
+SS_A = (a-1)(r \hat{\sigma}^2_A+ \hat{\sigma}^2_E), \quad SS_E =  a(r-1) \hat{\sigma}^2_E
+\]</span></p>
+<p>위의 방정식을 풀면 <span class="math inline">\(\sigma^2_A\)</span>와 <span class="math inline">\(\sigma^2_E\)</span>의 불편 추정량을 구할 수 있다. 여기서 유의할 사항은 <span class="math inline">\(\sigma^2_A\)</span>에 대한 추정량은 0보다 작은 값이 나올 수 있으므로 이럴 경우 0으로 지정한다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+s^2_E &amp; = \hat \sigma^2_E = \frac{SS_E}{a(r-1)} =MS_E\\
+s^2_A &amp; = \hat \sigma^2_A = \max \left [ 0, \frac{SS_A/(a-1) -\hat \sigma^2_E}{r} \right ]
+=\max \left [ 0, \frac{MS_A -MS_E}{r} \right ]
+\end{aligned}
+\]</span></p>
+</section>
+<section id="가설-검정" class="level3" data-number="C.3.4">
+<h3 data-number="C.3.4" class="anchored" data-anchor-id="가설-검정"><span class="header-section-number">C.3.4</span> 가설 검정</h3>
+<p>고정효과 모형에서 요인 <span class="math inline">\(A\)</span>의 수준간에 차이가 있는 지를 검정하는 경우 귀무가설은 <span class="math inline">\(H_0: \alpha_1=\dots=\alpha_a=0\)</span> 이었다. 이제 변량 모형에서는 집단 간의 변동이 없는지 검정하는 것이므로 다음과 같은 가설을 고려한다.</p>
+<p><span id="eq-hypo"><span class="math display">\[
+H_0 : \sigma_A^2 = 0 \quad \text{vs. } \quad H_1: \sigma^2_A &gt;0
+\tag{C.4}\]</span></span></p>
+<p>분산성분 <span class="math inline">\(\sigma_A^2\)</span>가 0 이라는 의미는 모든 <span class="math inline">\(\alpha_i\)</span> 가 0이고 이는 집단 간의 차이가 없는 상황을 의미한다. 위의 <strong>가설을 검정하는 방법은 고정효과 모형과 동일하다</strong>. 즉 다음과 같은 조건이 만족되면 귀무가설을 기각한다.</p>
+<p><span class="math display">\[ \text{reject } H_0 \text{ if } F_0 = \frac{MS_A}{MS_E} &gt; F[1-\alpha, a-1,a(r-1)] \]</span></p>
+</section>
+</section>
+<section id="예제-3.3" class="level2" data-number="C.4">
+<h2 data-number="C.4" class="anchored" data-anchor-id="예제-3.3"><span class="header-section-number">C.4</span> 예제 3.3</h2>
+<p>교과서 59 페이지에 있는 예제를 R 프호그램을 사용하여 풀어보자.</p>
+<p>화학약품 회사에서는 매년 원자재의 수백 개의 배치(batch)를 정제하여 순도가 높은 화학약품을 만든다. 품질 관리를 위하여 수백 개의 배치들 중에서 5개를 랜덤하게 선택하고 배치당 3개의 시료를 채취한 후에 순도를 측정하였다.</p>
+<p>배치마다 순도가 크게 다르면 품질을 일정하게 유지할 수 없눈 문제가 생긴다. 따라서 실험의 목적은 품질 관리이며 배치 간의 변동과 배치 내의 변동을 알아보는 것이다.</p>
+<section id="자료" class="level3" data-number="C.4.1">
+<h3 data-number="C.4.1" class="anchored" data-anchor-id="자료"><span class="header-section-number">C.4.1</span> 자료</h3>
+<p>다음과 같이 자료를 만들자</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="dv">74</span>, <span class="dv">76</span>, <span class="dv">75</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               <span class="dv">68</span>, <span class="dv">71</span>, <span class="dv">72</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               <span class="dv">75</span>, <span class="dv">77</span>, <span class="dv">77</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               <span class="dv">72</span>, <span class="dv">74</span>, <span class="dv">73</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>               <span class="dv">79</span>, <span class="dv">81</span>, <span class="dv">79</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>batch <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">each=</span><span class="dv">3</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(batch, response)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   batch response
+1      1       74
+2      1       76
+3      1       75
+4      2       68
+5      2       71
+6      2       72
+7      3       75
+8      3       77
+9      3       77
+10     4       72
+11     4       74
+12     4       73
+13     5       79
+14     5       81
+15     5       79</code></pre>
+</div>
+</div>
+</section>
+<section id="추정과-가설검정" class="level3" data-number="C.4.2">
+<h3 data-number="C.4.2" class="anchored" data-anchor-id="추정과-가설검정"><span class="header-section-number">C.4.2</span> 추정과 가설검정</h3>
+<p>변량모형을 적합시키기 위해서는 <code>lme4</code> 패키지 가 필요하다. 일워배치 변량모형을 적합시키는 함수는 <code>lmer</code>이며 다음과 같이 사용한다. 아래 모형식에서 <code>1</code>은 평균 <span class="math inline">\(\mu\)</span>를 나타내고 <code>(1|batch)</code>는 배치에 대한 임의 효과 <span class="math inline">\(\alpha_i\)</span>를 나타낸다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lmer</span>(response <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>batch), <span class="at">data=</span>df ) </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(res)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: response ~ 1 + (1 | batch)
+   Data: df
+
+REML criterion at convergence: 62.8
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-1.90384 -0.53153  0.00484  0.61386  1.16817 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ batch    (Intercept) 11.71    3.422   
+ Residual              1.80    1.342   
+Number of obs: 15, groups:  batch, 5
+
+Fixed effects:
+            Estimate Std. Error     df t value Pr(&gt;|t|)    
+(Intercept)   74.867      1.569  4.000   47.71 1.15e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>위의 결과에서 다음과 같은 추정값을 얻는다.</p>
+<ul>
+<li><span class="math inline">\(\hat \mu = 74.867\)</span></li>
+<li><span class="math inline">\(\hat \sigma^2_A = 11.71\)</span></li>
+<li><span class="math inline">\(\hat \sigma_E^2 = 1.80\)</span></li>
+</ul>
+<p>따라서 급내 상관계수(기여율)의 추정값은 다음과 같다.</p>
+<p><span class="math display">\[ \hat \rho = \frac{\hat \sigma^2_A }{\hat \sigma^2_A + \hat \sigma^2_E }
+= \frac{11.7}{11.7 + 1.8} = 0.867 \]</span></p>
+<p>위의 <span class="math inline">\(\hat \rho=0.867\)</span>을 기여율로 해석하면 총변동 중에서 배치 간의 변동이 차지하는 비율이 86.7% 이라는 것이다.</p>
+<p>또한 <span class="math inline">\(H_0: \sigma_A^2=0\)</span> 에 대한 검정은 다음과 같이 <code>aov</code>함수를 사용하여 수행할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(response <span class="sc">~</span> batch, <span class="at">data=</span>df ))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+batch        4  147.7   36.93   20.52 8.25e-05 ***
+Residuals   10   18.0    1.80                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>p-값이 유의수준 5% 보다 매우 작으므로 <span class="math inline">\(H_0\)</span>를 기각한다. 배치 간 변동이 유의하다고 할 수 있다. 따라서 품질이 배치 간에 따라서 크게 다르다.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-sch2001" class="csl-entry" role="listitem">
+Schabenberger, Oliver, 와/과 Francis J Pierce. 2001. <em>Contemporary statistical models for the plant and soil sciences</em>. CRC press.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../qmd/linear.html" class="pagination-link" aria-label="일원배치 모형과 최소제곱법">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">일원배치 모형과 최소제곱법</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../qmd/comfound.html" class="pagination-link" aria-label="교락">
+        <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">교락</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

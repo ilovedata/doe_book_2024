@@ -165,6 +165,12 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./qmd/block.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">블록설계, 라틴정방설계와 분할법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -182,6 +188,24 @@ div.csl-indent {
   <div class="sidebar-item-container"> 
   <a href="./qmd/visual.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title"><code>R</code>을 이용한 자료의 시각화 비교</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./qmd/linear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">일원배치 모형과 최소제곱법</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./qmd/raneff.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">혼합 모형</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./qmd/comfound.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">교락</span></span></a>
   </div>
 </li>
       </ul>
@@ -225,7 +249,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">공개</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024년 3월 20일</p>
+      <p class="date">2024년 4월 1일</p>
     </div>
   </div>
   
@@ -252,6 +276,11 @@ library(kableExtra)
 library(agricolae)
 library(emmeans)
 
+# 변량모형(혼합모형)
+library(lme4)
+library(lmerTest)
+
+# ggplot 그래프에서 한글 사용
 library(showtext)
 font_add_google("Nanum Pen Script", "gl")
 showtext_auto()
