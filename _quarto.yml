@@ -11,6 +11,7 @@ book:
     - qmd/oneway.qmd
     - qmd/twoway.qmd
     - qmd/block.qmd
+    - qmd/contrast.qmd
     - references.qmd
   appendices:    
     - qmd/visual.qmd
