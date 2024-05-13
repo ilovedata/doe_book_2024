@@ -21,6 +21,10 @@ library(emmeans)
 library(lme4)
 library(lmerTest)
 
+library(SixSigma)
+library(FrF2)
+library(unrepx)
+
 # ggplot 그래프에서 한글 사용
 library(showtext)
 font_add_google("Nanum Pen Script", "gl")

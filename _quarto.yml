@@ -12,6 +12,7 @@ book:
     - qmd/twoway.qmd
     - qmd/block.qmd
     - qmd/contrast.qmd
+    - qmd/twolevels.qmd
     - references.qmd
   appendices:    
     - qmd/visual.qmd
