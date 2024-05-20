@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>실험계획법 2024 강의 노트 - 6&nbsp; 2수준 요인배치법 - 교락법</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../references.html" rel="next">
+<link href="../qmd/twolevels.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/twolevelscomf.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">2수준 요인배치법 - 교락법</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">실험계획법 2024 강의 노트</a> 
+        <div class="sidebar-tools-main">
+    <a href="../실험계획법-2024-강의-노트.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">서론</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/oneway.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">일원배치법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/twoway.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">이원배치법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/block.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">블록설계, 라틴정방설계와 분할법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/contrast.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">대비</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/twolevels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">2수준 요인배치법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/twolevelscomf.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">2수준 요인배치법 - 교락법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/visual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title"><code>R</code>을 이용한 자료의 시각화 비교</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/linear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">일원배치 모형과 최소제곱법</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/raneff.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">혼합 모형</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/comfound.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">교락</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#교과서-예제-8.2" id="toc-교과서-예제-8.2" class="nav-link active" data-scroll-target="#교과서-예제-8.2"><span class="header-section-number">6.1</span> 교과서 예제 8.2</a>
+  <ul class="collapse">
+  <li><a href="#실험자료의-생성" id="toc-실험자료의-생성" class="nav-link" data-scroll-target="#실험자료의-생성"><span class="header-section-number">6.1.1</span> 실험자료의 생성</a></li>
+  <li><a href="#선형표현식" id="toc-선형표현식" class="nav-link" data-scroll-target="#선형표현식"><span class="header-section-number">6.1.2</span> 선형표현식</a></li>
+  <li><a href="#결합요인" id="toc-결합요인" class="nav-link" data-scroll-target="#결합요인"><span class="header-section-number">6.1.3</span> 결합요인</a></li>
+  <li><a href="#yates-계산법" id="toc-yates-계산법" class="nav-link" data-scroll-target="#yates-계산법"><span class="header-section-number">6.1.4</span> Yates 계산법</a></li>
+  <li><a href="#블럭변동" id="toc-블럭변동" class="nav-link" data-scroll-target="#블럭변동"><span class="header-section-number">6.1.5</span> 블럭변동</a></li>
+  <li><a href="#핵심요인의-선별" id="toc-핵심요인의-선별" class="nav-link" data-scroll-target="#핵심요인의-선별"><span class="header-section-number">6.1.6</span> 핵심요인의 선별</a></li>
+  <li><a href="#최종-모형" id="toc-최종-모형" class="nav-link" data-scroll-target="#최종-모형"><span class="header-section-number">6.1.7</span> 최종 모형</a></li>
+  </ul></li>
+  <li><a href="#상호작용-그림" id="toc-상호작용-그림" class="nav-link" data-scroll-target="#상호작용-그림"><span class="header-section-number">6.2</span> 상호작용 그림</a></li>
+  <li><a href="#exerxise8" id="toc-exerxise8" class="nav-link" data-scroll-target="#exerxise8"><span class="header-section-number">6.3</span> 8장 연습문제</a>
+  <ul class="collapse">
+  <li><a href="#연습문제-1" id="toc-연습문제-1" class="nav-link" data-scroll-target="#연습문제-1"><span class="header-section-number">6.3.1</span> 연습문제 1</a></li>
+  <li><a href="#연습문제-4" id="toc-연습문제-4" class="nav-link" data-scroll-target="#연습문제-4"><span class="header-section-number">6.3.2</span> 연습문제 4</a></li>
+  <li><a href="#연습문제-10" id="toc-연습문제-10" class="nav-link" data-scroll-target="#연습문제-10"><span class="header-section-number">6.3.3</span> 연습문제 10</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-twolevelcomf" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">2수준 요인배치법 - 교락법</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="교과서-예제-8.2" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="교과서-예제-8.2"><span class="header-section-number">6.1</span> 교과서 예제 8.2</h2>
+<p>반복이 없는 <span class="math inline">\(2^4\)</span> 요인배치법에서 16회의 실험을 동일한 환경에서 실시할 수 없어서 상호작용효과 <span class="math inline">\(ACD\)</span> 와 <span class="math inline">\(BCD\)</span> 를 블럭과 교락시켜서 실험하였다 (교과서 예제 8.2, 230 페이지)</p>
+<section id="실험자료의-생성" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="실험자료의-생성"><span class="header-section-number">6.1.1</span> 실험자료의 생성</h3>
+<p>먼저 16개의 실험 처리 조합을 표준 순서로서 생성하자. <code>default.level=c(0,1)</code> 은 요인의 수준을 0과 1로 표시하는 옵션이다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="at">nruns=</span><span class="dv">16</span>, <span class="at">nfactors=</span><span class="dv">4</span>, <span class="at">randomize =</span> <span class="cn">FALSE</span>,  <span class="at">default.level=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A B C D
+1  0 0 0 0
+2  1 0 0 0
+3  0 1 0 0
+4  1 1 0 0
+5  0 0 1 0
+6  1 0 1 0
+7  0 1 1 0
+8  1 1 1 0
+9  0 0 0 1
+10 1 0 0 1
+11 0 1 0 1
+12 1 1 0 1
+13 0 0 1 1
+14 1 0 1 1
+15 0 1 1 1
+16 1 1 1 1
+class=design, type= full factorial </code></pre>
+</div>
+</div>
+<p>실험의 표준 순서는 다음과 같이 <code>yates()</code> 함수를 이용하여 알 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">yates</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">16</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A    B   AB    C   AC   BC  ABC    D   AD   BD  ABD   CD  ACD  BCD ABCD 
+   0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+attr(,"mean")
+  
+0 </code></pre>
+</div>
+</div>
+<p>그리고 처리의 표준 순서로 실험값과 블럭변수를 입력한다. 그리고 처리조합 정보 <code>X</code> 와 결합하여 최종 자료인 <code>df</code> 를 만들자.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/ex82.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<figcaption>예제 8.2 자료</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">45</span>,<span class="dv">71</span>, <span class="dv">48</span>, <span class="dv">65</span>, <span class="dv">68</span>, <span class="dv">60</span>, <span class="dv">80</span>, <span class="dv">65</span>, <span class="dv">43</span>, <span class="dv">100</span>, <span class="dv">45</span>, <span class="dv">104</span>, <span class="dv">75</span>, <span class="dv">86</span>, <span class="dv">70</span>, <span class="dv">96</span> )</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>block <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>treat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="fu">names</span>(<span class="fu">yates</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">16</span>))))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>df0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">block=</span>block, <span class="at">treat=</span>treat,  <span class="at">y=</span>y )</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">cbind</span>(X, df0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span>   <span class="fu">kable_paper</span>(<span class="st">"hover"</span>, <span class="at">full_width =</span> F)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<table class="lightable-paper lightable-hover table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">A</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">B</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">C</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">D</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">block</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">treat</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">45</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: right;">71</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">48</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">AB</td>
+<td style="text-align: right;">65</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: right;">68</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">AC</td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">BC</td>
+<td style="text-align: right;">80</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">ABC</td>
+<td style="text-align: right;">65</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">D</td>
+<td style="text-align: right;">43</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">AD</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">BD</td>
+<td style="text-align: right;">45</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">ABD</td>
+<td style="text-align: right;">104</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">CD</td>
+<td style="text-align: right;">75</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">ACD</td>
+<td style="text-align: right;">86</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">BCD</td>
+<td style="text-align: right;">70</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">ABCD</td>
+<td style="text-align: right;">96</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>위의 실험 자료를 블럭과 처리 순으로 정렬해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> <span class="fu">arrange</span>( block, treat)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A B C D block treat   y
+1  0 0 0 0     1     0  45
+2  1 1 1 0     1   ABC  65
+3  1 1 0 1     1   ABD 104
+4  0 0 1 1     1    CD  75
+5  1 0 1 0     2    AC  60
+6  1 0 0 1     2    AD 100
+7  0 1 0 0     2     B  48
+8  0 1 1 1     2   BCD  70
+9  1 0 0 0     3     A  71
+10 1 0 1 1     3   ACD  86
+11 0 1 1 0     3    BC  80
+12 0 1 0 1     3    BD  45
+13 1 1 0 0     4    AB  65
+14 1 1 1 1     4  ABCD  96
+15 0 0 1 0     4     C  68
+16 0 0 0 1     4     D  43</code></pre>
+</div>
+</div>
+</section>
+<section id="선형표현식" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="선형표현식"><span class="header-section-number">6.1.2</span> 선형표현식</h3>
+<p>이제 위에서 생성된 자료에서 상호작용효과 <span class="math inline">\(ACD\)</span> 와 <span class="math inline">\(BCD\)</span> 가 블록과 교락되어 있는지 선형표현식을 이용하여 확인해 보자.</p>
+<p><span class="math display">\[
+\begin{aligned}
+L_1 &amp; = x_1 + x_3 + x_4 (\text{mod}2) \\
+L_2 &amp; = x_2 + x_3 + x_4 (\text{mod}2)
+\end{aligned}
+\]</span></p>
+<p>예를 들어 블럭 1 (<span class="math inline">\(L_1=0, L_2=0\)</span>) 에 베치된 처리에 대하여 선형식의 값을 구해보자.</p>
+<table class="table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">블럭</th>
+<th style="text-align: center;">처리</th>
+<th style="text-align: center;"><span class="math inline">\(L_1 (ACD)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(L_2 (BCD)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\((0)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (0+0+0, 2) = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (0+0+0, 2) = 0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(ABC\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (1+1+0, 2) = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (1+1+0, 2) = 0\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(ABD\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (1+0+1, 2) = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (1+0+1, 2) = 0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(CD\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (0+1+1, 2) = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (0+1+1, 2) = 0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>예를 들어 블럭 2 (<span class="math inline">\(L_1=0, L_2=1\)</span>) 에 베치된 처리에 대하여 선형식의 값을 구해보자.</p>
+<table class="table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">블럭</th>
+<th style="text-align: center;">처리</th>
+<th style="text-align: center;"><span class="math inline">\(L_1 (ACD)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(L_2 (BCD)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(AC\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (1+1+0, 2) = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (0+1+0, 2) = 1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(AD\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (1+0+1, 2) = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (0+0+1, 2) = 1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(B\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (0+0+0, 2) = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (1+0+0, 2) = 1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(BCD\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (0+1+1, 2) = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\texttt{MOD} (1+1+1, 2) = 1\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>이렇게 모든 처리에 대하여 구한 선형식의 값은 다음과 같이 함수 <code>conf.design()</code> 로 구할 수 있다. 아래 주어진 블럭배치의 결과는 자료 <code>df</code> 에서 처리들이 블럭에 배치된 것과 일치함을 확인할 수 있다.</p>
+<p>먼저 상호작용효과 <span class="math inline">\(ACD\)</span> 와 <span class="math inline">\(BCD\)</span> 가 블록과 교락되도록 정의할 수 있는 행렬을 만들어 보자. 아래 0 과 1 로 구성된 <span class="math inline">\(4 \times 2\)</span> 행렬을 보면, 먼저 4개의 인자를 나타내는 4개의 열로 구성되어 있으며 각 행은 블록과 교락된 상호작용효과에 해당되는 요인을 1로 표시한 것이다. 따라서 첫 행은 <span class="math inline">\(ACD\)</span> 에 해당되는 요인들을 1로 표시하고 나머지 행은 <span class="math inline">\(BCD\)</span> 에 해당되는 요인들을 1로 표시한 것이다.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">C</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Def.contrast <span class="ot">&lt;-</span>   <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dv">2</span>,<span class="dv">4</span>, <span class="at">byrow=</span><span class="cn">TRUE</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Def.contrast</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    0    1    1
+[2,]    0    1    1    1</code></pre>
+</div>
+</div>
+<p>다음으로 위에서 정의한 행렬을 이용하여 상호작용효과 <span class="math inline">\(ACD\)</span> 와 <span class="math inline">\(BCD\)</span> 가 블록과 교락되도록 실험을 설계해 보자. 아래 함수 <code>conf.design()</code> 를 사용하는 경우 인자들의 역활은 다음과 같다.</p>
+<ul>
+<li><code>G</code> : 상호작용효과를 정의하는 행렬</li>
+<li><code>p</code> : 실험의 수준</li>
+<li><code>block.name</code> : 블럭의 이름</li>
+<li><code>treatment.names</code> : 처리의 이름</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">conf.design</span>(<span class="at">G=</span>Def.contrast , <span class="at">p=</span><span class="dv">2</span>, <span class="at">block.name =</span> <span class="st">"블럭"</span>, <span class="at">treatment.names=</span><span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df2</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   블럭 A B C D
+1    00 0 0 0 0
+2    00 1 1 1 0
+3    00 1 1 0 1
+4    00 0 0 1 1
+5    01 0 1 0 0
+6    01 1 0 1 0
+7    01 1 0 0 1
+8    01 0 1 1 1
+9    10 1 0 0 0
+10   10 0 1 1 0
+11   10 0 1 0 1
+12   10 1 0 1 1
+13   11 1 1 0 0
+14   11 0 0 1 0
+15   11 0 0 0 1
+16   11 1 1 1 1</code></pre>
+</div>
+</div>
+<p>아래 함수 <code>conf.design()</code> 의 결과 <code>df2</code> 는 앞에서 만든 실험자료 <code>df</code> 와 처리와 블럭의배정이 일치하는 것을 확인할 수 있다.</p>
+</section>
+<section id="결합요인" class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="결합요인"><span class="header-section-number">6.1.3</span> 결합요인</h3>
+<p>상호작용효과 <span class="math inline">\(ACD\)</span> 와 <span class="math inline">\(BCD\)</span> 가 블록과 교락되어 있을 경우 발생하는 <strong>결합요인</strong>은 <span class="math inline">\(AB\)</span> 이다. 따라서 상호작용효과 <span class="math inline">\(AD\)</span> 도 블록 효과와 교락된다.</p>
+<p><span class="math display">\[ ACD \times BCD = ABC^2 D^2= AB \]</span></p>
+</section>
+<section id="yates-계산법" class="level3" data-number="6.1.4">
+<h3 data-number="6.1.4" class="anchored" data-anchor-id="yates-계산법"><span class="header-section-number">6.1.4</span> Yates 계산법</h3>
+<p>이제 자료 <code>df</code> 에 함수 <code>yates()</code> 를 다음과 같이 적용하여 각 효과의 추정치(effect)를 게산해 보자. 참고로 <code>attr(a, "mean")</code> 는 Yates 추정치가 저장된 <code>a</code> 에서 반응값의 전체 평균 <span class="math inline">\(\bar y_{....}\)</span> 을 구하는 함수이다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">yates</span>(df<span class="sc">$</span>y, <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>a</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      A       B      AB       C      AC      BC     ABC       D      AD      BD 
+ 21.625   3.125   0.125   9.875 -18.125   2.375   1.875  14.625  16.625  -0.375 
+    ABD      CD     ACD     BCD    ABCD 
+  4.125  -1.125  -1.625  -2.625   1.375 
+attr(,"mean")
+        
+70.0625 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(a, <span class="st">"mean"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        
+70.0625 </code></pre>
+</div>
+</div>
+<p>이제 위의 결과를 이용하여 교과서 표 8.4 와 동일한 Yates 계산의 결과를 구해보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>yates_effect <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">treat =</span> <span class="fu">names</span>(a), <span class="at">effect=</span> a)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>yates_effect</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     treat  effect
+A        A  21.625
+B        B   3.125
+AB      AB   0.125
+C        C   9.875
+AC      AC -18.125
+BC      BC   2.375
+ABC    ABC   1.875
+D        D  14.625
+AD      AD  16.625
+BD      BD  -0.375
+ABD    ABD   4.125
+CD      CD  -1.125
+ACD    ACD  -1.625
+BCD    BCD  -2.625
+ABCD  ABCD   1.375</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>totalmean <span class="ot">&lt;-</span>  <span class="fu">data.frame</span>(<span class="at">treat=</span><span class="st">"(0)"</span>, <span class="at">effect =</span> <span class="fu">attr</span>(a, <span class="st">"mean"</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>totalmean </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  treat  effect
+1   (0) 70.0625</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>yates_effect <span class="ot">&lt;-</span> <span class="fu">rbind</span>(totalmean, yates_effect)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>yates_effect</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     treat   effect
+1      (0)  70.0625
+A        A  21.6250
+B        B   3.1250
+AB      AB   0.1250
+C        C   9.8750
+AC      AC -18.1250
+BC      BC   2.3750
+ABC    ABC   1.8750
+D        D  14.6250
+AD      AD  16.6250
+BD      BD  -0.3750
+ABD    ABD   4.1250
+CD      CD  -1.1250
+ACD    ACD  -1.6250
+BCD    BCD  -2.6250
+ABCD  ABCD   1.3750</code></pre>
+</div>
+</div>
+<p>위에서 구한 데이터프레임의 <code>effect</code> 는 평균 효과를 의미한다. 예를 들어서 처리 <span class="math inline">\(A\)</span> 에 대한 효과는 다음과 같이 구한다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+A &amp; = \frac{1}{8} (a + ab + ac + abc + ad + abd + acd + abcd - (0) - b -c -bc -d - bd - cd -bcd) \\
+  &amp; =\frac{1}{8} (T_{1...} - T_{0...}) \\
+  &amp; = \bar {y}_{1...} - \bar {y}_{0...} \\
+  &amp; = 21.625
+\end{aligned}  
+\]</span></p>
+<p>따라서 제곱합을 구하는 방법은 처리합의 차를 제곱한 값 <span class="math inline">\((T_{1...} - T_{0...})^2\)</span> 을 총 실험의 크기 <span class="math inline">\(n=16\)</span> 으로 나눈다. 이는 평균처리 효과를 제곱한 값에 4를 곱해주는 양과 같다.</p>
+<p><span class="math display">\[ SS_A =  \frac{(T_{1...} - T_{0...})^2}{16} = 4 (\bar {y}_{1...} - \bar {y}_{0...})^2  \]</span></p>
+<p>이제 위에서 구한 평균 처리 효과를 이용하여 제곱합을 구해보자. 주의할 점은 평균 처리 효과가 저장된 <code>yates_effect</code> 의 첫 행은 전체평균 <span class="math inline">\(\bar y_{....} = T_{....}/16\)</span> 이 저장되어 있기 때문에 4를 한번 더 곱해주어야 한다.</p>
+<p><span class="math display">\[ CT = \frac{T_{....}^2}{16} = 16 (\bar y_{....})^2\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>yates_effect<span class="sc">$</span>SS <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">*</span>yates_effect<span class="sc">$</span>effect<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>yates_effect<span class="sc">$</span>SS[<span class="dv">1</span>] <span class="ot">&lt;-</span> yates_effect<span class="sc">$</span>SS[<span class="dv">1</span>] <span class="sc">*</span><span class="dv">4</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>yates_effect</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     treat   effect         SS
+1      (0)  70.0625 78540.0625
+A        A  21.6250  1870.5625
+B        B   3.1250    39.0625
+AB      AB   0.1250     0.0625
+C        C   9.8750   390.0625
+AC      AC -18.1250  1314.0625
+BC      BC   2.3750    22.5625
+ABC    ABC   1.8750    14.0625
+D        D  14.6250   855.5625
+AD      AD  16.6250  1105.5625
+BD      BD  -0.3750     0.5625
+ABD    ABD   4.1250    68.0625
+CD      CD  -1.1250     5.0625
+ACD    ACD  -1.6250    10.5625
+BCD    BCD  -2.6250    27.5625
+ABCD  ABCD   1.3750     7.5625</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/ex82-yates.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<figcaption>예제 8.2 Yates 계산</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="블럭변동" class="level3" data-number="6.1.5">
+<h3 data-number="6.1.5" class="anchored" data-anchor-id="블럭변동"><span class="header-section-number">6.1.5</span> 블럭변동</h3>
+<p>자료에서 블럭의 변동을 구하는 방법은 교과서 231 에 나온 것처럼 각 블럭에 대한 관측값의 합을 구해서 변동의 공식을 이용할 수 있다. 각 블럭 안의 관측값들 합을 <span class="math inline">\(T_i\)</span>라고 하면</p>
+<p><span class="math display">\[ SS_{block} = \frac{1}{4} \sum_{i=1}^4  T^2_i - CT \quad \text{where } CT=\frac {T^2}{(4)(4)}  \]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/ex82-block.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<figcaption>예제 8.2 블럭 제곱합</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>또한 다음과 같은 선형식을 R 록 적합식키고 분산분석을 이용하여 블럭의 변동(<span class="math inline">\(SS_{block}\)</span>)을 구할 수 있다. 아래 함수<br>
+<code>anova()</code> 결과에 의하면 <span class="math inline">\(SS_{block} = 38.19\)</span> 이다.</p>
+<p><span class="math display">\[ y_{ij} = \mu + \text{(block)}_i + e_{ij} \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>res_block <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>block, <span class="at">data=</span>df)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(res_block)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value Pr(&gt;F)
+block      3   38.2   12.73  0.0268 0.9937
+Residuals 12 5692.8  474.40               </code></pre>
+</div>
+</div>
+<p>블럭의 변동은 상호작용 효과 <span class="math inline">\(ACD\)</span>, <span class="math inline">\(BCD\)</span>, <span class="math inline">\(AB\)</span> 에 대한 제곱합들의 합과 같다.</p>
+<p><span class="math display">\[ SS_{block} = SS_{ACD} + SS_{BCD} + SS_{AB} = 10.5625 +  27.5625 +0.0625 = 38.19 \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>yates_effect <span class="sc">%&gt;%</span> <span class="fu">filter</span>(treat <span class="sc">==</span> <span class="st">"ACD"</span> <span class="sc">|</span> treat <span class="sc">==</span> <span class="st">"BCD"</span> <span class="sc">|</span> treat <span class="sc">==</span> <span class="st">"AB"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    treat effect      SS
+AB     AB  0.125  0.0625
+ACD   ACD -1.625 10.5625
+BCD   BCD -2.625 27.5625</code></pre>
+</div>
+</div>
+</section>
+<section id="핵심요인의-선별" class="level3" data-number="6.1.6">
+<h3 data-number="6.1.6" class="anchored" data-anchor-id="핵심요인의-선별"><span class="header-section-number">6.1.6</span> 핵심요인의 선별</h3>
+<p>핵심요인의 선별하기 위하여 먼저 각 처리의 제곱합을 순서대로 나열해 보자. 주요인 <span class="math inline">\(A\)</span>, <span class="math inline">\(C\)</span>, <span class="math inline">\(D\)</span> 와 상호작용 효과 <span class="math inline">\(AC\)</span> 와 <span class="math inline">\(AD\)</span>의 제곱합이 다른 것보다 크게 나타나는 것을 볼 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>yates_effect <span class="sc">%&gt;%</span>  <span class="fu">arrange</span>(<span class="fu">desc</span>(SS))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     treat   effect         SS
+1      (0)  70.0625 78540.0625
+A        A  21.6250  1870.5625
+AC      AC -18.1250  1314.0625
+AD      AD  16.6250  1105.5625
+D        D  14.6250   855.5625
+C        C   9.8750   390.0625
+ABD    ABD   4.1250    68.0625
+B        B   3.1250    39.0625
+BCD    BCD  -2.6250    27.5625
+BC      BC   2.3750    22.5625
+ABC    ABC   1.8750    14.0625
+ACD    ACD  -1.6250    10.5625
+ABCD  ABCD   1.3750     7.5625
+CD      CD  -1.1250     5.0625
+BD      BD  -0.3750     0.5625
+AB      AB   0.1250     0.0625</code></pre>
+</div>
+</div>
+<p>이제 모든 효과가 포함된 완전모형(full model)을 적합시키고 반정규확률 그림을 그려서 핵심효인을 다시 찾아보자. 제곱합을 비교할 때와 같이 주요인 <span class="math inline">\(A\)</span>, <span class="math inline">\(C\)</span>, <span class="math inline">\(D\)</span> 와 상호작용 효과 <span class="math inline">\(AC\)</span> 와 <span class="math inline">\(AD\)</span>이 핵심 요인으로 보여진다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fullmodel <span class="ot">&lt;-</span> <span class="fu">lm</span> (y<span class="sc">~</span> A<span class="sc">*</span>B<span class="sc">*</span>C<span class="sc">*</span>D, <span class="at">data=</span>df) </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DanielPlot</span>(fullmodel, <span class="at">half=</span><span class="cn">TRUE</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="twolevelscomf_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="최종-모형" class="level3" data-number="6.1.7">
+<h3 data-number="6.1.7" class="anchored" data-anchor-id="최종-모형"><span class="header-section-number">6.1.7</span> 최종 모형</h3>
+<p>위의 핵심요인의 선별 결과를 고려하여 주요인 <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, <span class="math inline">\(C\)</span>, <span class="math inline">\(D\)</span> 와 상호작용 효과 <span class="math inline">\(AC\)</span> 와 <span class="math inline">\(AD\)</span> 를 포함하는 축소된 모형을 최종모형으로 적합해 보자. 축소모형에는 당연히 블럭효과도 포함해야 한다. 또한 오차항에는 블럭과 교럭돤 상호작용 효과들과 축소모형에 포함된 효과들을 제외한 다른 효과들이 풀링된다.</p>
+<p><span class="math display">\[ SS_E = SS_{B \times C} + SS_{B \times D} + SS_{C \times D} + SS_{A \times B \times C} + SS_{A \times B \times D } + SS_{A \times B \times C \times D}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>finalmodel <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> block <span class="sc">+</span> A <span class="sc">+</span>B <span class="sc">+</span> C<span class="sc">+</span> D <span class="sc">+</span> A<span class="sc">:</span>C <span class="sc">+</span> A<span class="sc">:</span>D, <span class="at">data=</span>df)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(finalmodel)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: y
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+block      3   38.19   12.73  0.6479 0.6123498    
+A          1 1870.56 1870.56 95.2142  6.66e-05 ***
+B          1   39.06   39.06  1.9883 0.2081893    
+C          1  390.06  390.06 19.8547 0.0043020 ** 
+D          1  855.56  855.56 43.5493 0.0005821 ***
+A:C        1 1314.06 1314.06 66.8876 0.0001800 ***
+A:D        1 1105.56 1105.56 56.2747 0.0002902 ***
+Residuals  6  117.88   19.65                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="상호작용-그림" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="상호작용-그림"><span class="header-section-number">6.2</span> 상호작용 그림</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(df, <span class="fu">interaction.plot</span>(<span class="at">x.factor =</span> A, <span class="at">trace.factor =</span> C,  <span class="at">response =</span> y))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="twolevelscomf_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(df, <span class="fu">interaction.plot</span>(<span class="at">x.factor =</span> A, <span class="at">trace.factor =</span> D,  <span class="at">response =</span> y))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="twolevelscomf_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exerxise8" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="exerxise8"><span class="header-section-number">6.3</span> 8장 연습문제</h2>
+<p>다음은 8장의 연습문제를 풀 때 도음이 되는 R 프로그램이다.</p>
+<section id="연습문제-1" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="연습문제-1"><span class="header-section-number">6.3.1</span> 연습문제 1</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="at">nruns=</span><span class="dv">16</span>, <span class="at">nfactors=</span><span class="dv">4</span>, <span class="at">randomize =</span> <span class="cn">FALSE</span>,  <span class="at">default.level=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>X1</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A B C D
+1  0 0 0 0
+2  1 0 0 0
+3  0 1 0 0
+4  1 1 0 0
+5  0 0 1 0
+6  1 0 1 0
+7  0 1 1 0
+8  1 1 1 0
+9  0 0 0 1
+10 1 0 0 1
+11 0 1 0 1
+12 1 1 0 1
+13 0 0 1 1
+14 1 0 1 1
+15 0 1 1 1
+16 1 1 1 1
+class=design, type= full factorial </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">yates</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">16</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A    B   AB    C   AC   BC  ABC    D   AD   BD  ABD   CD  ACD  BCD ABCD 
+   0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+attr(,"mean")
+  
+0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>Def.contrast1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">conf.design</span>(<span class="at">G=</span>Def.contrast1 , <span class="at">p=</span><span class="dv">2</span>, <span class="at">block.name =</span> <span class="st">"블럭"</span>, <span class="at">treatment.names=</span><span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   블럭 A B C D
+1     0 0 0 0 0
+2     0 1 1 0 0
+3     0 1 0 1 0
+4     0 0 1 1 0
+5     0 1 0 0 1
+6     0 0 1 0 1
+7     0 0 0 1 1
+8     0 1 1 1 1
+9     1 1 0 0 0
+10    1 0 1 0 0
+11    1 0 0 1 0
+12    1 1 1 1 0
+13    1 0 0 0 1
+14    1 1 1 0 1
+15    1 1 0 1 1
+16    1 0 1 1 1</code></pre>
+</div>
+</div>
+</section>
+<section id="연습문제-4" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="연습문제-4"><span class="header-section-number">6.3.2</span> 연습문제 4</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="at">nruns=</span><span class="dv">8</span>, <span class="at">nfactors=</span><span class="dv">3</span>, <span class="at">randomize =</span> <span class="cn">FALSE</span>,  <span class="at">default.level=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>X2</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  A B C
+1 0 0 0
+2 1 0 0
+3 0 1 0
+4 1 1 0
+5 0 0 1
+6 1 0 1
+7 0 1 1
+8 1 1 1
+class=design, type= full factorial </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">yates</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">8</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  A   B  AB   C  AC  BC ABC 
+  0   0   0   0   0   0   0 
+attr(,"mean")
+  
+0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>Def.contrast2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">conf.design</span>(<span class="at">G=</span>Def.contrast2 , <span class="at">p=</span><span class="dv">2</span>, <span class="at">block.name =</span> <span class="st">"블럭"</span>, <span class="at">treatment.names=</span><span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  블럭 A B C
+1    0 0 0 0
+2    0 1 1 0
+3    0 1 0 1
+4    0 0 1 1
+5    1 1 0 0
+6    1 0 1 0
+7    1 0 0 1
+8    1 1 1 1</code></pre>
+</div>
+</div>
+</section>
+<section id="연습문제-10" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="연습문제-10"><span class="header-section-number">6.3.3</span> 연습문제 10</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>X3 <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="at">nruns=</span><span class="dv">64</span>, <span class="at">nfactors=</span><span class="dv">6</span>, <span class="at">randomize =</span> <span class="cn">FALSE</span>,  <span class="at">default.level=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>X3</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A B C D E F
+1  0 0 0 0 0 0
+2  1 0 0 0 0 0
+3  0 1 0 0 0 0
+4  1 1 0 0 0 0
+5  0 0 1 0 0 0
+6  1 0 1 0 0 0
+7  0 1 1 0 0 0
+8  1 1 1 0 0 0
+9  0 0 0 1 0 0
+10 1 0 0 1 0 0
+11 0 1 0 1 0 0
+12 1 1 0 1 0 0
+13 0 0 1 1 0 0
+14 1 0 1 1 0 0
+15 0 1 1 1 0 0
+16 1 1 1 1 0 0
+17 0 0 0 0 1 0
+18 1 0 0 0 1 0
+19 0 1 0 0 1 0
+20 1 1 0 0 1 0
+21 0 0 1 0 1 0
+22 1 0 1 0 1 0
+23 0 1 1 0 1 0
+24 1 1 1 0 1 0
+25 0 0 0 1 1 0
+26 1 0 0 1 1 0
+27 0 1 0 1 1 0
+28 1 1 0 1 1 0
+29 0 0 1 1 1 0
+30 1 0 1 1 1 0
+31 0 1 1 1 1 0
+32 1 1 1 1 1 0
+33 0 0 0 0 0 1
+34 1 0 0 0 0 1
+35 0 1 0 0 0 1
+36 1 1 0 0 0 1
+37 0 0 1 0 0 1
+38 1 0 1 0 0 1
+39 0 1 1 0 0 1
+40 1 1 1 0 0 1
+41 0 0 0 1 0 1
+42 1 0 0 1 0 1
+43 0 1 0 1 0 1
+44 1 1 0 1 0 1
+45 0 0 1 1 0 1
+46 1 0 1 1 0 1
+47 0 1 1 1 0 1
+48 1 1 1 1 0 1
+49 0 0 0 0 1 1
+50 1 0 0 0 1 1
+51 0 1 0 0 1 1
+52 1 1 0 0 1 1
+53 0 0 1 0 1 1
+54 1 0 1 0 1 1
+55 0 1 1 0 1 1
+56 1 1 1 0 1 1
+57 0 0 0 1 1 1
+58 1 0 0 1 1 1
+59 0 1 0 1 1 1
+60 1 1 0 1 1 1
+61 0 0 1 1 1 1
+62 1 0 1 1 1 1
+63 0 1 1 1 1 1
+64 1 1 1 1 1 1
+class=design, type= full factorial </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">yates</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">64</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     A      B     AB      C     AC     BC    ABC      D     AD     BD    ABD 
+     0      0      0      0      0      0      0      0      0      0      0 
+    CD    ACD    BCD   ABCD      E     AE     BE    ABE     CE    ACE    BCE 
+     0      0      0      0      0      0      0      0      0      0      0 
+  ABCE     DE    ADE    BDE   ABDE    CDE   ACDE   BCDE  ABCDE      F     AF 
+     0      0      0      0      0      0      0      0      0      0      0 
+    BF    ABF     CF    ACF    BCF   ABCF     DF    ADF    BDF   ABDF    CDF 
+     0      0      0      0      0      0      0      0      0      0      0 
+  ACDF   BCDF  ABCDF     EF    AEF    BEF   ABEF    CEF   ACEF   BCEF  ABCEF 
+     0      0      0      0      0      0      0      0      0      0      0 
+   DEF   ADEF   BDEF  ABDEF   CDEF  ACDEF  BCDEF ABCDEF 
+     0      0      0      0      0      0      0      0 
+attr(,"mean")
+  
+0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>Def.contrast3 <span class="ot">&lt;-</span>   <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dv">2</span>,<span class="dv">6</span>, <span class="at">byrow=</span><span class="cn">TRUE</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">conf.design</span>(<span class="at">G=</span>Def.contrast3 , <span class="at">p=</span><span class="dv">2</span>, <span class="at">block.name =</span> <span class="st">"블럭"</span>, <span class="at">treatment.names=</span><span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>, <span class="st">"F"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   블럭 A B C D E F
+1    00 0 0 0 0 0 0
+2    00 1 1 0 0 0 0
+3    00 0 0 1 1 0 0
+4    00 1 1 1 1 0 0
+5    00 1 0 1 0 1 0
+6    00 0 1 1 0 1 0
+7    00 1 0 0 1 1 0
+8    00 0 1 0 1 1 0
+9    00 1 0 1 0 0 1
+10   00 0 1 1 0 0 1
+11   00 1 0 0 1 0 1
+12   00 0 1 0 1 0 1
+13   00 0 0 0 0 1 1
+14   00 1 1 0 0 1 1
+15   00 0 0 1 1 1 1
+16   00 1 1 1 1 1 1
+17   01 1 0 1 0 0 0
+18   01 0 1 1 0 0 0
+19   01 1 0 0 1 0 0
+20   01 0 1 0 1 0 0
+21   01 0 0 0 0 1 0
+22   01 1 1 0 0 1 0
+23   01 0 0 1 1 1 0
+24   01 1 1 1 1 1 0
+25   01 0 0 0 0 0 1
+26   01 1 1 0 0 0 1
+27   01 0 0 1 1 0 1
+28   01 1 1 1 1 0 1
+29   01 1 0 1 0 1 1
+30   01 0 1 1 0 1 1
+31   01 1 0 0 1 1 1
+32   01 0 1 0 1 1 1
+33   10 0 0 1 0 0 0
+34   10 1 1 1 0 0 0
+35   10 0 0 0 1 0 0
+36   10 1 1 0 1 0 0
+37   10 1 0 0 0 1 0
+38   10 0 1 0 0 1 0
+39   10 1 0 1 1 1 0
+40   10 0 1 1 1 1 0
+41   10 1 0 0 0 0 1
+42   10 0 1 0 0 0 1
+43   10 1 0 1 1 0 1
+44   10 0 1 1 1 0 1
+45   10 0 0 1 0 1 1
+46   10 1 1 1 0 1 1
+47   10 0 0 0 1 1 1
+48   10 1 1 0 1 1 1
+49   11 1 0 0 0 0 0
+50   11 0 1 0 0 0 0
+51   11 1 0 1 1 0 0
+52   11 0 1 1 1 0 0
+53   11 0 0 1 0 1 0
+54   11 1 1 1 0 1 0
+55   11 0 0 0 1 1 0
+56   11 1 1 0 1 1 0
+57   11 0 0 1 0 0 1
+58   11 1 1 1 0 0 1
+59   11 0 0 0 1 0 1
+60   11 1 1 0 1 0 1
+61   11 1 0 0 0 1 1
+62   11 0 1 0 0 1 1
+63   11 1 0 1 1 1 1
+64   11 0 1 1 1 1 1</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../qmd/twolevels.html" class="pagination-link" aria-label="2수준 요인배치법">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">2수준 요인배치법</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
