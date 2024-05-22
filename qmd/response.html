@@ -1,0 +1,2806 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>실험계획법 2024 강의 노트 - 7&nbsp; 반응표면 분석</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../references.html" rel="next">
+<link href="../qmd/twolevelscomf.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/response.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">반응표면 분석</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">실험계획법 2024 강의 노트</a> 
+        <div class="sidebar-tools-main">
+    <a href="../실험계획법-2024-강의-노트.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">서론</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/oneway.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">일원배치법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/twoway.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">이원배치법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/block.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">블록설계, 라틴정방설계와 분할법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/contrast.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">대비</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/twolevels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">2수준 요인배치법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/twolevelscomf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">2수준 요인배치법 - 교락법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/response.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">반응표면 분석</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/visual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title"><code>R</code>을 이용한 자료의 시각화 비교</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/linear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">일원배치 모형과 최소제곱법</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/raneff.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">혼합 모형</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/comfound.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">교락</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#sec-response-intro" id="toc-sec-response-intro" class="nav-link active" data-scroll-target="#sec-response-intro"><span class="header-section-number">7.1</span> 반응표면 분석 개요</a>
+  <ul class="collapse">
+  <li><a href="#실험계획의-절차" id="toc-실험계획의-절차" class="nav-link" data-scroll-target="#실험계획의-절차"><span class="header-section-number">7.1.1</span> 실험계획의 절차</a></li>
+  <li><a href="#반응표면분석의-목적" id="toc-반응표면분석의-목적" class="nav-link" data-scroll-target="#반응표면분석의-목적"><span class="header-section-number">7.1.2</span> 반응표면분석의 목적</a></li>
+  <li><a href="#반응표면분석의-절차" id="toc-반응표면분석의-절차" class="nav-link" data-scroll-target="#반응표면분석의-절차"><span class="header-section-number">7.1.3</span> 반응표면분석의 절차</a></li>
+  </ul></li>
+  <li><a href="#steepdescent" id="toc-steepdescent" class="nav-link" data-scroll-target="#steepdescent"><span class="header-section-number">7.2</span> 최대경사법</a>
+  <ul class="collapse">
+  <li><a href="#개요" id="toc-개요" class="nav-link" data-scroll-target="#개요"><span class="header-section-number">7.2.1</span> 개요</a></li>
+  <li><a href="#절-자료와-변환" id="toc-절-자료와-변환" class="nav-link" data-scroll-target="#절-자료와-변환"><span class="header-section-number">7.2.2</span> 9.2절 자료와 변환</a></li>
+  <li><a href="#선형회귀식" id="toc-선형회귀식" class="nav-link" data-scroll-target="#선형회귀식"><span class="header-section-number">7.2.3</span> 선형회귀식</a></li>
+  <li><a href="#최대경사법" id="toc-최대경사법" class="nav-link" data-scroll-target="#최대경사법"><span class="header-section-number">7.2.4</span> 최대경사법</a></li>
+  <li><a href="#패키지-rsm" id="toc-패키지-rsm" class="nav-link" data-scroll-target="#패키지-rsm"><span class="header-section-number">7.2.5</span> 패키지 <code>rsm</code></a></li>
+  <li><a href="#변량이-3개-이상인-경우" id="toc-변량이-3개-이상인-경우" class="nav-link" data-scroll-target="#변량이-3개-이상인-경우"><span class="header-section-number">7.2.6</span> 변량이 3개 이상인 경우</a></li>
+  </ul></li>
+  <li><a href="#secondorder" id="toc-secondorder" class="nav-link" data-scroll-target="#secondorder"><span class="header-section-number">7.3</span> 2차 반응표면</a>
+  <ul class="collapse">
+  <li><a href="#개요-1" id="toc-개요-1" class="nav-link" data-scroll-target="#개요-1"><span class="header-section-number">7.3.1</span> 개요</a></li>
+  <li><a href="#차-다항-모형" id="toc-차-다항-모형" class="nav-link" data-scroll-target="#차-다항-모형"><span class="header-section-number">7.3.2</span> 2차 다항 모형</a></li>
+  <li><a href="#이차-반응표면의-모양" id="toc-이차-반응표면의-모양" class="nav-link" data-scroll-target="#이차-반응표면의-모양"><span class="header-section-number">7.3.3</span> 이차 반응표면의 모양</a></li>
+  <li><a href="#최적점과-정상점" id="toc-최적점과-정상점" class="nav-link" data-scroll-target="#최적점과-정상점"><span class="header-section-number">7.3.4</span> 최적점과 정상점</a></li>
+  <li><a href="#차-다항식의-표현" id="toc-차-다항식의-표현" class="nav-link" data-scroll-target="#차-다항식의-표현"><span class="header-section-number">7.3.5</span> 2차 다항식의 표현</a></li>
+  </ul></li>
+  <li><a href="#canonocal" id="toc-canonocal" class="nav-link" data-scroll-target="#canonocal"><span class="header-section-number">7.4</span> 2차모형의 정준분석</a>
+  <ul class="collapse">
+  <li><a href="#개요-2" id="toc-개요-2" class="nav-link" data-scroll-target="#개요-2"><span class="header-section-number">7.4.1</span> 개요</a></li>
+  <li><a href="#이차형식" id="toc-이차형식" class="nav-link" data-scroll-target="#이차형식"><span class="header-section-number">7.4.2</span> 이차형식</a></li>
+  </ul></li>
+  <li><a href="#차-다항식의-정준형식" id="toc-차-다항식의-정준형식" class="nav-link" data-scroll-target="#차-다항식의-정준형식"><span class="header-section-number">7.5</span> 2차 다항식의 정준형식</a>
+  <ul class="collapse">
+  <li><a href="#변환된-변수" id="toc-변환된-변수" class="nav-link" data-scroll-target="#변환된-변수"><span class="header-section-number">7.5.1</span> 변환된 변수</a></li>
+  <li><a href="#예제-2개의-독립-변수" id="toc-예제-2개의-독립-변수" class="nav-link" data-scroll-target="#예제-2개의-독립-변수"><span class="header-section-number">7.5.2</span> 예제: 2개의 독립 변수</a></li>
+  </ul></li>
+  <li><a href="#expriment" id="toc-expriment" class="nav-link" data-scroll-target="#expriment"><span class="header-section-number">7.6</span> 최적점 탐색을 위한 실험계획</a>
+  <ul class="collapse">
+  <li><a href="#개요-3" id="toc-개요-3" class="nav-link" data-scroll-target="#개요-3"><span class="header-section-number">7.6.1</span> 개요</a></li>
+  <li><a href="#중심합성설계" id="toc-중심합성설계" class="nav-link" data-scroll-target="#중심합성설계"><span class="header-section-number">7.6.2</span> 중심합성설계</a></li>
+  <li><a href="#회전가능-중심합성설계" id="toc-회전가능-중심합성설계" class="nav-link" data-scroll-target="#회전가능-중심합성설계"><span class="header-section-number">7.6.3</span> 회전가능 중심합성설계</a></li>
+  <li><a href="#box-benken-설계" id="toc-box-benken-설계" class="nav-link" data-scroll-target="#box-benken-설계"><span class="header-section-number">7.6.4</span> Box-Benken 설계</a></li>
+  <li><a href="#계획법에-따른-실험점의-개수" id="toc-계획법에-따른-실험점의-개수" class="nav-link" data-scroll-target="#계획법에-따른-실험점의-개수"><span class="header-section-number">7.6.5</span> 계획법에 따른 실험점의 개수</a></li>
+  <li><a href="#r-을-이용한-실험계획" id="toc-r-을-이용한-실험계획" class="nav-link" data-scroll-target="#r-을-이용한-실험계획"><span class="header-section-number">7.6.6</span> R 을 이용한 실험계획</a></li>
+  </ul></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">7.7</span> 이차반응표면분석 사례</a>
+  <ul class="collapse">
+  <li><a href="#개요-4" id="toc-개요-4" class="nav-link" data-scroll-target="#개요-4"><span class="header-section-number">7.7.1</span> 개요</a></li>
+  <li><a href="#실험의-목적과-개요" id="toc-실험의-목적과-개요" class="nav-link" data-scroll-target="#실험의-목적과-개요"><span class="header-section-number">7.7.2</span> 실험의 목적과 개요</a></li>
+  <li><a href="#중심합성설계의-실험점-생성" id="toc-중심합성설계의-실험점-생성" class="nav-link" data-scroll-target="#중심합성설계의-실험점-생성"><span class="header-section-number">7.7.3</span> 중심합성설계의 실험점 생성</a></li>
+  <li><a href="#실험자료-읽어오기" id="toc-실험자료-읽어오기" class="nav-link" data-scroll-target="#실험자료-읽어오기"><span class="header-section-number">7.7.4</span> 실험자료 읽어오기</a></li>
+  <li><a href="#차-다항식-모형의-적합" id="toc-차-다항식-모형의-적합" class="nav-link" data-scroll-target="#차-다항식-모형의-적합"><span class="header-section-number">7.7.5</span> 2차 다항식 모형의 적합</a></li>
+  <li><a href="#변수-선택" id="toc-변수-선택" class="nav-link" data-scroll-target="#변수-선택"><span class="header-section-number">7.7.6</span> 변수 선택</a></li>
+  <li><a href="#최종모형-선택" id="toc-최종모형-선택" class="nav-link" data-scroll-target="#최종모형-선택"><span class="header-section-number">7.7.7</span> 최종모형 선택</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-response" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">반응표면 분석</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-response-intro" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sec-response-intro"><span class="header-section-number">7.1</span> 반응표면 분석 개요</h2>
+<section id="실험계획의-절차" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="실험계획의-절차"><span class="header-section-number">7.1.1</span> 실험계획의 절차</h3>
+<ul>
+<li><p>요인배치법의 실험 자료의 분석은 실험조건인 처리에서의 모평균 비교.</p></li>
+<li><p>분산분석을 통하여 유의한 요인효과들을 선별</p></li>
+<li><p>각 처리에서 예측치 구하기.</p></li>
+<li><p>실험에서 고려된 처리조건들 중에서 <strong>모평균의 값을 최적으로 하는 실험조건 찾기</strong> 및 재현성 검토</p></li>
+</ul>
+</section>
+<section id="반응표면분석의-목적" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="반응표면분석의-목적"><span class="header-section-number">7.1.2</span> 반응표면분석의 목적</h3>
+<p>반응표면분석(response surface method)에서는 관심영역에 속한 임의의 계량인자(quantatitative factor)들의 값에서 수율(반응변수)의 예측이 실험 목적이다.</p>
+<p>일단 반응표변분석에서는 두 개의 계량인자 <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> 와 반응변수 <span class="math inline">\(y\)</span> 의 모평균 <span class="math inline">\(\eta =E(y)\)</span>이 다음과 같은 함수관계를 가진다고 가정한다.</p>
+<p><span class="math display">\[ \eta = f(x_1, x_2) \]</span></p>
+<p>위의 관계에서 함수 <span class="math inline">\(f(x_1, x_2)\)</span>는 모르는 함수이다.</p>
+<p>반응표면분석의 목적은 반응변수의 모평균 <span class="math inline">\(\eta\)</span>의 최대값 <span class="math inline">\(\eta^*\)</span> 가 나타나는 계량인자의 수준 <span class="math inline">\(x_1^*\)</span> 와 <span class="math inline">\(x_2^*\)</span> 를 주어진 영역에서 찾는 것이다.</p>
+<p><span class="math display">\[\eta^* = \max_{x_1, x_2} f(x_1, x_2) =f(x_1^*, x_2^*) \]</span></p>
+<p>함수 <span class="math inline">\(f(x_1, x_2)\)</span>는 복잡한 형태를 가질 수 있지만 반응표변분석에서는 최대값의 주위에서 함수 <span class="math inline">\(f(x_1, x_2)\)</span>를 <strong>이차함수로 근사</strong>하여 최적점을 찾는다.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/response-01.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figcaption>이차함수 근사 <span class="citation" data-cites="montgomery2017design">(<a href="../references.html#ref-montgomery2017design" role="doc-biblioref">Montgomery 2017</a>)</span></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="반응표면분석의-절차" class="level3" data-number="7.1.3">
+<h3 data-number="7.1.3" class="anchored" data-anchor-id="반응표면분석의-절차"><span class="header-section-number">7.1.3</span> 반응표면분석의 절차</h3>
+<ul>
+<li><p>반응값을 나타내는 변수를 반응변수로, 계량인자를 설명변수로 간주하여 실험 자료를 이용하여 회귀분석을 실시.</p>
+<ul>
+<li>관심영역의 최적조건 근처에서 곡선효과 존재</li>
+<li>곡선효과를 반영하는 가장 간결한 모형인 이차 다항모형 가정</li>
+<li>적절한 모형 찾기.</li>
+</ul></li>
+<li><p>예측치를 최적으로 하는 최적조건을 관심영역에서 찾고, 최적조건에서의 재현성 검토하기.</p></li>
+<li><p>반응표면분석의 절차는 다음과 같이 크게 3단계로 구성된다.</p>
+<ol type="1">
+<li><p>2수준 일부실시법에 의해서 핵심인자들을 선별하기.</p></li>
+<li><p>선별된 핵심인자들에 대한 축차적인 실험 설계(중심점을 갖는 2수준 요인 배치법)와 분석에 의해서 최적조건 근처의 설명변수들의 영역 으로 이동하기. (최대경사법 적용)</p></li>
+</ol></li>
+</ul>
+<p><span class="math display">\[ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_p x_p + e \]</span></p>
+<ol start="3" type="1">
+<li>최적조건 근처에서 2차 모형을 가정, ccd(중심합성설계)에 의한 실험설계 및 실험자료의 회귀분석을 통한 적절한 모형 찾기 및 최적조 건 찾기와 재현성 검토.</li>
+</ol>
+<p><span class="math display">\[  y = \beta_0 + \sum_{i=1}^k \beta_i x_i + \sum_{i=1}^k \beta_{ii} x^2_i + \underset{i&lt;j}{\sum \sum} \beta_{ij} x_i x_j + e \]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/response-02.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<figcaption>반응표면분석의 순차적인 특성 <span class="citation" data-cites="montgomery2017design">(<a href="../references.html#ref-montgomery2017design" role="doc-biblioref">Montgomery 2017</a>)</span></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="steepdescent" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="steepdescent"><span class="header-section-number">7.2</span> 최대경사법</h2>
+<section id="개요" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="개요"><span class="header-section-number">7.2.1</span> 개요</h3>
+<ul>
+<li><p>초기 실험에서는 실험에서 고려하는 계량인자들의 관심 영역이 반응변수의 최적값을 가지는 영역에서 멀리 떨어져 있는 경우가 흔하다.</p></li>
+<li><p>따라서 초기 실험에서는 최적의 영역으로 이동하기 위한 계량인자들의 방향을 알아내는 것이 중요하다.</p></li>
+<li><p><strong>간단한 초기 실험의 결과를 이용하여 계량인자들의 값을 최적점 근처로 순차적으로 이동시킬 수 있는 쉽고 경제적인 절차가 필요하다.</strong></p></li>
+<li><p>주어진 선형모형에서 계량인자들의 값을 이동시킬 수 있는 간단한 방법들 중의 하나는 <strong>최대경사법(method of steepest ascent)</strong> 이다.</p></li>
+</ul>
+</section>
+<section id="절-자료와-변환" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="절-자료와-변환"><span class="header-section-number">7.2.2</span> 9.2절 자료와 변환</h3>
+<p>교과서 9.2 절에 나오는 실험 자료를 고려해 보자. 화학공장에서 공정의 수율(<span class="math inline">\(y\)</span>)을 최적화하는 공정조건을 찾는 실험자가 관심이 있는 시간(<span class="math inline">\(x_1\)</span>, <code>time</code>)의 범위는 30-40분 이고 온도(<span class="math inline">\(x_2\)</span>, <code>temp</code>)의 범위는 160-180도 라고 하자. 이제 주어진 시간과 온도에 따라서 실험을 7번 수행하였으며 결과 자료는 다음과 같다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">40</span>,<span class="dv">40</span>,<span class="dv">35</span>,<span class="dv">35</span>,<span class="dv">35</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">160</span>, <span class="dv">180</span>, <span class="dv">160</span>, <span class="dv">180</span>, <span class="dv">170</span>, <span class="dv">170</span>, <span class="dv">170</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">72.5</span>, <span class="fl">74.2</span>, <span class="fl">76.3</span>, <span class="fl">77.0</span>, <span class="fl">74.8</span>, <span class="fl">75.6</span>, <span class="fl">75.2</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">time=</span>time, <span class="at">temp=</span>temp, <span class="at">y=</span>y)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df1 </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  time temp    y
+1   30  160 72.5
+2   30  180 74.2
+3   40  160 76.3
+4   40  180 77.0
+5   35  170 74.8
+6   35  170 75.6
+7   35  170 75.2</code></pre>
+</div>
+</div>
+<p>반응표면분석에서는 고려하는 변량의 범위를 <span class="math inline">\((-1,1)\)</span> 로 변환하는 작업을 먼저 수행한다. 위의 자료에서 시간과 온도의 범위를 <span class="math inline">\((-1,1)\)</span>로 변환하기 위하여 다음과 같은 식을 적용한다.</p>
+<p><span class="math display">\[ x_1 = \frac{\text{time} - 35}{5}, \quad x_2 = \frac{\text{temp} - 170}{10} \]</span></p>
+<p>위와 같은 변환은 패키지 <code>rsm</code> 에 있는 함수 <code>coded.data</code>를 사용해서 쉽게 수행할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df11 <span class="ot">&lt;-</span> <span class="fu">coded.data</span>(df1, x1 <span class="sc">~</span> (time <span class="sc">-</span> <span class="dv">35</span>)<span class="sc">/</span><span class="dv">5</span>, x2 <span class="sc">~</span> (temp <span class="sc">-</span> <span class="dv">170</span>)<span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df11)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "coded.data" "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df11 </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  time temp    y
+1   30  160 72.5
+2   30  180 74.2
+3   40  160 76.3
+4   40  180 77.0
+5   35  170 74.8
+6   35  170 75.6
+7   35  170 75.2
+
+Data are stored in coded form using these coding formulas ...
+x1 ~ (time - 35)/5
+x2 ~ (temp - 170)/10</code></pre>
+</div>
+</div>
+<p>위에서 변환된 자료 <code>df11</code> 는 변환된 이름 <code>x1</code> 과 <code>x2</code> 로 자료가 저장되어 있지만 원래 변수의 이름 <code>time</code> 과 <code>temp</code> 도 특정한 함수에서 사용이 가능한다.</p>
+<p>9.2 장 자료에서 7번 실험을 수행하는 경우 고려한 실험점(experiment point)은 정사각형의 각 꼭지점에서 하나의 관측값을 얻고 중심점 <span class="math inline">\((0,0)\)</span> 에서 3개의 실험값을 얻었다.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df11 <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(time, temp)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">colour =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">2</span>)  <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df11 <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(x1, x2)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">colour =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">2</span>)  <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:65.0%"></p>
+<figcaption>실험점의 배치</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:65.0%"></p>
+<figcaption>실험점의 배치</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>변환된 자료 <code>x1</code> 과 <code>x2</code> 의 값으로 부터 원래 자료의 값을 얻는 방법은 함수 <code>code2val()</code>을 사용한다. 예를 들어 <code>x1 = 0.5</code> , <code>x2 = 0.0</code> 으로 코딩된 원래 자료 <code>time</code> 과 <code>temp</code> 의 값은 다음과 같이 얻을 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">code2val</span>(<span class="fu">data.frame</span>(<span class="at">x1 =</span> <span class="fu">c</span>(<span class="fl">0.5</span>), <span class="at">x2 =</span> <span class="fu">c</span>(<span class="fl">0.0</span>)), <span class="fu">codings</span>(df11))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  time temp
+1 37.5  170</code></pre>
+</div>
+</div>
+</section>
+<section id="선형회귀식" class="level3" data-number="7.2.3">
+<h3 data-number="7.2.3" class="anchored" data-anchor-id="선형회귀식"><span class="header-section-number">7.2.3</span> 선형회귀식</h3>
+<p>다음은 반응변수 <span class="math inline">\(y\)</span> 를 에측하는 모형으로 두 개의 변량인자 <span class="math inline">\(x_1\)</span>과 <span class="math inline">\(x_2\)</span> 를 가지는 다음과 같은 일차선형 모형을 고려하자.</p>
+<p><span id="eq-resp-linearmodel"><span class="math display">\[
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 +  e
+\tag{7.1}\]</span></span></p>
+<p>주어진 자료를 이용하여 위의 일차선형 모형의 회귀계수들을 추정하면 반응변수의 평균 <span class="math inline">\(E(y|x)\)</span> 에 대한 다음과 같은 예측식을 얻을 수 있다.</p>
+<p><span id="eq-resp-linearpred"><span class="math display">\[
+\widehat {E(y|x)} = \hat y = \hat \beta_0 + \hat \beta_1 x_1 + \hat \beta_2 x_2
+\tag{7.2}\]</span></span></p>
+<p>변환된 <span class="math inline">\(x_1\)</span> 과 <span class="math inline">\(x_2\)</span> 가 저장된 데이터 프레임 <code>df11</code> 에 있는 자료를 이용하여 일차선형 모형을 적합한 결과는 다음과 같다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>lmdf11 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data=</span>df11)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lmdf11)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm.default(formula = y ~ x1 + x2, data = df11)
+
+Residuals:
+      1       2       3       4       5       6       7 
+-0.3357  0.1643  0.1643 -0.3357 -0.2857  0.5143  0.1143 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  75.0857     0.1510 497.201 9.82e-11 ***
+x1            1.6500     0.1998   8.259  0.00117 ** 
+x2            0.6000     0.1998   3.003  0.03981 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3996 on 4 degrees of freedom
+Multiple R-squared:  0.9508,    Adjusted R-squared:  0.9261 
+F-statistic: 38.62 on 2 and 4 DF,  p-value: 0.002425</code></pre>
+</div>
+</div>
+<p>예측식 <a href="#eq-resp-linearpred" class="quarto-xref">식&nbsp;<span>7.2</span></a> 를 3차원 공간에 표시하면 다음과 같은 평면으로 나타나게 된다. 패키지 <code>scatterplot3d</code> 의 함수 <code>scatterplot3d()</code>를 이용하여 3차원 산포도와 추정된 선형식을 그릴 수 있다.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>s3d <span class="ot">&lt;-</span> <span class="fu">scatterplot3d</span>(<span class="fu">as.data.frame</span>(df11), <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">angle=</span><span class="dv">55</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">xlab=</span><span class="st">"x1"</span>, <span class="at">ylab=</span><span class="st">"x2"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>s3d<span class="sc">$</span><span class="fu">plane3d</span>(lmdf11)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/plot4-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<figcaption>일차 선형식</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>위에서 적합된 예측식 <a href="#eq-resp-linearpred" class="quarto-xref">식&nbsp;<span>7.2</span></a> 을 함수 <code>contour.lm()</code>을 이용하여 등고선 그림으로 나타내면 다음 그림과 같다.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour.lm</span>(lmdf11, x2<span class="sc">~</span>x1, <span class="at">labcex=</span><span class="fl">1.4</span> )</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="dv">0</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">cex=</span><span class="fl">1.3</span>, <span class="at">pch=</span><span class="dv">19</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/plot5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<figcaption>일차 선형식</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="최대경사법" class="level3" data-number="7.2.4">
+<h3 data-number="7.2.4" class="anchored" data-anchor-id="최대경사법"><span class="header-section-number">7.2.4</span> 최대경사법</h3>
+<p>이제 반응변수의 변화에 대한 선형 예측식이 <a href="#eq-resp-linearpred" class="quarto-xref">식&nbsp;<span>7.2</span></a> 로 주어진 경우 반응변수가 가장 크게 증가하는 방향을 2차원 공간 <span class="math inline">\((x_1, x_2)\)</span>에서 찾아보자. 이렇게 공간에서 다변량 함수의 변화가 가장 크게 변하는 방향을 찾는 방법을 최대경사법(method of steepest ascent)이라고 부르며 이는 기울기 하강법(gradient descent method)의 반대 방법이다.</p>
+<p>이변량 함수 <span class="math inline">\(f(x_1, x_2)\)</span> 에 대한 기울기 벡터(gradient) <span class="math inline">\(\nabla f\)</span>는 다음과 같이 각 축에 대한 부분 미분(partial derivative)로 이루어진 벡터이다.</p>
+<p><span class="math display">\[
+\nabla f  =  \nabla f (x_1, x_2)  =
+\begin{bmatrix}
+\pardifftwo{f(x_1, x_2)}{x_1} \\
+\pardifftwo{f(x_1, x_2)}{x_2}
+\end{bmatrix}
+\]</span></p>
+<p>기울기 벡터 <span class="math inline">\(\nabla f\)</span> 에 대한 기하학적 의미는 다음과 같은 그림으로 나타낼 수 있으며 <span class="math inline">\(\nabla f\)</span>는 주어진 점에서 함수 <span class="math inline">\(f\)</span>가 가장 빨리 증가하는 방향을 의미한다. 따라서 기울기 벡터 <span class="math inline">\(\nabla f\)</span> 를 최대 경사(steepest ascent) 벡터라고 부른다.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/gradient2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<figcaption>기울기 벡터의 기하학적 의미</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>선형 예측식 <a href="#eq-resp-linearpred" class="quarto-xref">식&nbsp;<span>7.2</span></a> 이 주어진 경우 2차원 공간 <span class="math inline">\((x_1, x_2)\)</span>에서 반응변수가 가장 크게 증가하는 방향, 즉 최대경사 방향 <span class="math inline">\(\nabla f\)</span> 은 다음과 같이 주어진다.</p>
+<p><span id="eq-steepacend"><span class="math display">\[
+\nabla f =
+\begin{bmatrix}
+\pardifftwo{f(x_1, x_2)}{x_1} \\
+\pardifftwo{f(x_1, x_2)}{x_2} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\pardifftwo{(\hat \beta_0 + \hat \beta_1 x_1 + \hat \beta_2 x_2)}{x_1} \\
+\pardifftwo{(\hat \beta_0 + \hat \beta_1 x_1 + \hat \beta_2 x_2)}{x_2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\hat \beta_1  \\
+\hat \beta_2
+\end{bmatrix}
+\tag{7.3}\]</span></span></p>
+<p>따라서 9.2절의 실험자료에 대하여 적합한 모형식을 이용하면 최대경사 벡터 <span class="math inline">\(\nabla f\)</span> 는 다음과 같이 주어진다.</p>
+<p><span id="eq-steepacenddata"><span class="math display">\[
+\nabla f =
+\begin{bmatrix}
+1.65  \\
+0.6
+\end{bmatrix}
+\tag{7.4}\]</span></span></p>
+<p>위의 최대경사 벡터 <span class="math inline">\(\nabla f\)</span>은 적합한 모형식에서 <span class="math inline">\(x_1\)</span>과 <span class="math inline">\(x_2\)</span> 가 1 단위 만큼 증가할 때 반응변수의 변화를 나타내는 회귀계수 <span class="math inline">\(\hat \beta_1\)</span>, <span class="math inline">\(\hat \beta_2\)</span>의 방향을 의미한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(lmdf11)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)          x1          x2 
+   75.08571     1.65000     0.60000 </code></pre>
+</div>
+</div>
+<p>식 <a href="#eq-steepacenddata" class="quarto-xref">식&nbsp;<span>7.4</span></a> 에 나타난 최대경사 벡터 <span class="math inline">\(\nabla f\)</span>을 등고선 그림에 나타내면 다음과 같다. 아래의 등고선에서 최대경사 방향은 기울기가 <span class="math inline">\(0.6/1.65=0.364\)</span> 를 가진 원점을 지나는 직선 방향이다.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour.lm</span>(lmdf11, x2<span class="sc">~</span>x1, <span class="at">xlabs=</span><span class="fu">c</span>( <span class="st">"x1"</span>, <span class="st">"x2"</span>), <span class="at">bounds =</span> <span class="fu">list</span>(<span class="at">x1 =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="at">x2 =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>)))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="dv">0</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">cex=</span><span class="fl">1.3</span>, <span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( <span class="fu">coef</span>(lmdf11)[<span class="st">"x2"</span>] <span class="sc">/</span> <span class="fu">coef</span>(lmdf11)[<span class="st">"x1"</span>])</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>slope</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3636364</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">y=</span><span class="fu">c</span>(<span class="dv">0</span>,slope ), <span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/plot6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<figcaption>일차 선형식(빨간선이 최대경사 방향)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>최대경사 벡터를 구하는 경우 벡터의 길이가 1 이 되도록 하는 경우도 있다. 이러한 경우의 최대경사 방향의 벡터는 다음과 같다.</p>
+<p><span id="eq-steepacenddata2"><span class="math display">\[
+\begin{bmatrix}
+1.65 / \sqrt{1.65^2 + 0.6^2}  \\
+0.60 / \sqrt{1.65^2 + 0.6^2}  \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0.9398 \\
+0.3417
+\end{bmatrix}
+\tag{7.5}\]</span></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>radi <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">c</span>(<span class="fu">coef</span>(lmdf11)[<span class="st">"x1"</span>], <span class="fu">coef</span>(lmdf11)[<span class="st">"x2"</span>])<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">coef</span>(lmdf11)[<span class="st">"x1"</span>], <span class="fu">coef</span>(lmdf11)[<span class="st">"x2"</span>])<span class="sc">/</span>radi</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       x1        x2 
+0.9397934 0.3417431 </code></pre>
+</div>
+</div>
+</section>
+<section id="패키지-rsm" class="level3" data-number="7.2.5">
+<h3 data-number="7.2.5" class="anchored" data-anchor-id="패키지-rsm"><span class="header-section-number">7.2.5</span> 패키지 <code>rsm</code></h3>
+<p>위에서 언급한 분석을 포함한 다양한 반응표면 분석은 패키지 <code>rsm</code> 에 있는 여러 가지 함수를 이용하여 쉽게 수행할 수 있다.</p>
+<section id="일차-선형식의-적합" class="level4" data-number="7.2.5.1">
+<h4 data-number="7.2.5.1" class="anchored" data-anchor-id="일차-선형식의-적합"><span class="header-section-number">7.2.5.1</span> 일차 선형식의 적합</h4>
+<p>먼저 일차 선형식 <a href="#eq-resp-linearmodel" class="quarto-xref">식&nbsp;<span>7.1</span></a> 을 적합하는 경우 함수 <code>rsm()</code> 을 다음과 같이 사용할 수 있다. 모형식에서 <code>FO(x1, x2)</code> 는 2개의 변수 <code>x1</code> 과 <code>x2</code> 로 구성된 일차선형식(<code>FO</code>; First Order function)를 사용하는 것을 의미한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>rsmdf1 <span class="ot">&lt;-</span> <span class="fu">rsm</span>(y <span class="sc">~</span> <span class="fu">FO</span>(x1, x2), <span class="at">data =</span> df11)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rsmdf1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+rsm(formula = y ~ FO(x1, x2), data = df11)
+
+            Estimate Std. Error  t value  Pr(&gt;|t|)    
+(Intercept) 75.08571    0.15102 497.2005 9.818e-11 ***
+x1           1.65000    0.19978   8.2592  0.001172 ** 
+x2           0.60000    0.19978   3.0034  0.039810 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Multiple R-squared:  0.9508,    Adjusted R-squared:  0.9261 
+F-statistic: 38.62 on 2 and 4 DF,  p-value: 0.002425
+
+Analysis of Variance Table
+
+Response: y
+            Df  Sum Sq Mean Sq F value   Pr(&gt;F)
+FO(x1, x2)   2 12.3300  6.1650 38.6174 0.002425
+Residuals    4  0.6386  0.1596                 
+Lack of fit  2  0.3186  0.1593  0.9955 0.501119
+Pure error   2  0.3200  0.1600                 
+
+Direction of steepest ascent (at radius 1):
+       x1        x2 
+0.9397934 0.3417431 
+
+Corresponding increment in original units:
+    time     temp 
+4.698967 3.417431 </code></pre>
+</div>
+</div>
+<p>위의 함수 <code>rsm()</code>에서 얻은 결과는 선형모형을 적합하는 함수 <code>lm()</code> 의 결과에 추가적은 분석 결과가 포함된다. 추가 분석에 대한 설명은 다음과 같다.</p>
+<ul>
+<li><p>Analysis of Variance Table 는 일반적인 분산분석표에 2차 반응표면 함수의 각 부분에 대한 유의성 F-검정이 주어진다. 반복이 있는 경우 적합성결여 검정(lack of fit test)이 주어지며 해당하는 p-값이 유의수준 <span class="math inline">\(\alpha\)</span> 보다 작으면 모형의 적합성에 문제가 있다는 의미이다. 위의 결과에서는 분산분석에서 <code>Lack of fit</code> 에 대한 p-값이 0.5011 이므로 선형모형의 적합성에는 큰 문제가 없다.</p></li>
+<li><p>Direction of steepest ascent (at radius 1) 부분에서는 길이가 1 인 최대경사 벡터 <span class="math inline">\(\nabla f\)</span>를 구해준다.</p></li>
+<li><p>Corresponding increment in original units 부분에서는 최대경사 벡터를 원래 변환되기 전의 자료의 단위로 구해준다.</p></li>
+</ul>
+</section>
+<section id="등고선-그림" class="level4" data-number="7.2.5.2">
+<h4 data-number="7.2.5.2" class="anchored" data-anchor-id="등고선-그림"><span class="header-section-number">7.2.5.2</span> 등고선 그림</h4>
+<p>반응 표면의 등고선 그림은 함수 <code>rsm()</code> 의 적합 결과를 이용하여 <code>contour()</code> 함수를 사용하면 쉽게 그릴 수 있다.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(rsmdf1, <span class="sc">~</span> x1 <span class="sc">+</span> x2)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(rsmdf1, <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">image =</span> <span class="cn">TRUE</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/plot7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+<figcaption>rsm 결과를 이용한 등고선 그림</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/plot7-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+<figcaption>rsm 결과를 이용한 등고선 그림</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="최적-실험점-탐색" class="level4" data-number="7.2.5.3">
+<h4 data-number="7.2.5.3" class="anchored" data-anchor-id="최적-실험점-탐색"><span class="header-section-number">7.2.5.3</span> 최적 실험점 탐색</h4>
+<p>이제 실험 원점 <span class="math inline">\((0,0)\)</span> 에서 최대경사 벡터 <span class="math inline">\(\nabla f\)</span> 방향으로 여러 개의 실험점을 계산하려면 함수 <code>steepest()</code>를 사용한다. 아래의 함수에서 <code>dist=seq(0,5, by=1)</code> 는 최대경사 벡터 방향으로 길이가 1 만큼 증가하면서 길이가 5인 점까지 실험점을 구하라는 의미이다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>deltapoints <span class="ot">&lt;-</span> <span class="fu">steepest</span>(rsmdf1, <span class="at">dist=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>, <span class="at">by=</span><span class="dv">1</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Path of steepest ascent from ridge analysis:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>deltapoints</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  dist    x1    x2 |   time   temp |   yhat
+1    0 0.000 0.000 | 35.000 170.00 | 75.086
+2    1 0.940 0.342 | 39.700 173.42 | 76.842
+3    2 1.880 0.683 | 44.400 176.83 | 78.598
+4    3 2.819 1.025 | 49.095 180.25 | 80.352
+5    4 3.759 1.367 | 53.795 183.67 | 82.108
+6    5 4.699 1.709 | 58.495 187.09 | 83.864</code></pre>
+</div>
+</div>
+<p>위에서 구한 실험점들을 등고선 그림에 표시하면 다음과 같다.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(rsmdf1, <span class="sc">~</span> x1 <span class="sc">+</span> x2,  <span class="at">bounds =</span> <span class="fu">list</span>(<span class="at">x1 =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="at">x2 =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>)))</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(deltapoints<span class="sc">$</span>time, deltapoints<span class="sc">$</span>temp, <span class="at">cex=</span><span class="fl">1.2</span>, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">pch=</span><span class="dv">19</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/plot8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+<figcaption>최대경사 벡터 방향의 실험점</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>만약 아래 그림과 같이 최대경사 방향으로 4번의 실험을 수행하였다면 다음 실험의 중심점은 <span class="math inline">\((50, 180.9)\)</span>를 선택한다. 왜냐하면 더 경사면으로 올라간 실험점 <span class="math inline">\((55, 184.6)\)</span> 에서는 반응값이 감소하기 때문이다.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/response-05.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<figcaption>최대경사법을 이용한 실험점 찾기</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="변량이-3개-이상인-경우" class="level3" data-number="7.2.6">
+<h3 data-number="7.2.6" class="anchored" data-anchor-id="변량이-3개-이상인-경우"><span class="header-section-number">7.2.6</span> 변량이 3개 이상인 경우</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>heli</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   block    A    R    W   L ave logSD
+1      1 11.8 2.26 1.00 1.5 367    72
+2      1 13.0 2.26 1.00 1.5 369    72
+3      1 11.8 2.78 1.00 1.5 374    74
+4      1 13.0 2.78 1.00 1.5 370    79
+5      1 11.8 2.26 1.50 1.5 372    72
+6      1 13.0 2.26 1.50 1.5 355    81
+7      1 11.8 2.78 1.50 1.5 397    72
+8      1 13.0 2.78 1.50 1.5 377    99
+9      1 11.8 2.26 1.00 2.5 350    90
+10     1 13.0 2.26 1.00 2.5 373    86
+11     1 11.8 2.78 1.00 2.5 358    92
+12     1 13.0 2.78 1.00 2.5 363   112
+13     1 11.8 2.26 1.50 2.5 344    76
+14     1 13.0 2.26 1.50 2.5 355    69
+15     1 11.8 2.78 1.50 2.5 370    91
+16     1 13.0 2.78 1.50 2.5 362    71
+17     1 12.4 2.52 1.25 2.0 377    51
+18     1 12.4 2.52 1.25 2.0 375    74
+19     2 11.2 2.52 1.25 2.0 361   111
+20     2 13.6 2.52 1.25 2.0 364    93
+21     2 12.4 2.00 1.25 2.0 355   100
+22     2 12.4 3.04 1.25 2.0 373    80
+23     2 12.4 2.52 0.75 2.0 361    71
+24     2 12.4 2.52 1.75 2.0 360    98
+25     2 12.4 2.52 1.25 1.0 380    69
+26     2 12.4 2.52 1.25 3.0 360    74
+27     2 12.4 2.52 1.25 2.0 370    86
+28     2 12.4 2.52 1.25 2.0 368    74
+29     2 12.4 2.52 1.25 2.0 369    89
+30     2 12.4 2.52 1.25 2.0 366    76
+
+Data are stored in coded form using these coding formulas ...
+x1 ~ (A - 12.4)/0.6
+x2 ~ (R - 2.52)/0.26
+x3 ~ (W - 1.25)/0.25
+x4 ~ (L - 2)/0.5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>heli.rsm <span class="ot">&lt;-</span> <span class="fu">rsm</span>(ave <span class="sc">~</span>  <span class="fu">FO</span>(x1, x2, x3, x4), <span class="at">data =</span> heli)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(heli.rsm)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+rsm(formula = ave ~ FO(x1, x2, x3, x4), data = heli)
+
+              Estimate Std. Error  t value  Pr(&gt;|t|)    
+(Intercept) 366.500000   1.437359 254.9816 &lt; 2.2e-16 ***
+x1           -0.083333   1.607016  -0.0519 0.9590556    
+x2            5.083333   1.607016   3.1632 0.0040659 ** 
+x3            0.250000   1.607016   0.1556 0.8776230    
+x4           -6.083333   1.607016  -3.7855 0.0008577 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Multiple R-squared:  0.4935,    Adjusted R-squared:  0.4125 
+F-statistic: 6.091 on 4 and 25 DF,  p-value: 0.001453
+
+Analysis of Variance Table
+
+Response: ave
+                   Df  Sum Sq Mean Sq F value   Pr(&gt;F)
+FO(x1, x2, x3, x4)  4 1510.00  377.50  6.0907 0.001453
+Residuals          25 1549.50   61.98                 
+Lack of fit        20 1458.67   72.93  4.0147 0.064646
+Pure error          5   90.83   18.17                 
+
+Direction of steepest ascent (at radius 1):
+         x1          x2          x3          x4 
+-0.01050596  0.64086379  0.03151789 -0.76693536 
+
+Corresponding increment in original units:
+           A            R            W            L 
+-0.006303578  0.166624586  0.007879473 -0.383467680 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(heli.rsm, <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x4)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">steepest</span>(heli.rsm)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Path of steepest ascent from ridge analysis:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   dist     x1    x2    x3     x4 |       A       R       W      L |    yhat
+1   0.0  0.000 0.000 0.000  0.000 | 12.4000 2.52000 1.25000 2.0000 | 366.500
+2   0.5 -0.005 0.320 0.016 -0.383 | 12.3970 2.60320 1.25400 1.8085 | 370.461
+3   1.0 -0.011 0.641 0.032 -0.767 | 12.3934 2.68666 1.25800 1.6165 | 374.433
+4   1.5 -0.016 0.961 0.047 -1.150 | 12.3904 2.76986 1.26175 1.4250 | 378.394
+5   2.0 -0.021 1.282 0.063 -1.534 | 12.3874 2.85332 1.26575 1.2330 | 382.366
+6   2.5 -0.026 1.602 0.079 -1.917 | 12.3844 2.93652 1.26975 1.0415 | 386.327
+7   3.0 -0.032 1.923 0.095 -2.301 | 12.3808 3.01998 1.27375 0.8495 | 390.299
+8   3.5 -0.037 2.243 0.110 -2.684 | 12.3778 3.10318 1.27750 0.6580 | 394.260
+9   4.0 -0.042 2.563 0.126 -3.068 | 12.3748 3.18638 1.28150 0.4660 | 398.227
+10  4.5 -0.047 2.884 0.142 -3.451 | 12.3718 3.26984 1.28550 0.2745 | 402.193
+11  5.0 -0.053 3.204 0.158 -3.835 | 12.3682 3.35304 1.28950 0.0825 | 406.160</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="secondorder" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="secondorder"><span class="header-section-number">7.3</span> 2차 반응표면</h2>
+<section id="개요-1" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="개요-1"><span class="header-section-number">7.3.1</span> 개요</h3>
+<ul>
+<li><p>여러번의 간단한 실험을 순차적으로 수행하면서 1차모형과 최대경사법을 이용하여 최적점 근처로 실험점을 이동한다.</p></li>
+<li><p>최적조건 근처의 영역에서는 반응표면모형의 모형으로 곡선효과가 고려된 2차 다항 모형을 가정하고 최적점을 찾는다.</p></li>
+</ul>
+</section>
+<section id="차-다항-모형" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="차-다항-모형"><span class="header-section-number">7.3.2</span> 2차 다항 모형</h3>
+<p>이제 반응변수 <span class="math inline">\(y\)</span>의 변화(반응표면; response surface)를 <span class="math inline">\(k\)</span> 개의 독립변수 <span class="math inline">\(x_1, x_2, \cdots, x_k\)</span> 로 이루어진 2차 다항식(second polynomial function)으로 적합하는 2차 다항 모형을 고려하자.</p>
+<p><span id="eq-secondorder"><span class="math display">\[
+y = \beta_0 + \sum_{i=1}^{k} \beta_i x_i + \sum_{i=1}^{k} \beta_{ii} x^2_i + \underset{i&lt;j}{\sum \sum} \beta_{ij} x_i x_j +e
+\tag{7.6}\]</span></span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>반응표면분석에서 고려한 2차 다항 모형에서는 독립변수의 값들이 모두 <span class="math inline">\([-1,1]\)</span> 사이에 있다고 가정하자.</p>
+</div>
+</div>
+</section>
+<section id="이차-반응표면의-모양" class="level3" data-number="7.3.3">
+<h3 data-number="7.3.3" class="anchored" data-anchor-id="이차-반응표면의-모양"><span class="header-section-number">7.3.3</span> 이차 반응표면의 모양</h3>
+<p>예를 들어 독립변수가 두 개인 경우 다음과 같은 2차 다항 모형이 된다.</p>
+<p><span id="eq-secondordertwo"><span class="math display">\[
+y = \beta_0 + \beta_1 x_1  + \beta_2 x_2 + \beta_{11} x_1^2 + \beta_{22} x_2^2 + \beta_{12} x_1 x_2 + e
+\tag{7.7}\]</span></span></p>
+<p>독립변수가 두 개인 경우 2차 다항 모형 <a href="#eq-secondordertwo" class="quarto-xref">식&nbsp;<span>7.7</span></a> 은 다음 그림과 같이 다양한 반응 표면을 가질 수 있다.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/response-03.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<figcaption>이차 반응표면의 모양- 표면그림과 등고선</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/response-04.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<figcaption>이차 반응표면의 모양- 표면그림과 등고선</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="최적점과-정상점" class="level3" data-number="7.3.4">
+<h3 data-number="7.3.4" class="anchored" data-anchor-id="최적점과-정상점"><span class="header-section-number">7.3.4</span> 최적점과 정상점</h3>
+<p>2차 다항모형 <a href="#eq-secondorder" class="quarto-xref">식&nbsp;<span>7.6</span></a> 을 반응표면 분석에 사용하는 이유는 반응변수의 값이 최대가 되는 독립변수들의 값을 구하기 위함이다. 이렇게 반응변수의 값이 최대가 되는 독립변수들의 값을 <strong>최적점(optimum point)</strong> 라고 부른다.</p>
+<p>최적점을 찾는 방법은 2차 다항모형 <a href="#eq-secondorder" class="quarto-xref">식&nbsp;<span>7.6</span></a> 을 각 독립변수로 미분한 식을 0으로 놓고 방정식을 푸는 것이다. 최적점을 찾는 방법을 좀 더 체계적으로 구성하기 위하여 2차 다항모형 <a href="#eq-secondorder" class="quarto-xref">식&nbsp;<span>7.6</span></a> 을 벡터와 행렬로 나타내어 보자.</p>
+<p>먼저 자료를 이용하여 2차 다항모형 <a href="#eq-secondorder" class="quarto-xref">식&nbsp;<span>7.6</span></a> 에 나타난 계수들을 추정한 후 반응변수의 예측식을 다음과 같이 나타낼 수 있다. 아래의 식에서 <span class="math inline">\(b_0,b_{i}, b_{ii}, b_{ij}\)</span> 는 각각 회귀계수 <span class="math inline">\(\beta_0, \beta_{i}, \beta_{ii}, \beta_{ij}\)</span> 의 추정값이라고 하자.</p>
+<p><span id="eq-secondorder3"><span class="math display">\[
+\hat y = b_0 + \sum_{i=1}^{k} b_i x_i + \sum_{i=1}^{k} b_{ii} x^2_i + \underset{i&lt;j}{\sum \sum} b_{ij} x_i x_j
+\tag{7.8}\]</span></span></p>
+<p>이제 추정식 <a href="#eq-secondorder3" class="quarto-xref">식&nbsp;<span>7.8</span></a> 를 다음과 같이 벡터와 행렬로 나타내자.</p>
+<p><span id="eq-secondordermat"><span class="math display">\[
+\hat y = b_0 + {\pmb  x}^t \pmb  b + {\pmb  x}^t \pmb  B {\pmb  x}
+\tag{7.9}\]</span></span></p>
+<p>여기서 <span class="math inline">\(k \times 1\)</span> 차원의 독립변수 벡터 <span class="math inline">\(\pmb  x\)</span>, <span class="math inline">\(k \times 1\)</span> 차원의 1차 계수 벡터 <span class="math inline">\(\pmb  b\)</span>, <span class="math inline">\(k \times K\)</span> 차원의 2차 계수 행렬 <span class="math inline">\(\pmb  B\)</span> 는 다음과 같이 주어진다. 여기서 2차 계수 행렬 <span class="math inline">\(\pmb  B\)</span> 는 대칭행렬이며 비대각 원소는 계수 <span class="math inline">\(b_{ij}\)</span>의 반 값임을 유의하자.</p>
+<p><span id="eq-coef"><span class="math display">\[
+\pmb  x =
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_k
+\end{bmatrix}
+, \quad
+\pmb  b =
+\begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_k
+\end{bmatrix}, \quad
+\pmb  B =
+\begin{bmatrix}
+b_{11}   &amp; \frac{b_{12}}{2} &amp; \frac{b_{13}}{2}    &amp; \dots &amp; \frac{b_{1k}}{2} \\
+\frac{b_{12}}{2} &amp; b_{22}   &amp; \frac{b_{23}}{2}  &amp; \dots &amp; \frac{b_{2k}}{2}  \\
+\frac{b_{13}}{2}  &amp; \frac{b_{23}}{2}    &amp; b_{33} &amp; \dots &amp; \frac{b_{3k}}{2} \\
+\vdots   &amp; \vdots   &amp; \vdots   &amp; \vdots &amp; \vdots \\
+\frac{b_{1k}}{2}  &amp; \frac{b_{2k}}{2}    &amp; \frac{b_{3k}}{2}  &amp; \dots &amp; b_{kk}
+\end{bmatrix}
+\tag{7.10}\]</span></span></p>
+<p>이제 정삼점을 찿는 방법은 2차 다항 에측식 <a href="#eq-secondorder3" class="quarto-xref">식&nbsp;<span>7.8</span></a> 를 각 독립변수 <span class="math inline">\(x_i\)</span> 로 미분한 식을 0으로 놓은 방정식을 풀면 된다.</p>
+<p><span id="eq-equation1"><span class="math display">\[
+\pardifftwo{\hat y}{x_i} =  b_i + 2 b_{ii} x_i + \sum_{j \ne i} b_{ij} x_j =0, \quad i=1,2,\cdots, k
+\tag{7.11}\]</span></span></p>
+<p>방정식 <a href="#eq-equation1" class="quarto-xref">식&nbsp;<span>7.11</span></a> 을 벡터식으로 표시하면 다음과 같은 벡터 방정식을 얻는다.</p>
+<p><span id="eq-equation1-1"><span class="math display">\[
+\pardifftwo{\hat y}{\pmb  x} =  \pmb  b + 2 {\pmb  B} \pmb  x = \pmb  0
+\tag{7.12}\]</span></span></p>
+<p>벡터 방정식 <a href="#eq-equation1-1" class="quarto-xref">식&nbsp;<span>7.12</span></a> 을 만족하는 벡터 <span class="math inline">\({\pmb  x}^*\)</span> 를 <strong>정상점(stationary point)</strong> 라고 부르며 정상점 <span class="math inline">\({\pmb  x}^* = (x_1^*, x_2^*, \cdots, x_k^*)^t\)</span> 는 다음과 같이 얻어진다.</p>
+<p><span id="eq-statpoint"><span class="math display">\[
+{\pmb  x}^* =  - \frac{1}{2} {\pmb  B}^{-1} \pmb  b
+\tag{7.13}\]</span></span></p>
+<p>식 <a href="#eq-statpoint" class="quarto-xref">식&nbsp;<span>7.13</span></a> 에 주어진 정상점 <span class="math inline">\({\pmb  x}^*\)</span> 은 행렬 <span class="math inline">\(\pmb  B\)</span> 의 성질에 따라서 반응값을 최대로 하는 최적점일 수도 있고 아닐 수도 있다. 다음 절에서는 정상점이 최적점일 조건을 살펴보기로 하자.</p>
+</section>
+<section id="차-다항식의-표현" class="level3" data-number="7.3.5">
+<h3 data-number="7.3.5" class="anchored" data-anchor-id="차-다항식의-표현"><span class="header-section-number">7.3.5</span> 2차 다항식의 표현</h3>
+<p>앞 절에서 보았듯이 정상점 <span class="math inline">\({\pmb  x}^*\)</span> 은 추정된 2차 다항식에 대하여 미분방정식 <a href="#eq-statpoint" class="quarto-xref">식&nbsp;<span>7.13</span></a> 을 만족하는 점이다.</p>
+<p>2차 다항식은 그림 @ref(fig:plot3) 처럼 다양한 모양을 가진다. 실험의 목적이 반응변수를 최대로 하는 최적점을 찾는 것이기 떄문에 2차 다항식의 모양이 산 모양이면 정상점이 최적점이 되지만 다른 형태이면 최적점이 아니다.</p>
+<p>정상점 <span class="math inline">\({\pmb  x}^*\)</span> 이 최적점이 될 조건은 행렬 <span class="math inline">\(\pmb  B\)</span>에 대한 정준분석(canonical analysis)를 통하여 파악할 수 있다. 정준분석은 행령의 고유값(eigen value)과 고유벡터(eigen vector) 를 통하여 이루어진다. 이 절에서는 정분분석을 하기 위하여 2차 다항식을 다루기 쉬운 형식으로 표현하고자 한다.</p>
+<p>식 <a href="#eq-statpoint" class="quarto-xref">식&nbsp;<span>7.13</span></a> 의 정상점 <span class="math inline">\({\pmb  x}^*\)</span> 을 중심으로 하는 축 <span class="math inline">\(\pmb  z\)</span> 를 다음과 같이 고려하고</p>
+<p><span id="eq-transz"><span class="math display">\[
+\pmb  z = \pmb  x - {\pmb  x}^* \quad \text{ equivalently} \quad  \pmb  x =  {\pmb  x}^* + \pmb  z
+\tag{7.14}\]</span></span></p>
+<p>2차 다항식 <a href="#eq-secondordermat" class="quarto-xref">식&nbsp;<span>7.9</span></a> 를 다음과 같이 <span class="math inline">\(\pmb  z\)</span> 의 함수로 변환해 보자. 아래 식에서 정상점 <span class="math inline">\({\pmb  x}^* =  -{\pmb  B}^{-1} \pmb  b/2\)</span> 이다.</p>
+<p><span id="eq-statval"><span class="math display">\[
+\begin{aligned}
+\hat y  &amp; =   b_0 + {\pmb  x}^t \pmb  b + {\pmb  x}^t \pmb  B {\pmb  x}  \\
+  &amp; =  b_0  + {\pmb  x}^t \pmb  b +  ({\pmb  x}^* + \pmb  z )^t \pmb  B ({\pmb  x}^* + \pmb  z ) \\
+  &amp; =  b_0  + {\pmb  x}^t \pmb  b + 2 {\pmb  x}^{*t}  \pmb  B  \pmb  z  + {\pmb  x}^{*t}  \pmb  B {\pmb  x}^{*} +  {\pmb  z}^t \pmb  B  {\pmb  z} \\
+   &amp; =  b_0  + {\pmb  x}^t \pmb  b - {\pmb  b}^t  {\pmb  B}^{-1}  \pmb  B  \pmb  z  +\frac{1}{4} {\pmb  b}^t  {\pmb  B}^{-1} \pmb  B {\pmb  B}^{-1} {\pmb  b} +  {\pmb  z}^t \pmb  B  {\pmb  z} \\
+   &amp; = b_0  + {\pmb  x}^t \pmb  b  - {\pmb  b}^t  \pmb  z +\frac{1}{4}  {\pmb  b}^t {\pmb  B}^{-1}{\pmb  b} +  {\pmb  z}^t \pmb  B  {\pmb  z} \\
+   &amp; = b_0  + ({\pmb  x}^* + \pmb  z)^t \pmb  b  - {\pmb  b}^t  \pmb  z +\frac{1}{4}  {\pmb  b}^t {\pmb  B}^{-1}{\pmb  b} +  {\pmb  z}^t \pmb  B  {\pmb  z} \\
+   &amp; = b_0 + ( {\pmb  z}^t \pmb  b - {\pmb  b}^t  \pmb  z) + {\pmb  x}^{*t} \pmb  b  +\frac{1}{4}  {\pmb  b}^t {\pmb  B}^{-1}{\pmb  b} +  {\pmb  z}^t \pmb  B  {\pmb  z} \\
+  &amp; = b_0 + 0  + \left [ - \frac{1}{2}   {\pmb  b}^t  {\pmb  B}^{-1} \right ] {\pmb  b} +\frac{1}{4}  {\pmb  b}^t {\pmb  B}^{-1}{\pmb  b} +  {\pmb  z}^t \pmb  B  {\pmb  z} \\
+  &amp; =  \left [ b_0 - \frac{1}{4} {\pmb  b}^t {\pmb  B}^{-1}{\pmb  b}  \right ] +  {\pmb  z}^t \pmb  B  {\pmb  z}
+\end{aligned}
+\tag{7.15}\]</span></span></p>
+<p>위의 식에서 <span class="math inline">\(\pmb  z= 0\)</span> 인 점은 원래의 측으로 보면 정상점 <span class="math inline">\(\pmb  x ={\pmb  x}^*\)</span> 이다. 정상점에서의 반응변수의 예측값을 <span class="math inline">\(\hat y_s\)</span> 라고 하면</p>
+<p><span class="math display">\[ \hat y_s =   b_0 + {\pmb  x}^{*t} \pmb  b + {\pmb  x}^{*t} \pmb  B {\pmb  x}^* =  b_0 - \frac{1}{4} {\pmb  b}^t {\pmb  B}^{-1}{\pmb  b} \]</span></p>
+<p>따라서 2차 다항식의 예측식 <a href="#eq-secondordermat" class="quarto-xref">식&nbsp;<span>7.9</span></a> 은 변수 <span class="math inline">\(\pmb  z = \pmb  x - {\pmb  x}^*\)</span> 으로 다음과 같이 나타낼 수 있다.</p>
+<p><span id="eq-secondorderpred"><span class="math display">\[
+\hat y = \hat y_s +   {\pmb  z}^t \pmb  B  {\pmb  z}
+\tag{7.16}\]</span></span></p>
+<!--
+## 2차다항식의 정준분석
+
+
+앞 절에서 유도한 2차 다항 에측식을 보면 행렬 $\pmb  B$ 가 예측한 반응표면의 모양을 결정한다. 
+
+예를 들어 2개의 독립변수가 있는 모형을 살펴보자. 편의상 $x_1$과 
+-->
+</section>
+</section>
+<section id="canonocal" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="canonocal"><span class="header-section-number">7.4</span> 2차모형의 정준분석</h2>
+<section id="개요-2" class="level3" data-number="7.4.1">
+<h3 data-number="7.4.1" class="anchored" data-anchor-id="개요-2"><span class="header-section-number">7.4.1</span> 개요</h3>
+<ul>
+<li><p>여러번의 간단한 실험을 순차적으로 수행하면서 1차모형과 최대경사법을 이용하여 최적점 근처로 실험점을 이동한다.</p></li>
+<li><p>최적조건 근처의 영역에서는 반응표면모형의 모형으로 곡선효과가 고려된 2차 다항 모형을 가정하고 최적점을 찾는다.</p></li>
+<li><p>2차 다항 모형은 계수의 추정치에 따라서 반응표면의 모양을 4가지 모양으로 크게 분류하할 수 있다.</p></li>
+<li><p>추정된 2차 모형이 어떤 모양에 해당하는지 판단할 수 있는 기법인 정준분석(canonocal analysis)을 적용한다.</p></li>
+</ul>
+</section>
+<section id="이차형식" class="level3" data-number="7.4.2">
+<h3 data-number="7.4.2" class="anchored" data-anchor-id="이차형식"><span class="header-section-number">7.4.2</span> 이차형식</h3>
+<p>임의의 벡터 <span class="math inline">\(\pmb  x\)</span>에 대하여 차원이 <span class="math inline">\(k \times k\)</span> 인 대칭 행렬 <span class="math inline">\(\pmb  B\)</span> 이 주어진 경우 이차형식(quadratic form) <span class="math inline">\(s(\pmb  x, \pmb  B)\)</span>는 다음과 같이 정의된다.</p>
+<p><span id="eq-quadform"><span class="math display">\[
+s(\pmb  x, \pmb  B) = {\pmb  x}^t \pmb  B \pmb  x
+\tag{7.17}\]</span></span></p>
+<p>만약 행렬 <span class="math inline">\(\pmb  B\)</span>의 고유값이 다음과 같고</p>
+<p><span class="math display">\[ \lambda_1 ,\lambda_2 , \dots , \lambda_k \]</span></p>
+<p>이에 대응하는 고유벡터가 다음과 같다고 하자.</p>
+<p><span class="math display">\[  \pmb  q_1, \pmb  q_2 , \cdots , \pmb  q_k \]</span></p>
+<p>자세한 고유값과 고유젝터에 대한 이론은 부록을 참조하자.</p>
+<p>대칭 행렬 <span class="math inline">\(\pmb  B\)</span>의 고유값과 고유벡터를 이용하면 다음과 같은 스펙트럴 분해(spectral decomposition)가 가능하다 (부록 참조).</p>
+<p><span id="eq-specdecomp"><span class="math display">\[
+\pmb  B = \pmb  Q \pmb  \Lambda {\pmb  Q}^t = \lambda_1 \pmb  q_1 \pmb  q_1^t + \lambda_2 \pmb  q_2 \pmb  q_2^t
++ \cdots + \lambda_k \pmb  q_k \pmb  q_k^t
+\tag{7.18}\]</span></span></p>
+<p>이제 식 <a href="#eq-quadform" class="quarto-xref">식&nbsp;<span>7.17</span></a> 에서 정의된 이차형식은 스펙트럴 분해를 이용하여 다음과 같은 분해가 가능하다.</p>
+<p><span id="eq-quadform2"><span class="math display">\[
+\begin{aligned}
+s(\pmb  x, \pmb  B) &amp; = {\pmb  x}^t \pmb  B \pmb  x \notag \\
+    &amp; = {\pmb  x}^t \pmb  Q \pmb  \Lambda {\pmb  Q}^t \pmb  x \notag \\
+    &amp;= {\pmb  x}^t  \left [ \lambda_1 \pmb  q_1 \pmb  q_1^t + \lambda_2 \pmb  q_2 \pmb  q_2^t
++ \cdots + \lambda_k \pmb  q_k \pmb  q_k^t \right ] \pmb  x \notag \\
+&amp; = \sum_{i=1}^k \lambda_i  ( {\pmb  x}^t \pmb  q_i)  (\pmb  q_i^t \pmb  x) \notag  \\
+&amp; = \sum_{i=1}^k \lambda_i w_i^2
+\end{aligned}
+\tag{7.19}\]</span></span></p>
+<p>여기서</p>
+<p><span class="math display">\[ w_i = {\pmb  x}^t \pmb  q_i = \pmb  q_i^t \pmb  x, \quad i=1,2,\dots, k \]</span></p>
+</section>
+</section>
+<section id="차-다항식의-정준형식" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="차-다항식의-정준형식"><span class="header-section-number">7.5</span> 2차 다항식의 정준형식</h2>
+<p>앞 절에서 논의한 것을 정리하면 2차 다항식의 예측식은 식 <a href="#eq-transz" class="quarto-xref">식&nbsp;<span>7.14</span></a> 에서 정의된 변수 <span class="math inline">\(\pmb  z = \pmb  x - {\pmb  x}^*\)</span> 를 이용하여 식 <a href="#eq-secondorderpred" class="quarto-xref">식&nbsp;<span>7.16</span></a> 과 같이 표현할 수 있으므로 다음과 같이 정준형식으로 나타낼 수 있다.</p>
+<p><span id="eq-secondordercan"><span class="math display">\[
+\begin{aligned}
+\hat y &amp; = \hat y_s +   {\pmb  z}^t \pmb  B  {\pmb  z}  \notag \\
+  &amp; = \hat y_s + \lambda_1 w_1^2 + \lambda_2 w_2^2 + \cdots + \lambda_k w_k^2
+\end{aligned}
+\tag{7.20}\]</span></span></p>
+<p>여기서</p>
+<p><span class="math display">\[w_i = {\pmb  z}^t \pmb  q_i = \pmb  q_i^t \pmb  z, \quad i=1,2,\dots, k \]</span></p>
+<p><span class="math display">\[ \hat y_s =   b_0 - \frac{1}{4} {\pmb  b}^t {\pmb  B}^{-1}{\pmb  b} \]</span></p>
+<p>위의 식 <a href="#eq-secondordercan" class="quarto-xref">식&nbsp;<span>7.20</span></a> 을 2차 다항식의 <strong>정준형식(canonical form)</strong> 이라고 부른다.</p>
+<p>이제 행렬 <span class="math inline">\(\pmb  B\)</span> 의 고유값을 이용한 정준분석을 이용하여 다음과 같이 정상점의 형태와 최적점의 유무를 알아낼 수 있다.</p>
+<table class="table">
+<caption>정준분석을 이용한 최적점의 판단</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">행렬 <span class="math inline">\(\pmb  B\)</span> 의 고유값</th>
+<th style="text-align: center;">정상점은</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">모두 음수이면</td>
+<td style="text-align: center;">최대점(최적점)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">모두 양수 이면</td>
+<td style="text-align: center;">최저점</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">양수와 음수가 섞여있으면</td>
+<td style="text-align: center;">안장점</td>
+</tr>
+</tbody>
+</table>
+<section id="변환된-변수" class="level3" data-number="7.5.1">
+<h3 data-number="7.5.1" class="anchored" data-anchor-id="변환된-변수"><span class="header-section-number">7.5.1</span> 변환된 변수</h3>
+<p>2차 다항식의 정준형식 <a href="#eq-secondordercan" class="quarto-xref">식&nbsp;<span>7.20</span></a> 에 나타난 변환된 변수 <span class="math inline">\(w_i\)</span> 와 원래 사용된 변수 <span class="math inline">\(x_i\)</span> 의 관계를 알아보자.</p>
+<p>변수 <span class="math inline">\(z_i\)</span> 는 원래 변수 <span class="math inline">\(x_i\)</span> 에서 정상점 <span class="math inline">\(x_i^*\)</span> 를 빼서 만든 변수이다 <a href="#eq-transz" class="quarto-xref">식&nbsp;<span>7.14</span></a>. 또한 <span class="math inline">\(w_i = {\pmb  q}_i^t \pmb  z\)</span> 이므로 다음과 같은 변환식이 얻어진다.</p>
+<p><span id="eq-wzrelation"><span class="math display">\[
+\pmb  w =
+\begin{bmatrix}
+w_1 \\
+w_2 \\
+\vdots \\
+w_k
+\end{bmatrix}
+= \pmb  Q^t \pmb  z  = \pmb  Q^t (\pmb  x -\pmb  x^*)
+\tag{7.21}\]</span></span></p>
+<p>여기서 행렬 <span class="math inline">\(\pmb  Q\)</span> 는 행렬 <span class="math inline">\(\pmb  B\)</span> 의 고유벡터들로 이루진다. 따라서 행렬 <span class="math inline">\(\pmb  Q\)</span> 는 직교행렬이다.</p>
+<p><span class="math display">\[ \pmb  Q = [ \pmb  q_1~ \pmb  q_2 ~ \dots \pmb  q_k], \quad  \pmb  Q^t \pmb  Q = \pmb  Q \pmb  Q^t = \pmb  I \]</span></p>
+<p>따라서 식 <a href="#eq-wzrelation" class="quarto-xref">식&nbsp;<span>7.21</span></a> 에서 정의된 변환은 벡터 <span class="math inline">\(\pmb  z\)</span>를 행렬 <span class="math inline">\(\pmb  Q\)</span> 를 이용하여 회전하는 변환이다.</p>
+<p><span class="math display">\[ \pmb  w^t \pmb  w = \pmb  z^t  \pmb  Q \pmb  Q^t \pmb  z =  \pmb  z^t  \pmb  z \]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/canonical.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="예제-2개의-독립-변수" class="level3" data-number="7.5.2">
+<h3 data-number="7.5.2" class="anchored" data-anchor-id="예제-2개의-독립-변수"><span class="header-section-number">7.5.2</span> 예제: 2개의 독립 변수</h3>
+<p>만약 독립변수가 2개 있는 2차 다항 모형에서는 행렬 <span class="math inline">\(\pmb  B\)</span>의 차원은 <span class="math inline">\(2 \times 2\)</span>이다. 따라서 행렬 <span class="math inline">\(\pmb  B\)</span>의 고유치는 <span class="math inline">\(\lambda_1\)</span> 과 <span class="math inline">\(\lambda_2\)</span> 라고 하자.</p>
+<p>이 경우는 2차 형식이 다음과 같이 분해될 수 있다.</p>
+<p><span class="math display">\[ s(\pmb  x, \pmb  B) =  \pmb  x^t \pmb  B \pmb  x = \lambda_1 w_1^2 + \lambda_2 w_2^2 \]</span></p>
+<p>위의 2차 형식을 계산하는 함수를 R 로 만들어 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>quad <span class="ot">&lt;-</span> <span class="cf">function</span>(w1, w2, l1, l2){</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  l1<span class="sc">*</span>w1<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> l2<span class="sc">*</span>w2<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="1">
+<li><p><span class="math inline">\(\lambda_1 &lt; \lambda_2 &lt;  0\)</span> 의 경우</p>
+<ul>
+<li><p>이차형식 <span class="math inline">\(s(\pmb  x, \pmb  B)\)</span> 는 정상점이 <strong>최대 반응점</strong>이 되며 <span class="math inline">\(w_2\)</span> 에 비하여 <span class="math inline">\(w_1\)</span> 축으로 반응의 변화가 급하다.</p></li>
+<li><p><span class="math inline">\(\lambda_1 =-4\)</span>, <span class="math inline">\(\lambda_2 =-1\)</span> 인 경우 2차 형식의 형태는 다음과 같다.</p></li>
+</ul></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>w1 <span class="ot">&lt;-</span> w2 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="at">length=</span> <span class="dv">30</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">outer</span>(w1, w2 ,quad, <span class="sc">-</span><span class="dv">4</span>, <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">persp3D</span>(w1, w2, s,</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">main=</span><span class="st">"이차형식: l1 &lt; l2 &lt; 0"</span>,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">zlab =</span> <span class="st">"s"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">theta =</span> <span class="dv">30</span>, <span class="at">phi =</span> <span class="dv">15</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li><p><span class="math inline">\(\lambda_1 &gt; \lambda_2 &gt;  0\)</span> 의 경우</p>
+<ul>
+<li><p>이차형식 <span class="math inline">\(s(\pmb  x, \pmb  B)\)</span> 는 정상점이 최소 반응점이 되며 <span class="math inline">\(w_2\)</span> 에 비하여 <span class="math inline">\(w_1\)</span> 축으로 반응의 변화가 급하다.</p></li>
+<li><p><span class="math inline">\(\lambda_1 =2\)</span>, <span class="math inline">\(\lambda_2 =1\)</span> 인 경우 2차 형식의 형태는 다음과 같다.</p></li>
+</ul></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>w1 <span class="ot">&lt;-</span> w2 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="at">length=</span> <span class="dv">30</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">outer</span>(w1, w2 ,quad, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">persp3D</span>(w1, w2, s,</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">main=</span><span class="st">"이차형식: l1 &gt; l2 &gt;  0"</span>,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">zlab =</span> <span class="st">"s"</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">theta =</span> <span class="dv">40</span>, <span class="at">phi =</span> <span class="dv">20</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="1">
+<li><p><span class="math inline">\(\lambda_1 &gt;0\)</span>, <span class="math inline">\(\lambda_2 &lt;0\)</span>, <span class="math inline">\(|\lambda_1| &gt; |\lambda_2\)</span> 의 경우</p>
+<ul>
+<li><p>이차형식 <span class="math inline">\(s(\pmb  x, \pmb  B)\)</span> 는 정상점이 안장점(saddle point)이 되며 <span class="math inline">\(w_2\)</span> 축으로는 반응값이 감소하게 되고 <span class="math inline">\(w_1\)</span> 축으로는 반응값이 증가하게 된다. 또한 <span class="math inline">\(w_2\)</span> 에 비하여 <span class="math inline">\(w_1\)</span> 축으로 반응의 변화가 급하다.</p></li>
+<li><p><span class="math inline">\(\lambda_1 = - 3\)</span>, <span class="math inline">\(\lambda_2 =1\)</span> 인 경우 2차 형식의 형태는 다음과 같다.</p></li>
+</ul></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>w1 <span class="ot">&lt;-</span> w2 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="at">length=</span> <span class="dv">30</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">outer</span>(w1, w2 ,quad, <span class="sc">-</span><span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">persp3D</span>(w1, w2, s,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">main=</span><span class="st">"이차형식: l1 &gt;  0  &gt; l2"</span>,</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">zlab =</span> <span class="st">"s"</span>,</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">theta =</span> <span class="dv">40</span>, <span class="at">phi =</span> <span class="dv">15</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="1">
+<li><p><span class="math inline">\(\lambda_i  \approx 0\)</span> 인 경우</p>
+<ul>
+<li><p>반응표면 체계가 능선 체계(ridge system)이라고 한다. 능선 체계에서는 최적점이 무수히 많은 정상 능선 체계(stationary ridge system)와 능선이 한 방향ㅇ으로 계속 증가하는 형태(rising ridge system)으로 나뉜다. 올라가는 능선 체계에서는 현제의 실험 영역에서 최적점이 없기 때문에 실헌 영역을 변경하여 다시 실험을 진행해야 한다.</p></li>
+<li><p><span class="math inline">\(\lambda_1 = 0\)</span>, <span class="math inline">\(\lambda_2 =1\)</span> 인 경우 2차 형식의 형태는 다음과 같다.</p></li>
+</ul></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>w1 <span class="ot">&lt;-</span> w2 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="at">length=</span> <span class="dv">30</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">outer</span>(w1, w2 ,quad, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">persp3D</span>(w1, w2, s,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">main=</span><span class="st">"이차형식: l1 =  0 "</span>,</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">zlab =</span> <span class="st">"s"</span>,</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">theta =</span> <span class="dv">40</span>, <span class="at">phi =</span> <span class="dv">15</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="expriment" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="expriment"><span class="header-section-number">7.6</span> 최적점 탐색을 위한 실험계획</h2>
+<section id="개요-3" class="level3" data-number="7.6.1">
+<h3 data-number="7.6.1" class="anchored" data-anchor-id="개요-3"><span class="header-section-number">7.6.1</span> 개요</h3>
+<ul>
+<li><p>최적조건 근처의 영역에서는 반응표면모형의 모형으로 곡선효과가 고려된 2차 다항 모형을 가정하고 최적점을 찾는다.</p></li>
+<li><p>최적 조건을 찾는 실험에서는 실험점을 효율적으로 배치해야 한다.</p></li>
+<li><p>2차다항식을 적합해야 하기 때문에 각 요인에 대하여 최소한 3개의 수준이 필요하다.</p></li>
+</ul>
+</section>
+<section id="중심합성설계" class="level3" data-number="7.6.2">
+<h3 data-number="7.6.2" class="anchored" data-anchor-id="중심합성설계"><span class="header-section-number">7.6.2</span> 중심합성설계</h3>
+<p>반응표면 분석에서 고려하는 변량(독립변수)의 개수가 <span class="math inline">\(k\)</span> 개 이면 한 요인에 대해서 최소한 3개의 수준이 필요하다. 3개의 수준이 필요한 이유는 2차 다항식을 고려해야 하기 때문이다.</p>
+<p>따라서 요인의 개수가 <span class="math inline">\(k\)</span> 이면 실험점의 개수가 <span class="math inline">\(3^k\)</span> 가 필요하며 실험점의 개수는 요인의 수에 따라서 기하급수적으로 늘어나게 된다. 예를 들어 <span class="math inline">\(k=3\)</span> 인 경우에는 실험점이 <span class="math inline">\(3^3=27\)</span> 개, 경우에는 실험점이 <span class="math inline">\(3^4=81\)</span> 개로 늘어나는데 이는 현실적으로 감당하기 어려운 경우일 수 있다.</p>
+<p>따라서 반응표면 방법에서는 실험을 축차적으로(sequentially) 실행하면서 최적점 근처에서 더 많은 실험을 수행할 수 있는 효율적인 실험 계획을 고려해야 한다. 아래는 반응표면 실험의 축차적인 절차를 설명한다.</p>
+<ol type="1">
+<li>1차 모형 적합을 위한 1단계 실험
+<ul>
+<li>먼저 <strong>중심점(center points)에서 <span class="math inline">\(n_0\)</span> 개</strong>의 실험을 수행하고 각 요인의 <strong>상자점들(factorial points)에서 <span class="math inline">\(2^k\)</span></strong> 실험을 실시한다.</li>
+<li>이러한 기초 실험은 최대경사법을 이용하는 중간 과정에서 언제나 수행해야 하는 실험이다.</li>
+<li>기초 실험은 1차 모형을 적합하기 위한 실험계획이다.</li>
+<li>기초 실험에서 실험 구간에 최적점이 포함되어 있다고 판단되면 2차 모형 적합을 위한 2단계실험을 실시한다.</li>
+<li>1단계 실험의 개수는 상자점 <span class="math inline">\(2^k\)</span> 개 + 중심점 <span class="math inline">\(n_0\)</span> 개</li>
+</ul></li>
+<li>2차 모형 적합을 위한 2단계 실험
+<ul>
+<li>최적점이 가까워진 경우 2차 모형 적합을 위해서 1단계 실험의 실험점들에 추가적인 실험점을 더해서 2단계 실험을 진행한다.</li>
+<li>2차 모형을 적합하기 위한 실험으로 <strong>각 요인에 대하여 2개의 축점(axial points, star points)을 더 추가한다</strong>. 기초실험에서 수행한 실험점들과 합쳐서 각 요인마다 3개의 수준을 가지는 실험점을 만든다.</li>
+<li>2단계 실험에서 추가한 축점은 2차 모형의 효율적인 추정을 고려하여 선택한다.</li>
+<li>2단계 실험의 개수는 축점 <span class="math inline">\(2k\)</span> 개</li>
+</ul></li>
+</ol>
+<p>반응표면방법에서 위와 같이 최적점 탐색을 하는 경우 사용되는 대표적인 실험설계는 <strong>중심합성설계(CCD: central composite design)</strong> 이다.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/ccc.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<figcaption>구형 계획법을 이용한 중심합성설계</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>중심합성설계에서 축차적으로 실험을 실시한 경우 <span class="math inline">\(k\)</span>개의 요인을 고려하면 실험점들은 그 특성에 따라서 다음과 같은 나타난다.</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">실험점</th>
+<th style="text-align: center;">목적</th>
+<th style="text-align: center;">개수</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">상자점(factorial points)</td>
+<td style="text-align: center;">1차 모형 적합을 위한 2수준 배치법에서의 실험점</td>
+<td style="text-align: center;"><span class="math inline">\(F=2^k\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">중심점(center points)</td>
+<td style="text-align: center;">관심 구간의 중심에 위치한 실험점</td>
+<td style="text-align: center;"><span class="math inline">\(n_0\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">축점(axial points)</td>
+<td style="text-align: center;">2차 모형 적합을 위해 추가된 실험점</td>
+<td style="text-align: center;"><span class="math inline">\(n_a=2k\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="회전가능-중심합성설계" class="level3" data-number="7.6.3">
+<h3 data-number="7.6.3" class="anchored" data-anchor-id="회전가능-중심합성설계"><span class="header-section-number">7.6.3</span> 회전가능 중심합성설계</h3>
+<p>중심합성설계에서 2차 다항식을 추정하기 위한 2단계 실험에서 추가하는 축점(axial points)을 어떻게 선택하는 것이 좋을까?</p>
+<p>축점을 배치할 때 중요한 고려사항은 2차 다항식에서 얻은 추정치들의 분산이 각 실험접들에서 동일하게 나타나게 하는 것이다. 이러한 성질을 <strong>회전 가능성(Rotatibility)</strong> 라고 부른다. 이러한 회전 가능성이 만족하면 고려한 모든 실험점들에서 구한 예측값들의 정도(precision)가 같다는 의미이다.</p>
+<p>회전가능성이 중요한 이유는 반응표면분석이 반응의 최적점을 찾는 실험이고 최적점의 위치는 알 수 없으므로 모든 방향에 대한 예측값의 정도를 동일하게 설정하는 것이 합리적이기 때문이다.</p>
+<p>2차 다항식도 선형모형에 속하므로 다음과 같은 선형모형을 고려할 때</p>
+<p><span class="math display">\[\pmb  y = \pmb  X \pmb  \beta + \pmb  e\]</span></p>
+<p>최소제곱법으로 얻은 회귀계수의 추정량을 <span class="math inline">\(\hat {\pmb  \beta}\)</span> 이라고 하자. 만약 관심이 있는 실험점 <span class="math inline">\(\pmb  x\)</span> 에서 반응값의 예측치는 <span class="math inline">\(\hat y = {\pmb  x}^t  \hat {\pmb  \beta}\)</span> 이다. 또한 예측치의 분산은 다음과 같이 주어진다.</p>
+<p><span class="math display">\[Var (\hat y) = Var (\hat y|\pmb  x) = \sigma^2 {\pmb  x}^t (\pmb  X^t \pmb  X)^{-1} {\pmb  x}\]</span> <strong>“중심합성설계가 회전 가능하다”는 의미는 실험에서 사용한 모든 실험점들에서 반응변수 예측치의 분산이 동일하다</strong>는 것을 의미한다.</p>
+<p><span id="eq-ratate"><span class="math display">\[
+Var (\hat y|\pmb  x_i) =   Var (\hat y|\pmb  x_j)  \quad \text{ for all } i,j
+\tag{7.22}\]</span></span></p>
+<p>이렇게 실험에서 고려한 모든 실험점에서 예측치의 분산이 같은 실험계획을 ‘회전가능하다’(rotatable) 라고 말하며 일반적으로 <strong>균등 정밀 중심합성설계(uniform precision CCD)</strong>라고 부른다.</p>
+<p>중심합성설계가 회전가능하게 되는 조건은 무었일까? 일반적으로 2차 실험에서 추가되는 축점의 길이 <span class="math inline">\(\alpha\)</span>에 따라서 회전가능성이 결정된다. 상자점의 수가 <span class="math inline">\(F\)</span>개 인 경우 회전 가능한 계획을 얻기 위해서는 <strong>축점의 길이를 <span class="math inline">\(\alpha= F^{1/4}\)</span> 로 설정</strong>하면 된다.</p>
+<p>다음은 요인의 개수 <span class="math inline">\(k\)</span> 에 대한 균등 정밀 중심합성설계의 각 실험점의 개수와 축점의 길이 <span class="math inline">\(\alpha\)</span>를 나타낸 표이다.</p>
+<!--
+
+::: {.cell layout-align="center"}
+::: {.cell-output-display}
+![균등 정밀 중심합성설계의 각 실험점](../images/ccc-points.png){fig-align='center' width=80%}
+:::
+:::
+
+-->
+<table class="table">
+<caption>표 9.4. 균등 정밀 중심합성설계의 각 실험점의 개수와 축점의 거리</caption>
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(k\)</span></th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(F=2^k\)</span></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">128</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(n_a=2k\)</span></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(n_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n_0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\alpha = F^{1/4}\)</span></td>
+<td style="text-align: center;">1.414</td>
+<td style="text-align: center;">1.682</td>
+<td style="text-align: center;">2.000</td>
+<td style="text-align: center;">2.378</td>
+<td style="text-align: center;">2.828</td>
+<td style="text-align: center;">3.363</td>
+</tr>
+</tbody>
+</table>
+<p><strong>교과서 표 9.5 에 오타가 있습니다. 위의 표가 수정된 실험점의 개수와 축점의 거리입니다.</strong></p>
+<p>참고로 중심점 <span class="math inline">\((0,0)\)</span> 에서의 실험의 수 <span class="math inline">\(n_0\)</span> 는 일반적으로 3개에서 5개이다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>구형 계획법</p>
+<p>반응표면분석에서 회전 가능한 계획법은 실험에서 고려한 모든 실험점들의 분산을 같게 하는 실험계획이다. 하지만 실제 현장에서는 분산이 모두 동일한 경우 보다는 <strong>모든 실험점이 원점에서 같은 거리에 있는 경우</strong>를 선호하는 경우도 있다.</p>
+<p>고려한 모든 실험점이 중심점으로부터 거리가 동일한 계획을 <strong>구형 계획법(spherical design)</strong>이라고 한다. 요인의 개수가 <span class="math inline">\(k\)</span> 개인 경우, 구형 계획법에서 축점의 거리는 <span class="math inline">\(\alpha=\sqrt{k}\)</span> 이다.</p>
+</div>
+</div>
+</section>
+<section id="box-benken-설계" class="level3" data-number="7.6.4">
+<h3 data-number="7.6.4" class="anchored" data-anchor-id="box-benken-설계"><span class="header-section-number">7.6.4</span> Box-Benken 설계</h3>
+<p>Box-Benken 설계는 2차 모형 적합을 위한 효율적인 3수준 실험설계로 3수준 요인배치법의 일부 실험조건에서만 실험을 실시하는 것이다.</p>
+<p>예를 들어 3개의 요인가 있다면 관심영역 상자점에서 2개의 요인를 먼저 선택하고 <span class="math inline">\(2^2\)</span> 개의 <span class="math inline">\((\pm 1, \pm1)\)</span> 수준에서 실험을 하고 나머지 인자는 수준의 중앙값인 0으로 고정한다.</p>
+<p>이렇게 고려하는 인자의 개수가 <span class="math inline">\(k\)</span> 개인 경우, 2개의 인자를 선택하는 조합의 수는 <span class="math inline">\(k(k-1)/2\)</span> 개이다. 또한 각 조합마다 4개의 실험점<span class="math inline">\((\pm 1, \pm1)\)</span> 이 추가되므로 총 실험점의 개수는 다음과 같다.</p>
+<p><span class="math display">\[ 4k(k-1)/2 + n_0 \]</span></p>
+<p>Box-Benken 설계는 선택된 2개의 조합이 블럭으로 나타나는 블럭 일부실시법이다.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/boxbenken.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<figcaption>요인의 개수가 3개 인 경우 Box-Benken 설계</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="계획법에-따른-실험점의-개수" class="level3" data-number="7.6.5">
+<h3 data-number="7.6.5" class="anchored" data-anchor-id="계획법에-따른-실험점의-개수"><span class="header-section-number">7.6.5</span> 계획법에 따른 실험점의 개수</h3>
+<p>요인의 개수가 <span class="math inline">\(k\)</span> 개인 경우 각 실험계획법에 대한 실험점의 개수는 다음의 표에 있는 공식으로 계산할 수 있다. <span class="math inline">\(n_c\)</span> 는 중심점 <span class="math inline">\((0,0)\)</span> 에서 실험의 개수이다(앞 절에서는 중심점을 <span class="math inline">\(n_0\)</span> 로 표시).</p>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">요인의 수</th>
+<th style="text-align: center;">Box-Benken 설계</th>
+<th style="text-align: center;">중심합성설계(CCD)</th>
+<th style="text-align: center;">3수준 요인 배치법</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;"><span class="math inline">\(4k(k-1)/2 + n_c\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(2^k+2k + n_c\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(3^k\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/exp-number.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<figcaption>계획법에 따른 실험점의 개수 예제</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="r-을-이용한-실험계획" class="level3" data-number="7.6.6">
+<h3 data-number="7.6.6" class="anchored" data-anchor-id="r-을-이용한-실험계획"><span class="header-section-number">7.6.6</span> R 을 이용한 실험계획</h3>
+<section id="회전가능-중심합성설계-1" class="level4" data-number="7.6.6.1">
+<h4 data-number="7.6.6.1" class="anchored" data-anchor-id="회전가능-중심합성설계-1"><span class="header-section-number">7.6.6.1</span> 회전가능 중심합성설계</h4>
+<p>요인의 개수가 <span class="math inline">\(k=3\)</span> 이고 중심점에서 실험의 개수가 <span class="math inline">\(n_0=2\)</span> 인 회전가능 중심합성설계의 실험점을 패키지 <code>rsm</code> 의 함수 <code>ccd()</code> 를 통하여 구해보자.</p>
+<p>함수 <code>ccd()</code>를 사용하는 경우 인자는 다음과 같다.</p>
+<ul>
+<li><code>basis = 3</code> : 요인의 개수(<span class="math inline">\(k\)</span>)를 3개로 지정</li>
+<li><code>n0 = 2</code> : 중심점의 수 (<span class="math inline">\(n_0\)</span>) 를 2개로 지정</li>
+<li><code>alpha = "rotatable"</code> : 회전 가능한 계획의 축점을 지정</li>
+<li><code>randomize = F</code> : 실험의 순서를 임의화하지 않는다.</li>
+</ul>
+<p>함수 <code>ccd()</code>의 결과를 볼 때 주의할 점은 다음과 같다.</p>
+<ul>
+<li>실험점들은 2개의 블럭(<code>Block</code>)으로 나누어 표시된다.</li>
+<li>첫 번째 블럭(<code>Block=1</code>)은 1차 모형을 적합하기 위한 상자점과 중심점으로 구성된다.</li>
+<li>두 번째 블럭(<code>Block=2</code>)은 2차 모형을 적합하기 위한 축점과 중심점으로 구성된다.</li>
+<li>따라서 중심점의 총 개수는 지정한 개수 <code>n0 = 2</code> 의 2배가 된다.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>designR <span class="ot">&lt;-</span> <span class="fu">ccd</span> (<span class="at">basis =</span> <span class="dv">3</span>, <span class="at">n0 =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="st">"rotatable"</span>, <span class="at">randomize =</span> F)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>designR</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   run.order std.order  x1.as.is  x2.as.is  x3.as.is Block
+1          1         1 -1.000000 -1.000000 -1.000000     1
+2          2         2  1.000000 -1.000000 -1.000000     1
+3          3         3 -1.000000  1.000000 -1.000000     1
+4          4         4  1.000000  1.000000 -1.000000     1
+5          5         5 -1.000000 -1.000000  1.000000     1
+6          6         6  1.000000 -1.000000  1.000000     1
+7          7         7 -1.000000  1.000000  1.000000     1
+8          8         8  1.000000  1.000000  1.000000     1
+9          9         9  0.000000  0.000000  0.000000     1
+10        10        10  0.000000  0.000000  0.000000     1
+11         1         1 -1.681793  0.000000  0.000000     2
+12         2         2  1.681793  0.000000  0.000000     2
+13         3         3  0.000000 -1.681793  0.000000     2
+14         4         4  0.000000  1.681793  0.000000     2
+15         5         5  0.000000  0.000000 -1.681793     2
+16         6         6  0.000000  0.000000  1.681793     2
+17         7         7  0.000000  0.000000  0.000000     2
+18         8         8  0.000000  0.000000  0.000000     2
+
+Data are stored in coded form using these coding formulas ...
+x1 ~ x1.as.is
+x2 ~ x2.as.is
+x3 ~ x3.as.is</code></pre>
+</div>
+</div>
+<p>교과서 표 9.4에 나타난 실험계획에 대한 데이터프레임을 만드는 방법은 아래와 같다. 참고할 점은 중심점의 수를 6개로 지정하면(<code>n0=6</code>) 모두 12개의 중심점이 생성되므로 마지막 6개의 중심점은 자료에 포함시키지 않는다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>design94 <span class="ot">&lt;-</span> <span class="fu">ccd</span> (<span class="at">basis =</span> <span class="dv">3</span>, <span class="at">n0 =</span> <span class="dv">6</span>, <span class="at">alpha =</span> <span class="st">"rotatable"</span>, <span class="at">randomize =</span> F)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>design94</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   run.order std.order  x1.as.is  x2.as.is  x3.as.is Block
+1          1         1 -1.000000 -1.000000 -1.000000     1
+2          2         2  1.000000 -1.000000 -1.000000     1
+3          3         3 -1.000000  1.000000 -1.000000     1
+4          4         4  1.000000  1.000000 -1.000000     1
+5          5         5 -1.000000 -1.000000  1.000000     1
+6          6         6  1.000000 -1.000000  1.000000     1
+7          7         7 -1.000000  1.000000  1.000000     1
+8          8         8  1.000000  1.000000  1.000000     1
+9          9         9  0.000000  0.000000  0.000000     1
+10        10        10  0.000000  0.000000  0.000000     1
+11        11        11  0.000000  0.000000  0.000000     1
+12        12        12  0.000000  0.000000  0.000000     1
+13        13        13  0.000000  0.000000  0.000000     1
+14        14        14  0.000000  0.000000  0.000000     1
+15         1         1 -1.681793  0.000000  0.000000     2
+16         2         2  1.681793  0.000000  0.000000     2
+17         3         3  0.000000 -1.681793  0.000000     2
+18         4         4  0.000000  1.681793  0.000000     2
+19         5         5  0.000000  0.000000 -1.681793     2
+20         6         6  0.000000  0.000000  1.681793     2
+21         7         7  0.000000  0.000000  0.000000     2
+22         8         8  0.000000  0.000000  0.000000     2
+23         9         9  0.000000  0.000000  0.000000     2
+24        10        10  0.000000  0.000000  0.000000     2
+25        11        11  0.000000  0.000000  0.000000     2
+26        12        12  0.000000  0.000000  0.000000     2
+
+Data are stored in coded form using these coding formulas ...
+x1 ~ x1.as.is
+x2 ~ x2.as.is
+x3 ~ x3.as.is</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>y<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fl">7.6</span>,<span class="fl">7.9</span>,<span class="fl">8.9</span>,<span class="fl">7.1</span>,<span class="fl">10.2</span>,<span class="fl">7.8</span>,<span class="fl">11.9</span>,<span class="fl">8.3</span>,<span class="fl">11.5</span>,<span class="fl">11.2</span>,<span class="fl">13.8</span>,<span class="fl">10.7</span>,<span class="dv">11</span>,<span class="fl">10.9</span>,<span class="fl">10.8</span>,<span class="dv">6</span>,<span class="fl">7.9</span>,</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>     <span class="fl">7.3</span>,<span class="dv">5</span>,<span class="fl">9.8</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>data94 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">data.frame</span>(design94)[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,<span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>], y)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>data94</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          x1        x2        x3    y
+1  -1.000000 -1.000000 -1.000000  7.6
+2   1.000000 -1.000000 -1.000000  7.9
+3  -1.000000  1.000000 -1.000000  8.9
+4   1.000000  1.000000 -1.000000  7.1
+5  -1.000000 -1.000000  1.000000 10.2
+6   1.000000 -1.000000  1.000000  7.8
+7  -1.000000  1.000000  1.000000 11.9
+8   1.000000  1.000000  1.000000  8.3
+9   0.000000  0.000000  0.000000 11.5
+10  0.000000  0.000000  0.000000 11.2
+11  0.000000  0.000000  0.000000 13.8
+12  0.000000  0.000000  0.000000 10.7
+13  0.000000  0.000000  0.000000 11.0
+14  0.000000  0.000000  0.000000 10.9
+15 -1.681793  0.000000  0.000000 10.8
+16  1.681793  0.000000  0.000000  6.0
+17  0.000000 -1.681793  0.000000  7.9
+18  0.000000  1.681793  0.000000  7.3
+19  0.000000  0.000000 -1.681793  5.0
+20  0.000000  0.000000  1.681793  9.8</code></pre>
+</div>
+</div>
+</section>
+<section id="box-benken-설계-1" class="level4" data-number="7.6.6.2">
+<h4 data-number="7.6.6.2" class="anchored" data-anchor-id="box-benken-설계-1"><span class="header-section-number">7.6.6.2</span> Box-Benken 설계</h4>
+<p>요인의 개수가 <span class="math inline">\(k=3\)</span> 이고 중심점에서 실험의 개수가 <span class="math inline">\(n_0=2\)</span> 인 Box-Benken 설계의 실험점을 패키지 <code>rsm</code> 의 함수 <code>bbd()</code> 를 통하여 구해보자 (교과서 표 9.6).</p>
+<p>함수 <code>bbd()</code>를 사용하는 경우 인자는 다음과 같다.</p>
+<ul>
+<li><code>k = 3</code> : 요인의 개수(<span class="math inline">\(k\)</span>)를 3개로 지정</li>
+<li><code>n0 = 2</code> : 중심점의 수 (<span class="math inline">\(n_0\)</span>) 를 2개로 지정</li>
+<li><code>randomize = F</code> : 실험의 순서를 임의화하지 않는다.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>designBB <span class="ot">&lt;-</span> <span class="fu">bbd</span> ( <span class="at">k=</span> <span class="dv">3</span>, <span class="at">n0 =</span> <span class="dv">2</span>,  <span class="at">randomize =</span> F)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>designBB</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   run.order std.order x1.as.is x2.as.is x3.as.is
+1          1         1       -1       -1        0
+2          2         2        1       -1        0
+3          3         3       -1        1        0
+4          4         4        1        1        0
+5          5         5       -1        0       -1
+6          6         6        1        0       -1
+7          7         7       -1        0        1
+8          8         8        1        0        1
+9          9         9        0       -1       -1
+10        10        10        0        1       -1
+11        11        11        0       -1        1
+12        12        12        0        1        1
+13        13        13        0        0        0
+14        14        14        0        0        0
+
+Data are stored in coded form using these coding formulas ...
+x1 ~ x1.as.is
+x2 ~ x2.as.is
+x3 ~ x3.as.is</code></pre>
+</div>
+</div>
+<!--
+y <- rnorm(18, 150, 10)
+dfS <- cbind( data.frame(designS)[3:5], y)
+dfR <- cbind( data.frame(designR)[3:5], y)
+
+rsmS <- rsm(y~SO(x1,x2,x3), data=dfS)
+rsmR <- rsm(y~SO(x1,x2,x3), data=dfR)
+
+XS <- model.matrix(rsmS)
+XR <- model.matrix(rsmS)
+
+xx <- runif(3)
+xx <- xx/sqrt(sum(xx^2))
+xx <- matrix(xx, 3,1) 
+xx0 <- c(1, xx, xx[1]*xx[2], xx[1]*xx[3], xx[2]*xx[3], xx[1]^2, xx[2]^2, xx[3]^2)
+xx
+
+t(xx0) %*% solve(t(XS) %*% XS) %*% xx0
+t(xx0) %*% solve(t(XR) %*% XR) %*% xx0
+
+-->
+</section>
+</section>
+</section>
+<section id="example" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="example"><span class="header-section-number">7.7</span> 이차반응표면분석 사례</h2>
+<section id="개요-4" class="level3" data-number="7.7.1">
+<h3 data-number="7.7.1" class="anchored" data-anchor-id="개요-4"><span class="header-section-number">7.7.1</span> 개요</h3>
+<ul>
+<li>교과서 9.6 절의 반응표면분석 사례 예제</li>
+<li>교과서에서는 <code>Design Expert</code> 프로그램을 사용하였지만 본 강의노트에서는 <code>R</code> 의 <code>rsm</code> 패키지를 사용하여 사례 분석</li>
+</ul>
+</section>
+<section id="실험의-목적과-개요" class="level3" data-number="7.7.2">
+<h3 data-number="7.7.2" class="anchored" data-anchor-id="실험의-목적과-개요"><span class="header-section-number">7.7.2</span> 실험의 목적과 개요</h3>
+<p>빵을 포장하는 비닐 봉지의 접착력 <span class="math inline">\(y\)</span> 을 가장 크게 하는 마감 공정의 조건을 찾는 실험을 수행하려고 한다. 실험에서 고려하는 반응변수 <span class="math inline">\(y\)</span> 는 접착력이고 설명변수는 3개를 고려하는데 변수의 정의, 고려하는 범위와 변환식는 다음과 같다.</p>
+<table class="table">
+<caption>실험에서 고려하는 설명변수</caption>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">독립변수 이름</th>
+<th style="text-align: center;">설명(단위)</th>
+<th style="text-align: center;">관심 범위</th>
+<th style="text-align: left;">상자점 <span class="math inline">\((-1,1)\)</span> 변환식</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>T</code></td>
+<td style="text-align: center;">마감온도(섭씨 온도)</td>
+<td style="text-align: center;">(100, 140)</td>
+<td style="text-align: left;"><span class="math inline">\(x_1 = (T-120)/20\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>C</code></td>
+<td style="text-align: center;">냉각온도(섭씨 온도)</td>
+<td style="text-align: center;">(5, 15)</td>
+<td style="text-align: left;"><span class="math inline">\(x_2 = (C-10)/5\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>P</code></td>
+<td style="text-align: center;">폴리 에틸렌 첨가제의 양(%)</td>
+<td style="text-align: center;">(0.5, 1.7)</td>
+<td style="text-align: left;"><span class="math inline">\(x_2 = (P-1.1)/(0.6)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>반응표면분석은 다음과 같은 2차 모형을 고려하여 접착력을 최대로 하는 최적점을 찾으려고 한다.</p>
+<p><span id="eq-exammodel1"><span class="math display">\[
+y = \beta_0 + \sum_{i=1}^{3} \beta_i x_i + \sum_{i=1}^{3} \beta_{ii} x^2_i +
+\sum_{i=1}^{2} \sum_{j=i+1}^3 \beta_{ij} x_i x_j +e
+\tag{7.23}\]</span></span></p>
+<p>다음은 반응표면분석을 위한 패키지 <code>rsm</code> 에서 함수 <code>rsm()</code>을 이용하여 1차 또는 2차 다항모형을 적합하는 경우 사용되는 모형식의 종류와 설명이다.</p>
+<table class="table">
+<caption>함수 <code>rsm()</code> 의 모형식</caption>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 23%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">모형식</th>
+<th style="text-align: left;">설명</th>
+<th style="text-align: center;">사용의 예</th>
+<th style="text-align: center;">식</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>FO</code></td>
+<td style="text-align: left;">first-order, 1차 다항식</td>
+<td style="text-align: center;"><code>FO(x1, x2, x3)</code></td>
+<td style="text-align: center;"><span class="math inline">\(\sum_{i=1}^{3} \beta_i x_i\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>TWI</code></td>
+<td style="text-align: left;">two-way interaction, 두 변수의 상호작용</td>
+<td style="text-align: center;"><code>TWI(x1,x2)</code></td>
+<td style="text-align: center;"><span class="math inline">\(\sum_{i=1}^{2} \sum_{j=i+1}^3 \beta_{ij} x_i x_j\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>PQ</code></td>
+<td style="text-align: left;">pure quadratic , 제곱항</td>
+<td style="text-align: center;"><code>PQ(x1)</code></td>
+<td style="text-align: center;"><span class="math inline">\(\sum_{i=1}^{3} \beta_{ii} x^2_i\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>SO</code></td>
+<td style="text-align: left;">second-order, 2차 다항식</td>
+<td style="text-align: center;"><code>SO(x1, x2, x3)</code></td>
+<td style="text-align: center;">all terms</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="중심합성설계의-실험점-생성" class="level3" data-number="7.7.3">
+<h3 data-number="7.7.3" class="anchored" data-anchor-id="중심합성설계의-실험점-생성"><span class="header-section-number">7.7.3</span> 중심합성설계의 실험점 생성</h3>
+<p>설명변수(요인)의 개수가 3개이며 회전가능한 중심합성설계를 사용한 실험점은 다음과 같이 <code>ccd()</code> 함수로 구할 수 있다.</p>
+<ul>
+<li><code>ccd()</code> 함수에서 독립 변수의 변환식을 지정할 수 있으며 실험점이 원래 변수(<code>T</code>, <code>C</code>, <code>P</code>)의 값으로 표시된다.</li>
+<li>중심점에서 6개의 실험을 하려고 한다. <code>ccd()</code> 함수는 지정된 <code>n0</code> 값보다 2배의 실험점을 생성하기 때문에 <code>n0 = 6</code> 를 사용하고 마지막 6개의 중심점을 제거하였다.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>mydesign0 <span class="ot">&lt;-</span> <span class="fu">ccd</span>(<span class="dv">3</span>, <span class="at">n0 =</span> <span class="dv">6</span>, <span class="at">alpha =</span> <span class="st">"rotatable"</span>, <span class="at">randomize =</span> F, <span class="at">coding =</span><span class="fu">list</span>(x1 <span class="sc">~</span> (T <span class="sc">-</span> <span class="dv">120</span>)<span class="sc">/</span><span class="dv">20</span>, x2 <span class="sc">~</span> (C <span class="sc">-</span> <span class="dv">10</span>)<span class="sc">/</span><span class="dv">5</span>, x3 <span class="sc">~</span> (P<span class="fl">-1.1</span>)<span class="sc">/</span><span class="fl">0.6</span>))</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>mydesign0</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   run.order std.order         T         C         P Block
+1          1         1 100.00000  5.000000 0.5000000     1
+2          2         2 140.00000  5.000000 0.5000000     1
+3          3         3 100.00000 15.000000 0.5000000     1
+4          4         4 140.00000 15.000000 0.5000000     1
+5          5         5 100.00000  5.000000 1.7000000     1
+6          6         6 140.00000  5.000000 1.7000000     1
+7          7         7 100.00000 15.000000 1.7000000     1
+8          8         8 140.00000 15.000000 1.7000000     1
+9          9         9 120.00000 10.000000 1.1000000     1
+10        10        10 120.00000 10.000000 1.1000000     1
+11        11        11 120.00000 10.000000 1.1000000     1
+12        12        12 120.00000 10.000000 1.1000000     1
+13        13        13 120.00000 10.000000 1.1000000     1
+14        14        14 120.00000 10.000000 1.1000000     1
+15         1         1  86.36414 10.000000 1.1000000     2
+16         2         2 153.63586 10.000000 1.1000000     2
+17         3         3 120.00000  1.591036 1.1000000     2
+18         4         4 120.00000 18.408964 1.1000000     2
+19         5         5 120.00000 10.000000 0.0909243     2
+20         6         6 120.00000 10.000000 2.1090757     2
+21         7         7 120.00000 10.000000 1.1000000     2
+22         8         8 120.00000 10.000000 1.1000000     2
+23         9         9 120.00000 10.000000 1.1000000     2
+24        10        10 120.00000 10.000000 1.1000000     2
+25        11        11 120.00000 10.000000 1.1000000     2
+26        12        12 120.00000 10.000000 1.1000000     2
+
+Data are stored in coded form using these coding formulas ...
+x1 ~ (T - 120)/20
+x2 ~ (C - 10)/5
+x3 ~ (P - 1.1)/0.6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>mydesign <span class="ot">&lt;-</span> mydesign0[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,<span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>mydesign</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           T         C         P
+1  100.00000  5.000000 0.5000000
+2  140.00000  5.000000 0.5000000
+3  100.00000 15.000000 0.5000000
+4  140.00000 15.000000 0.5000000
+5  100.00000  5.000000 1.7000000
+6  140.00000  5.000000 1.7000000
+7  100.00000 15.000000 1.7000000
+8  140.00000 15.000000 1.7000000
+9  120.00000 10.000000 1.1000000
+10 120.00000 10.000000 1.1000000
+11 120.00000 10.000000 1.1000000
+12 120.00000 10.000000 1.1000000
+13 120.00000 10.000000 1.1000000
+14 120.00000 10.000000 1.1000000
+15  86.36414 10.000000 1.1000000
+16 153.63586 10.000000 1.1000000
+17 120.00000  1.591036 1.1000000
+18 120.00000 18.408964 1.1000000
+19 120.00000 10.000000 0.0909243
+20 120.00000 10.000000 2.1090757
+
+Data are stored in coded form using these coding formulas ...
+x1 ~ (T - 120)/20
+x2 ~ (C - 10)/5
+x3 ~ (P - 1.1)/0.6</code></pre>
+</div>
+</div>
+</section>
+<section id="실험자료-읽어오기" class="level3" data-number="7.7.4">
+<h3 data-number="7.7.4" class="anchored" data-anchor-id="실험자료-읽어오기"><span class="header-section-number">7.7.4</span> 실험자료 읽어오기</h3>
+<p>이제 실제 실험을 수행하고 반응값인 접착력을 측정한 자료를 읽어보자. 측정한 자료는 화일 <a href="https://ilovedata.github.io/doe_book_2024/data/chap9_rsm.csv">chap9_rsm.csv</a> 에 저장되어 있으며 다음과 같이 자료를 읽어서 데이터프레임<code>rsm_data</code> 를 생성할 수 있다.</p>
+<p>주의할 점은 화일 <code>chap9_rsm.csv</code> 이 현재 작업 경로(working directory)에 있다고 가정한다. 현재 작업 경로에 화일이 없으면 화일의 전체 경로를 지정해주어야 한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>rsm_data0 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"chap9_rsm.csv"</span>), <span class="at">header =</span> T)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>rsm_data0</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           T         C         P    y
+1  100.00000  5.000000 0.5000000  7.6
+2  140.00000  5.000000 0.5000000  7.9
+3  100.00000 15.000000 0.5000000  8.9
+4  140.00000 15.000000 0.5000000  7.1
+5  100.00000  5.000000 1.7000000 10.2
+6  140.00000  5.000000 1.7000000  7.8
+7  100.00000 15.000000 1.7000000 11.9
+8  140.00000 15.000000 1.7000000  8.3
+9   86.36414 10.000000 1.1000000 10.8
+10 153.63586 10.000000 1.1000000  6.0
+11 120.00000  1.591036 1.1000000  7.9
+12 120.00000 18.408964 1.1000000  7.3
+13 120.00000 10.000000 0.0909243  5.0
+14 120.00000 10.000000 2.1090757  9.8
+15 120.00000 10.000000 1.1000000 11.5
+16 120.00000 10.000000 1.1000000 11.2
+17 120.00000 10.000000 1.1000000 13.8
+18 120.00000 10.000000 1.1000000 10.7
+19 120.00000 10.000000 1.1000000 11.0
+20 120.00000 10.000000 1.1000000 10.9</code></pre>
+</div>
+</div>
+<p>이제 위의 표에서 제시된 변환식이 적용된 실험자료의 데이터프레임을 만들자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>rsm_data <span class="ot">&lt;-</span> <span class="fu">coded.data</span>(rsm_data0, x1 <span class="sc">~</span> (T <span class="sc">-</span> <span class="dv">120</span>)<span class="sc">/</span><span class="dv">20</span>, x2 <span class="sc">~</span> (C <span class="sc">-</span> <span class="dv">10</span>)<span class="sc">/</span><span class="dv">5</span>, x3 <span class="sc">~</span> (P<span class="fl">-1.1</span>)<span class="sc">/</span><span class="fl">0.6</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>rsm_data</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           T         C         P    y
+1  100.00000  5.000000 0.5000000  7.6
+2  140.00000  5.000000 0.5000000  7.9
+3  100.00000 15.000000 0.5000000  8.9
+4  140.00000 15.000000 0.5000000  7.1
+5  100.00000  5.000000 1.7000000 10.2
+6  140.00000  5.000000 1.7000000  7.8
+7  100.00000 15.000000 1.7000000 11.9
+8  140.00000 15.000000 1.7000000  8.3
+9   86.36414 10.000000 1.1000000 10.8
+10 153.63586 10.000000 1.1000000  6.0
+11 120.00000  1.591036 1.1000000  7.9
+12 120.00000 18.408964 1.1000000  7.3
+13 120.00000 10.000000 0.0909243  5.0
+14 120.00000 10.000000 2.1090757  9.8
+15 120.00000 10.000000 1.1000000 11.5
+16 120.00000 10.000000 1.1000000 11.2
+17 120.00000 10.000000 1.1000000 13.8
+18 120.00000 10.000000 1.1000000 10.7
+19 120.00000 10.000000 1.1000000 11.0
+20 120.00000 10.000000 1.1000000 10.9
+
+Data are stored in coded form using these coding formulas ...
+x1 ~ (T - 120)/20
+x2 ~ (C - 10)/5
+x3 ~ (P - 1.1)/0.6</code></pre>
+</div>
+</div>
+<!---
+## 1차 다항식 모형의 적합
+
+현재 고려하는  자료 `rsm_data` 는  반응표면분석의 최종 단계에서 최적점을 찾기 위한 실험이다.
+따라서 2차 모형을 적합하기 위한 상자점과 축점이 모두 포함되어 있다.
+
+이 절에서는  자료 `rsm_data` 에서 축점을 제외하고  1차 선형모형을 이용한 최대경사법을 적용해본다.
+
+
+::: {.cell}
+
+```{.r .cell-code}
+steep_data <- rsm_data[,-(14:20)]
+steep_data 
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+           T         C         P    y
+1  100.00000  5.000000 0.5000000  7.6
+2  140.00000  5.000000 0.5000000  7.9
+3  100.00000 15.000000 0.5000000  8.9
+4  140.00000 15.000000 0.5000000  7.1
+5  100.00000  5.000000 1.7000000 10.2
+6  140.00000  5.000000 1.7000000  7.8
+7  100.00000 15.000000 1.7000000 11.9
+8  140.00000 15.000000 1.7000000  8.3
+9   86.36414 10.000000 1.1000000 10.8
+10 153.63586 10.000000 1.1000000  6.0
+11 120.00000  1.591036 1.1000000  7.9
+12 120.00000 18.408964 1.1000000  7.3
+13 120.00000 10.000000 0.0909243  5.0
+14 120.00000 10.000000 2.1090757  9.8
+15 120.00000 10.000000 1.1000000 11.5
+16 120.00000 10.000000 1.1000000 11.2
+17 120.00000 10.000000 1.1000000 13.8
+18 120.00000 10.000000 1.1000000 10.7
+19 120.00000 10.000000 1.1000000 11.0
+20 120.00000 10.000000 1.1000000 10.9
+
+Data are stored in coded form using these coding formulas ...
+x1 ~ (T - 120)/20
+x2 ~ (C - 10)/5
+x3 ~ (P - 1.1)/0.6
+```
+
+
+:::
+
+```{.r .cell-code}
+steep_res <- rsm(y ~ FO(x1, x2, x3), data = steep_data)
+summary(steep_res)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+rsm(formula = y ~ FO(x1, x2, x3), data = steep_data)
+
+            Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)  9.28000    0.43541 21.3133 3.581e-13 ***
+x1          -1.14028    0.52691 -2.1641   0.04593 *  
+x2           0.12382    0.52691  0.2350   0.81720    
+x3           1.08170    0.52691  2.0529   0.05681 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Multiple R-squared:  0.3588,    Adjusted R-squared:  0.2386 
+F-statistic: 2.984 on 3 and 16 DF,  p-value: 0.0624
+
+Analysis of Variance Table
+
+Response: y
+               Df Sum Sq Mean Sq F value  Pr(>F)
+FO(x1, x2, x3)  3 33.946 11.3153  2.9843 0.06240
+Residuals      16 60.666  3.7916                
+Lack of fit    11 54.038  4.9125  3.7057 0.07972
+Pure error      5  6.628  1.3257                
+
+Direction of steepest ascent (at radius 1):
+         x1          x2          x3 
+-0.72325567  0.07853346  0.68610038 
+
+Corresponding increment in original units:
+          T           C           P 
+-14.4651133   0.3926673   0.4116602 
+```
+
+
+:::
+:::
+
+-->
+</section>
+<section id="차-다항식-모형의-적합" class="level3" data-number="7.7.5">
+<h3 data-number="7.7.5" class="anchored" data-anchor-id="차-다항식-모형의-적합"><span class="header-section-number">7.7.5</span> 2차 다항식 모형의 적합</h3>
+<section id="모형의-적합" class="level4" data-number="7.7.5.1">
+<h4 data-number="7.7.5.1" class="anchored" data-anchor-id="모형의-적합"><span class="header-section-number">7.7.5.1</span> 모형의 적합</h4>
+<p>이제 자료 <code>rsm_data</code> 에 대하여 식 <a href="#eq-exammodel1" class="quarto-xref">식&nbsp;<span>7.23</span></a> 으로 표현된 2차 선형모형을 적합해보자. 2차 다항식의 적합은 함수 <code>rsm()</code> 에서 <code>SO(x1+x2+x3)</code>를 사용한다.</p>
+<p>아래의 적합한 결과를 요약하면 다음과 같다.</p>
+<ul>
+<li>1차항(<code>FO</code>)은 <code>x1</code> 과 <code>x2</code> 가 유의하다.</li>
+<li>상호작용(<code>TWI</code>)은 모두 유의하지 않다.</li>
+<li>2차항(<code>PQ</code>)은 모두 유의하다.</li>
+<li>2차 다항식의 정준분석으로 3개의 고유값이 모두 음수이다 <span class="math inline">\((-0.6064, -1.2442, -1.3711)\)</span></li>
+<li>따라서 최적점은 반응변수가 최대가 되는 실험점이다.</li>
+<li>최적점은 원자료의 단위로 <span class="math inline">\(T=100.86\)</span>, <span class="math inline">\(C=11.45\)</span>, <span class="math inline">\(P=1.52\)</span>이다.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">rsm</span>(y <span class="sc">~</span> <span class="fu">SO</span>(x1, x2, x3), <span class="at">data =</span> rsm_data)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(res2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+rsm(formula = y ~ SO(x1, x2, x3), data = rsm_data)
+
+            Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept) 11.47992    0.47725 24.0542 3.508e-10 ***
+x1          -1.14028    0.31665 -3.6011  0.004839 ** 
+x2           0.12382    0.31665  0.3910  0.703984    
+x3           1.08170    0.31665  3.4161  0.006590 ** 
+x1:x2       -0.41250    0.41372 -0.9971  0.342252    
+x1:x3       -0.56250    0.41372 -1.3596  0.203816    
+x2:x3        0.21250    0.41372  0.5136  0.618665    
+x1^2        -0.86177    0.30825 -2.7957  0.018933 *  
+x2^2        -1.14462    0.30825 -3.7133  0.004019 ** 
+x3^2        -1.21533    0.30825 -3.9427  0.002763 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Multiple R-squared:  0.8553,    Adjusted R-squared:  0.725 
+F-statistic: 6.566 on 9 and 10 DF,  p-value: 0.003469
+
+Analysis of Variance Table
+
+Response: y
+                Df Sum Sq Mean Sq F value   Pr(&gt;F)
+FO(x1, x2, x3)   3 33.946 11.3153  8.2636 0.004630
+TWI(x1, x2, x3)  3  4.254  1.4179  1.0355 0.418243
+PQ(x1, x2, x3)   3 42.719 14.2397 10.3992 0.002037
+Residuals       10 13.693  1.3693                 
+Lack of fit      5  7.065  1.4129  1.0658 0.472962
+Pure error       5  6.628  1.3257                 
+
+Stationary point of response surface:
+        x1         x2         x3 
+-0.9569885  0.2907543  0.6919092 
+
+Stationary point in original units:
+         T          C          P 
+100.860230  11.453771   1.515146 
+
+Eigenanalysis:
+eigen() decomposition
+$values
+[1] -0.6064157 -1.2442428 -1.3710551
+
+$vectors
+         [,1]       [,2]        [,3]
+x1  0.8054829 -0.3224169 -0.49723696
+x2 -0.3957602 -0.9171818 -0.04638263
+x3 -0.4411022  0.2341470 -0.86637408</code></pre>
+</div>
+</div>
+</section>
+<section id="등고선과-3차원-그림" class="level4" data-number="7.7.5.2">
+<h4 data-number="7.7.5.2" class="anchored" data-anchor-id="등고선과-3차원-그림"><span class="header-section-number">7.7.5.2</span> 등고선과 3차원 그림</h4>
+<p>이제 각 두 개의 요인에 대하여 적합된 2차 다항식 반응표면의 예측값을 등고선 그림과 3차원 그림으로 나타내어 보자.</p>
+<p>이 실험에서는 3개의 독립변수를 사용하였기 때문에 등고선 그림을 그리는 경우 2개의 변수를 사용해서 그려야 한다. 이 경우 나머지 독립변수의 값은 주어진 값으로 고정시켜야 한다. 함수 <code>contour()</code> 에서 <code>at=summary(res2)$canonical$xs</code> 는 두 독립변수를 축으로 그림을 그릴때 나머지 독립변수의 값을 최적점으로 지정해주는 옵션이다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(res2)<span class="sc">$</span>canonical<span class="sc">$</span>xs <span class="co"># 최적실험점</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        x1         x2         x3 
+-0.9569885  0.2907543  0.6919092 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">1</span>))</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span> (res2, <span class="sc">~</span> x1<span class="sc">+</span>x2<span class="sc">+</span>x3, <span class="at">image =</span> <span class="cn">TRUE</span>, <span class="at">at=</span><span class="fu">summary</span>(res2)<span class="sc">$</span>canonical<span class="sc">$</span>xs)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-36-2.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-36-3.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">1</span>))</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(res2, x2<span class="sc">~</span>x1, <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">50</span>))</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(res2, x3<span class="sc">~</span>x1, <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">50</span>))</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(res2, x3<span class="sc">~</span>x2, <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">50</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-37-2.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-37-3.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="변수-선택" class="level3" data-number="7.7.6">
+<h3 data-number="7.7.6" class="anchored" data-anchor-id="변수-선택"><span class="header-section-number">7.7.6</span> 변수 선택</h3>
+<p>앞에서 2차 다항식의 모형을 적합한 경우 상호작용 효과가 유의하지 않았다. 이제 2차 다항식 모형을 <code>lm()</code> 함수를 이용하여 적합한 후에 함수 <code>step()</code>을 이용하여 후방제거법(backward elimination)으로 변수 선택을 실행해 보자. <code>step()</code> 에서는 별도로 지정하지 않으면 AIC(Akaike Information Criteria)에 의한 최적 모형을 선택해 준다.</p>
+<p>2차 다항식 모형을 <code>lm()</code> 함수로 적합하는 경우는 상호작용과 2차식을 모두 모형식에 아래와 같이 포함시켜주어야 한다.</p>
+<p>후방제거법(backward elimination)을 실행한 결과 다음과 같은 모형이 최종적으로 선택되었다.</p>
+<p><span class="math display">\[ y= \beta_0 + \beta_1 x_1 + \beta_3 x_3 + \beta_{13} x_1 x_3 + \beta_{11} x_1^2 + \beta_{22} x_2^2 + \beta_{33} x_3^2 + e \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>res21 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x1<span class="sc">:</span>x2 <span class="sc">+</span> x1<span class="sc">:</span>x3 <span class="sc">+</span> x2<span class="sc">:</span>x3 <span class="sc">+</span> <span class="fu">I</span>(x1<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(x2<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(x3<span class="sc">^</span><span class="dv">2</span>), <span class="at">data=</span>rsm_data)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(res21)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm.default(formula = y ~ x1 + x2 + x3 + x1:x2 + x1:x3 + x2:x3 + 
+    I(x1^2) + I(x2^2) + I(x3^2), data = rsm_data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.22327 -0.50492 -0.07776  0.31191  2.32008 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  11.4799     0.4773  24.054 3.51e-10 ***
+x1           -1.1403     0.3166  -3.601  0.00484 ** 
+x2            0.1238     0.3166   0.391  0.70398    
+x3            1.0817     0.3166   3.416  0.00659 ** 
+I(x1^2)      -0.8618     0.3082  -2.796  0.01893 *  
+I(x2^2)      -1.1446     0.3082  -3.713  0.00402 ** 
+I(x3^2)      -1.2153     0.3082  -3.943  0.00276 ** 
+x1:x2        -0.4125     0.4137  -0.997  0.34225    
+x1:x3        -0.5625     0.4137  -1.360  0.20382    
+x2:x3         0.2125     0.4137   0.514  0.61866    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.17 on 10 degrees of freedom
+Multiple R-squared:  0.8553,    Adjusted R-squared:  0.725 
+F-statistic: 6.566 on 9 and 10 DF,  p-value: 0.003469</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(res21 , <span class="at">direction =</span> <span class="st">"backward"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=12.42
+y ~ x1 + x2 + x3 + x1:x2 + x1:x3 + x2:x3 + I(x1^2) + I(x2^2) + 
+    I(x3^2)
+
+          Df Sum of Sq    RSS    AIC
+- x2:x3    1    0.3613 14.054 10.944
+- x1:x2    1    1.3613 15.054 12.319
+&lt;none&gt;                 13.693 12.423
+- x1:x3    1    2.5313 16.224 13.816
+- I(x1^2)  1   10.7026 24.396 21.973
+- I(x2^2)  1   18.8809 32.574 27.756
+- I(x3^2)  1   21.2857 34.979 29.180
+
+Step:  AIC=10.94
+y ~ x1 + x2 + x3 + I(x1^2) + I(x2^2) + I(x3^2) + x1:x2 + x1:x3
+
+          Df Sum of Sq    RSS    AIC
+- x1:x2    1    1.3613 15.416 10.793
+&lt;none&gt;                 14.054 10.944
+- x1:x3    1    2.5313 16.586 12.256
+- I(x1^2)  1   10.7026 24.757 20.267
+- I(x2^2)  1   18.8809 32.935 25.976
+- I(x3^2)  1   21.2857 35.340 27.386
+
+Step:  AIC=10.79
+y ~ x1 + x2 + x3 + I(x1^2) + I(x2^2) + I(x3^2) + x1:x3
+
+          Df Sum of Sq    RSS     AIC
+- x2       1    0.2094 15.625  9.0627
+&lt;none&gt;                 15.416 10.7929
+- x1:x3    1    2.5312 17.947 11.8336
+- I(x1^2)  1   10.7026 26.118 19.3379
+- I(x2^2)  1   18.8809 34.296 24.7862
+- I(x3^2)  1   21.2857 36.701 26.1416
+
+Step:  AIC=9.06
+y ~ x1 + x3 + I(x1^2) + I(x2^2) + I(x3^2) + x1:x3
+
+          Df Sum of Sq    RSS     AIC
+&lt;none&gt;                 15.625  9.0627
+- x1:x3    1    2.5312 18.156 10.0656
+- I(x1^2)  1   10.7026 26.327 17.4976
+- I(x2^2)  1   18.8809 34.506 22.9079
+- I(x3^2)  1   21.2857 36.911 24.2553</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm.default(formula = y ~ x1 + x3 + I(x1^2) + I(x2^2) + I(x3^2) + 
+    x1:x3, data = rsm_data)
+
+Coefficients:
+(Intercept)           x1           x3      I(x1^2)      I(x2^2)      I(x3^2)  
+    11.4799      -1.1403       1.0817      -0.8618      -1.1446      -1.2153  
+      x1:x3  
+    -0.5625  </code></pre>
+</div>
+</div>
+</section>
+<section id="최종모형-선택" class="level3" data-number="7.7.7">
+<h3 data-number="7.7.7" class="anchored" data-anchor-id="최종모형-선택"><span class="header-section-number">7.7.7</span> 최종모형 선택</h3>
+<section id="최종모형의-선택과-적합" class="level4" data-number="7.7.7.1">
+<h4 data-number="7.7.7.1" class="anchored" data-anchor-id="최종모형의-선택과-적합"><span class="header-section-number">7.7.7.1</span> 최종모형의 선택과 적합</h4>
+<p>앞에서 후방제거법(backward elimination)을 실행한 결과에서 주 효과 <span class="math inline">\(x_2\)</span> 가 제외되었지만 2차항 <span class="math inline">\(x_2^2\)</span> 이 선택되었으므로 주 효과 <span class="math inline">\(x_2\)</span> 도 최종 모형에 포함시킨다.</p>
+<p><span id="eq-finalmodel"><span class="math display">\[
+y= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_{13} x_1 x_3 + \beta_{11} x_1^2 + \beta_{22} x_2^2 + \beta_{33} x_3^2 + e
+\tag{7.24}\]</span></span></p>
+<p>따라서 위에서 고려한 최종모형 <a href="#eq-finalmodel" class="quarto-xref">식&nbsp;<span>7.24</span></a> 을 선택하여 반응표면 분석을 다시 실행해 보자.</p>
+<ul>
+<li>최종모형의 정준분석으로 3개의 고유값이 모두 음수이다 <span class="math inline">\((-0.7064, -1.1446, -1.3707)\)</span></li>
+<li>따라서 최적점은 반응변수가 최대가 되는 실험점이다.</li>
+<li>최종모형에서 최적점은 원자료의 단위로 <span class="math inline">\(T=102.55\)</span>, <span class="math inline">\(C=10.27\)</span>, <span class="math inline">\(P=1.49\)</span>이다.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>finalres <span class="ot">&lt;-</span> <span class="fu">rsm</span>(y <span class="sc">~</span> <span class="fu">FO</span>(x1, x2, x3) <span class="sc">+</span> <span class="fu">TWI</span>(x1, x3) <span class="sc">+</span> <span class="fu">PQ</span>(x1,x2,x3), <span class="at">data =</span> rsm_data)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(finalres)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+rsm(formula = y ~ FO(x1, x2, x3) + TWI(x1, x3) + PQ(x1, x2, x3), 
+    data = rsm_data)
+
+            Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept) 11.47992    0.46226 24.8343 1.099e-11 ***
+x1          -1.14028    0.30670 -3.7179  0.002938 ** 
+x2           0.12382    0.30670  0.4037  0.693534    
+x3           1.08170    0.30670  3.5269  0.004170 ** 
+x1:x3       -0.56250    0.40072 -1.4037  0.185750    
+x1^2        -0.86177    0.29856 -2.8864  0.013667 *  
+x2^2        -1.14462    0.29856 -3.8337  0.002379 ** 
+x3^2        -1.21533    0.29856 -4.0706  0.001552 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Multiple R-squared:  0.8371,    Adjusted R-squared:  0.742 
+F-statistic: 8.807 on 7 and 12 DF,  p-value: 0.0006411
+
+Analysis of Variance Table
+
+Response: y
+               Df Sum Sq Mean Sq F value   Pr(&gt;F)
+FO(x1, x2, x3)  3 33.946 11.3153  8.8082 0.002327
+TWI(x1, x3)     1  2.531  2.5313  1.9704 0.185750
+PQ(x1, x2, x3)  3 42.719 14.2397 11.0847 0.000896
+Residuals      12 15.416  1.2846                 
+Lack of fit     7  8.787  1.2553  0.9469 0.543851
+Pure error      5  6.628  1.3257                 
+
+Stationary point of response surface:
+         x1          x2          x3 
+-0.87274297  0.05408589  0.64699393 
+
+Stationary point in original units:
+         T          C          P 
+102.545141  10.270429   1.488196 
+
+Eigenanalysis:
+eigen() decomposition
+$values
+[1] -0.7063571 -1.1446152 -1.3707412
+
+$vectors
+         [,1] [,2]      [,3]
+x1  0.8752577    0 0.4836569
+x2  0.0000000    1 0.0000000
+x3 -0.4836569    0 0.8752577</code></pre>
+</div>
+</div>
+</section>
+<section id="등고선과-3차원-그림-1" class="level4" data-number="7.7.7.2">
+<h4 data-number="7.7.7.2" class="anchored" data-anchor-id="등고선과-3차원-그림-1"><span class="header-section-number">7.7.7.2</span> 등고선과 3차원 그림</h4>
+<p>이제 적합된 최종모형에서 각 두 개의 요인에 대하여 반응표면의 예측값을 등고선 그림과 3차원 그림으로 나타내어 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">1</span>))</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span> (finalres, <span class="sc">~</span> x1<span class="sc">+</span>x2<span class="sc">+</span>x3, <span class="at">image =</span> <span class="cn">TRUE</span>, <span class="at">at=</span><span class="fu">summary</span>(finalres)<span class="sc">$</span>canonical<span class="sc">$</span>xs)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-40-2.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-40-3.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">1</span>))</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(finalres, x2<span class="sc">~</span>x1, <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">50</span>))</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(finalres, x3<span class="sc">~</span>x1, <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">50</span>))</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(finalres, x3<span class="sc">~</span>x2, <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">50</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-41-2.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="response_files/figure-html/unnamed-chunk-41-3.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-montgomery2017design" class="csl-entry" role="listitem">
+Montgomery, Douglas C. 2017. <em>Design and analysis of experiments</em>. John wiley &amp; sons.
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../qmd/twolevelscomf.html" class="pagination-link" aria-label="2수준 요인배치법 - 교락법">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">2수준 요인배치법 - 교락법</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
