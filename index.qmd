@@ -25,6 +25,11 @@ library(SixSigma)
 library(FrF2)
 library(unrepx)
 
+library(rsm)
+library(DoE.wrapper)
+library(scatterplot3d)
+
+
 # ggplot 그래프에서 한글 사용
 library(showtext)
 font_add_google("Nanum Pen Script", "gl")
