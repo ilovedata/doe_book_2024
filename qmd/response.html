@@ -1871,6 +1871,19 @@ x3 ~ (P - 1.1)/0.6</code></pre>
 <section id="실험자료-읽어오기" class="level3" data-number="7.7.4">
 <h3 data-number="7.7.4" class="anchored" data-anchor-id="실험자료-읽어오기"><span class="header-section-number">7.7.4</span> 실험자료 읽어오기</h3>
 <p>이제 실제 실험을 수행하고 반응값인 접착력을 측정한 자료를 읽어보자. 측정한 자료는 화일 <a href="https://ilovedata.github.io/doe_book_2024/data/chap9_rsm.csv">chap9_rsm.csv</a> 에 저장되어 있으며 다음과 같이 자료를 읽어서 데이터프레임<code>rsm_data</code> 를 생성할 수 있다.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+중요
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>자료 화일은 온라인강의실 14주차 섹션에서 화일로 다운로드받을 수 있다.</p>
+</div>
+</div>
 <p>주의할 점은 화일 <code>chap9_rsm.csv</code> 이 현재 작업 경로(working directory)에 있다고 가정한다. 현재 작업 경로에 화일이 없으면 화일의 전체 경로를 지정해주어야 한다.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>rsm_data0 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"chap9_rsm.csv"</span>), <span class="at">header =</span> T)</span>
@@ -2036,7 +2049,7 @@ Corresponding increment in original units:
 <p>이제 자료 <code>rsm_data</code> 에 대하여 식 <a href="#eq-exammodel1" class="quarto-xref">식&nbsp;<span>7.23</span></a> 으로 표현된 2차 선형모형을 적합해보자. 2차 다항식의 적합은 함수 <code>rsm()</code> 에서 <code>SO(x1+x2+x3)</code>를 사용한다.</p>
 <p>아래의 적합한 결과를 요약하면 다음과 같다.</p>
 <ul>
-<li>1차항(<code>FO</code>)은 <code>x1</code> 과 <code>x2</code> 가 유의하다.</li>
+<li>1차항(<code>FO</code>)은 <code>x1</code> 과 <code>x3</code> 가 유의하다.</li>
 <li>상호작용(<code>TWI</code>)은 모두 유의하지 않다.</li>
 <li>2차항(<code>PQ</code>)은 모두 유의하다.</li>
 <li>2차 다항식의 정준분석으로 3개의 고유값이 모두 음수이다 <span class="math inline">\((-0.6064, -1.2442, -1.3711)\)</span></li>
