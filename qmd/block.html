@@ -238,6 +238,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/clinical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">의학연구에서의 실험계획법</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -656,11 +662,11 @@ Levels: A B C D E</code></pre>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design.lsd</span>(mytrt)<span class="sc">$</span>sketch</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4] [,5]
-[1,] "B"  "A"  "E"  "D"  "C" 
-[2,] "C"  "B"  "A"  "E"  "D" 
-[3,] "D"  "C"  "B"  "A"  "E" 
-[4,] "A"  "E"  "D"  "C"  "B" 
-[5,] "E"  "D"  "C"  "B"  "A" </code></pre>
+[1,] "D"  "E"  "C"  "A"  "B" 
+[2,] "B"  "C"  "A"  "D"  "E" 
+[3,] "A"  "B"  "E"  "C"  "D" 
+[4,] "E"  "A"  "D"  "B"  "C" 
+[5,] "C"  "D"  "B"  "E"  "A" </code></pre>
 </div>
 </div>
 <p>함수 <code>design.lsd()</code>는 실행할 때마다 랜덤하게 배정하기 때문에 기록을 위해서 랜덤 seed 를 지정하면 나중에도 동일한 계획을 얻을 수 있다.</p>
