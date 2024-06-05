@@ -15,6 +15,7 @@ book:
     - qmd/twolevels.qmd
     - qmd/twolevelscomf.qmd
     - qmd/response.qmd
+    - qmd/clinical.qmd
     - references.qmd
   appendices:    
     - qmd/visual.qmd
