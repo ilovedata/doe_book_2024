@@ -60,11 +60,11 @@ $$ {#eq-ancovamodel1}
 참고로 공변량을 중심화 하지 않는 모형은 다음과 같이 표현할 수 있다. 
 
 $$
-\begin{align*}
+\begin{aligned}
 y_{ij} & = \mu + \alpha_i + \beta(x_{ij} - \bar x_{..}) + e_{ij} \\
   & = \beta_0 + \alpha_i + \beta x_{ij} + e_{ij} \\
   & = \beta_{0i} + \beta x_{ij} + e_{ij}
-\end{align*}
+\end{aligned}
 $$
 
 
@@ -73,11 +73,11 @@ $$
 모형 @eq-ancovamodel1 에서 각 모수의 추정은  최소제곱법을 이용하여 추정하며 부가조건 $\sum_i \alpha_i =0$ 을 이용하면 다음과 같은 추정량을 얻을 수 있다 
 
 $$
-\begin{align*}
+\begin{aligned}
 \hat \mu & = \bar y_{..} \\
 \hat \alpha_i & =\bar y_{i.} - \bar y_{..} -\hat \beta(\bar x_{i.} -\bar x_{..}) \\
 \hat \beta & =  \frac{ \sum_i \sum_j (x_{ij} - \bar x_{i.})(y_{ij}-\bar y_{i.})}{\sum_i \sum_j (x_{ij} - \bar x_{i.})^2}
-\end{align*}
+\end{aligned}
 $$
 
 
@@ -97,9 +97,9 @@ $$ {#eq-hypoancova}
 
 ### 예제: 혈압 강하를 위한 임상 실험
 
-공분산분석의 개념을 이해앟기 위한 예제로서 혈압 강하를 위한 임상 실험에서 얻는 자료를 분석해 보자.
+공분산분석의 개념을 이해하기 위한 예제로서 혈압 강하를 위한 임상 실험에서 얻는 자료를 분석해 보자.
 
-자료는 [@chen2017clinical] 에 나온 자료이며 화일 [dbp.txt](https://ilovedata.github.io/teaching/experiment/clinical/dbp.txt) 에 저장되어 있다.
+자료는 [@chen2017clinical] 에 나온 자료이며 화일 [dbp.txt](https://github.com/ilovedata/doe_book_2024/blob/main/data/dbp.txt) 에 저장되어 있다.
 
 혈압 강하를 위한 임상실험은 2개의 처리 집단(`A`  와 `B`) 로 각각 20명이 실험에 참가하였다. 약을 복용하기 전에 혈압을 측정하고(`DBP1`) 약을 복용한 후  한 달 간격으로 4번 측정을 하였다 (`DBP2`-`DBP5`).
 
@@ -219,9 +219,9 @@ $$ {#eq-anocvadecomp}
 
 
 
-```{r, figures-side, fig.show="hold", out.width="50%"}
+```{r, figures-side, fig.show="hold", out.width="70%"}
 ssq1 <- data.frame(effect=c("TRT", "Residuals"), sumsquare=lmaov1$"Sum Sq")
-ssq2 <- data.frame(effect=c("TRT","Age", "Residuals"), sumsquare=lmaov2$"Sum Sq")
+ssq2 <- data.frame(effect=c("TRT", "Age", "Residuals"), sumsquare=lmaov2$"Sum Sq")
 
 par(mar = c(2, 2, 2, 2))
 pie(ssq1$sumsquare, labels = ssq1$effect, main="ANOVA")
@@ -254,4 +254,330 @@ abline(lmres2$coef[1]+lmres2$coef[2], lmres2$coef[3],lwd=2, lty=4)
 
 
 
+## 임상살험의 목적
+
+### 임상실험의 목적: 우월성, 동등성, 비열등성 
+
+- 우월성 (superiority)
+  + T is superior to S
+  + Treatment T has more therapeutic effect than S.
+  
+- 동등성(equivalence)
+  + T is equivalent to S
+  + Two treatments T and S have equal therapeutic effect. 
+
+- 비열등성(noninferiority)
+  + T is noninferior to S
+  + Treatment T is not inferior to S (T is as effective as S)
+
+
+![](../images/equiv-meaning.png)
+
+출처: @walker2011understanding
+
+
+### 통계적 가설
+
+평균이 큰 것이 좋다고 가정하자.
+
+- 우월성 연구의 가설
+
+$$ H_0 : \mu_T = \mu_S  \quad \text{ vs. } \quad H_1: \mu_T \ne \mu_S   $$
+
+- 사실상 우월성 실험의 대립 가설은 $H_1: \mu_T > \mu_S$ 이다.
+
+- 우월성에 대한  가설을 아래와 같이 세울수도 있지만 거의 사용하지 않는다.   
+
+$$ H_0 : \mu_T \le  \mu_S + \delta  \quad \text{ vs. } \quad H_1: \mu_T > \mu_S +   \delta $$
+
+  + $\delta$는 margin 이라고 부르며 의학적(임상적)으로 우월한 차이를 보이는 치료 효과의 차이를 말한다.   
+
+
+- 동등성(equivalence)
+
+
+$$ H_0 : | \mu_T - \mu_S | \ge \delta \quad \text{ vs. } \quad H_1: | \mu_T - \mu_S| < \delta $$ 
+
+
+- 비열등성(noninferiority)
+
+$$ H_0  : \mu_T \le  \mu_S - \delta  \quad \text{ vs. } \quad H_1: \mu_T > \mu_S -   \delta $$ 
+
+
+### 통계적 검정 절차 - 우월성
+
+
+- 우월성 연구의 가설
+
+$$ H_0 : \mu_T = \mu_S  \quad \text{ vs. } \quad H_1: \mu_T \ne \mu_S   $$
+
+- 일반적인 t-검정 또는 z-검정을 사용  
+
+- 귀무가설의 기각 조건 
+
+$$   \frac{\hat \mu_T - \hat \mu_S}{se(\hat \mu_T - \hat \mu_S)} > c_{\alpha/2} $$
+또는 
+
+$$   (\hat \mu_T - \hat \mu_S) - c_{\alpha/2}  se(\hat \mu_T - \hat \mu_S) > 0  $$
+
+
+![](../images/equiv-super.png)
+
+출처: @walker2011understanding
+
+
+### 통계적 검정 절차 - 비열등성
+
+
+- 비열등성의 가설
+
+$$
+H_0 : H_0 : \mu_T \le  \mu_S - \delta  \quad \text{ vs. } \quad H_1: \mu_T > \mu_S -   \delta
+$$ #{eq-noninf}
+
+
+
+- 일반적인 t-검정 또는 z-검정을 사용  
+
+- 귀무가설의 기각 조건 
+
+
+
+$$   (\hat \mu_T - \hat \mu_S) - c_{\alpha} ~ se(\hat \mu_T - \hat \mu_S) > -\delta  $$
+
+
+![](../images/equiv-inf.png)
+
+출처: @walker2011understanding
+
+
+### 통계적 검정 절차 - 동등성
+
+-동등성 가설
+
+$$
+H_0 : | \mu_T - \mu_S | \ge \delta \quad \text{ vs. } \quad H_1: | \mu_T - \mu_S| < \delta
+$$  {#eq-equihypo} 
+
+
+- 일반적인 t-검정 또는 z-검정이 아닌 **the two one-sided test**를 사용
+
+- 가설 @eq-equihypo 의 귀무가설은 다음 두 개의 단측 귀무 가설의 합집합니다.
+
+
+$$
+H_{01} :  \mu_T - \mu_S  \ge \delta \quad  \quad H_{02} :  \mu_T - \mu_S  \le  -\delta
+$$ {#eq-twoequihypo}
+
+따라서   @eq-twoequihypo 에 있는 두 개의 가설이 모두 기각되면 @eq-equihypo 에 있는 동등성 가설을  기각할 수 있다.
+
+
+
+- **the two one-sided test**는 다음과 같은 두 조건이 만족되면 귀무가설을 기각한다.
+
+$$  
+\frac{\hat \mu_T - \hat \mu_S - \delta}{se(\hat \mu_T - \hat \mu_S)} < - c_{\alpha}
+~~\text{ and }~~~ \frac{\hat \mu_T - \hat \mu_S + \delta}{se(\hat \mu_T - \hat \mu_S)} > c_{\alpha}
+$$
+
+위의 귀무가설 기각 조건은 다음과 동일하다. 즉 $100(1-2\alpha)$\% 신뢰구간이 $(-\delta, \delta)$ 안에 존재하면 귀무가설을 기각한다.
+
+$$ 
+-\delta < (\hat \mu_T - \hat \mu_S) -  c_{\alpha} ~~se(\hat \mu_T - \hat \mu_S) < 
+(\hat \mu_T - \hat \mu_S) + c_{\alpha}~~ se(\hat \mu_T - \hat \mu_S) < \delta
+$$
+
+
+![](../images/equiv-equiv.png)
+
+
+### 동등성 검정의 Size 와 유의수준
+
+- $100(1-2\alpha)$\% 신뢰구간을 이용하는 경우 검정의 Size 와 유의수준은  ? ( @kang2008 참조)
+
+
+
+## 교차실험과 동등성 검정 
+
+
+### 생체이용률(Bioavailability)
+
+
+- the rate and extent to which the active ingredient is absorbed from a drug product and  becomes available at the site of action
+
+- 주성분 또는 그 활성대사체가 제제로부터 전신순환혈로 흡수되는 속도와 양의 비율
+
+- Pharmacokinetic (PK) measures (평가항목) of  bioavailability
+
+
+  + $AUC_t$: Area under the blood or plasma concentration-time curve; 일정시간까지 혈중농도-시간곡선하면적
+  + $C_{max}$: Maximum Concentration; 최고혈중농도
+  + $T_{max}$: Time to Maximum Concentration; 최고혈중농도 도달시간
+
+
+![](../images/plasma.jpg)
+
+
+### 약품 주성분의 생체이용률의 평균적 변화
+
+
+![](../images/bioequi.jpg)
+
+
+### 생물학적동등성의 정의: FDA 과 KFDA 
+
+
+- Bioequivalence by FDA
+
+    absence of a significant difference in Bioavailability between two formulations.... when administered at the same molar dose under similar conditions in an appropriately designed study
+
+  + in vivo: Bioequivalence
+
+  + in vitro: Bioequivalence
+
+- KFDA
+
+의약품동등성시험이란 그 주성분 ·함량 및 제형이 동일한 두 제제에 대한 의약품동등성을 입증하기 위해 실시하는 
+생물학적동등성시험, 비교용출시험, 비교붕해등 기타시험의 생체내·외 시험을 말한다.
+
+
+
+### 생물학적동등성 실험의 설계
+
+- 생체이용률(bioavailibility)은 개인간에 변동이 크다 
+
+- 개인효과(individual effect)를 제거하기 위한 쌍비교 t-검정 (paired t-test)의 개념을 도입
+
+- 실험자가 두 개의 처리를 모두 받는다.
+
+- 생동성실험은 주로 **교차시험(crossover design)**을 이용한다.
+
+- 제재의 반감기가 긴 경우 등 특수한 경우는  병렬계획(Parallel design) 실험도 가능하다.
+
+
+
+
+- 2x2 교차실험
+
+![](../images/design22.jpg)
+
+-  2x4 교차시험
+
+![](../images/design24.jpg)
+
+### 교차실험에 대한 통계적 모형
+
+- 보통 10-20명의 실험 대상자 
+
+- 각 실험 대상자가  2개(3개 또는 4개)의 반응값(PK responses)을 가진다.
+
+- 각 실험대상자의 반응값은 독립이 아니다 (correlated response; repeated measurements)
+
+- 실험대상자 간의 변이가 크다 (large between-subject variation) 
+
+- 시험약과 대조약간의 (로그)반응값의 평균의 차이가 주 검토대상이다. 
+
+- 정규분포를 가정한 선형혼합모형(linear mixed model)
+
+
+### 평균적 생물학적동등성에 대한 가설 
+
+- The absence of a significant difference (중대한 차이가 없다) in two population means between two formulations .
+
+= 시험약(T)과 대조약(R)간의 반응값의 평균의 차이:  $\mu_T-\mu_R$:
+
+- 보통 반응변수(PK response)에 로그를 취한 뒤 통계분석
+
+- $\delta=\mu_T-\mu_R$: 시험약(T)과 대조약(R)간의 로그 반응값의 평균의 차이
+
+
+- 평균적 생물학적동등성에 대한 가설
+
+$$ H_0: \delta \le \delta_L ~~~or~~~ \delta \ge \delta_U   \quad vs. \quad H_1: \delta_L < \delta < \delta_U $$
+
+- 동등성 한계 (bioequivalence limit) 
+
+$$ \delta_L=-0.223=log(0.8) \quad and \quad \delta_U=0.223=log(1.25) $$
+
+- 평균적 생물학적동등성에 대한 가설(로그변환 전)
+
+$$ H_1: 0.8 < \frac{\mu'_T}{\mu'_R} < 1.25 $$ 
+
+
+
+
+- 평균적 생물학적동등성을 어떤 통계적 방법으로 검정할 것인가? 
+
+$$ H_0: \delta \le \delta_L ~~~or~~~ \delta \ge \delta_U   \quad vs. \quad H_1: \delta_L < \delta < \delta_U $$
+
+
+- Historical development of statistical tests for ABE
+
+  + Westlake (1976), Hsu (1984), Bofinger (1985, 1992), Schuirmann (1987), Liu(1990)
+
+  + Berger and Hsu (1996), Brown, Hwang, and Munk (1997), Perlman and Wu (1999), Welleck (2003), Romano (2005)
+
+  + FDA guidance: 1992, 1997, 1999, 2000 and some drafts
+
+
+- 가설
+
+$$ H_0: |\mu_T-\mu_R| \ge \delta  \quad vs. \quad H_1: |\mu_T-\mu_R| < \delta $$
+
+- 신뢰구간을 이용한 방법
+
+
+- 2개의 단측검정을 결합한 방법 (Two ones-sided tests; TOST)
+
+
+$$ H_{01}: \mu_T-\mu_R  < -\delta \text{ and } H_{02}:  \mu_T-\mu_R  > \delta $$
+
+
+
+### 신뢰구간을 이용한 평균적 생물학적동등성 검정
+
+- 가설
+
+$$ H_0: |\mu_T-\mu_R| \ge \delta  \quad vs. \quad H_1: |\mu_T-\mu_R| < \delta $$
+
+
+- $\mu_T-\mu_R$ 에 대한 신뢰구간 $C(Y)$ 를 구한다. 
+
+- 신뢰구간이 동등성 한계안에 포함되면 평균적 생물학적동등성 선언!
+
+$$ C(y) \subset (-\delta,\delta) $$
+
+
+### 2개의 단측검정을 이용한 방법
+
+- 정규분포 가정
+
+- 각 처리에 대한 평균 $\bar {y}_T$ 과 $\bar {y}_R$ 는  $\mu_T$ 과 $\mu_R$의 추정량
+
+- $SE$ 를  $\bar {y}_T-\bar {y}_R$의 표준 오차(standard error)라고 하자
+
+- 다음을 만족하면 귀무가설 $H_0$를 기각 (생물학적 동등성을 선언)
+
+$$
+\frac{ \bar {y}_T-  \bar {y}_R +\delta}{SE} > t_\alpha ~~\text{ and }~~
+\frac{ \bar {y}_T-  \bar {y}_R -\delta}{SE} <- t_\alpha 
+$$
+
+- 위의 귀무가설 기각조건은 아래와 동일한다 (90\% 신뢰구간이 동등성 한계안에 있다)
+
+$$ 
+[(\bar {y}_T-  \bar {y}_R - t_\alpha (SE),~ (\bar {y}_T-  \bar {y}_R + t_\alpha(SE) )] \subseteq
+(-\delta,~\delta) 
+$$
+
+
+- TOST is a special case of intersection-union test (Berger and Hsu, 1996)
+
+- TOST is level $2\alpha$ test, but its size is actually $\alpha$.
+
+$$ \text{size of test } = \sup_{H_0} P( \text{ test rejects } H_0 ) $$
+
+- Improved tests are proposed by Berger and Hsu (1996), Brown, Hwang, and Munk (1997), Perlman and Wu (1999), Welleck (2003), Romano (2005)
+
+- But, still TOST is widely used because of its validity and simplicity
 
